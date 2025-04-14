@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENI-Enchères</title>
+</head>
+<body>
+<h1>ENI-Enchères</h1>
+<div class="user-info">
+  <p>NineJea est connectée</p>
+  <a href="#">Vendre un article</a>
+  <a href="#">Mon profil</a>
+  <a href="#">Déconnexion</a>
+</div>
+
+<h2>Filtres</h2>
+<div>
+  <h3>Achats</h3>
+  <label><input type="checkbox"> enchères ouvertes</label><br>
+  <label><input type="checkbox"> mes enchères en cours</label><br>
+  <label><input type="checkbox"> mes enchères remportées</label><br>
+</div>
+<div>
+  <h3>Mes ventes</h3>
+  <label><input type="checkbox"> mes ventes en cours</label><br>
+  <label><input type="checkbox"> ventes non débutées</label><br>
+  <label><input type="checkbox"> ventes terminées</label><br>
+</div>
+
+<label for="categories">Catégories:</label>
+<select id="categories" name="categories">
+  <option value="toutes">Toutes</option>
+</select><br><br>
+
+<label for="search">Le nom de l'article contient:</label>
+<input type="text" id="search" name="search"><br><br>
+<button type="submit">Rechercher</button>
+
+<div class="article">
+  <div class="image"></div>
+  <div class="details">
+    <h3>Titre</h3>
+    <p>Prix:</p>
+    <p>Fin de l'enchère:</p>
+    <p>Retrait:</p>
+    <p>Vendeur:</p>
+  </div>
+</div>
+
+</body>
+</html>
