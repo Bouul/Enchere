@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<form th:action="@{/login}" method="post">
+    <label for="identifiant">Identifiant :</label>
+    <input type="text" id="identifiant" name="identifiant" th:value="${identifiant}"/><br><br>
+
+    <label for="mot_de_passe">Mot de passe :</label>
+    <input type="password" id="mot_de_passe" name="mot_de_passe"/><br><br>
+
+    <input type="checkbox" id="souvenir" name="souvenir"/>
+    <label for="souvenir">Se souvenir de moi</label><br><br>
+
+    <input type="submit" value="Connexion"/>
+    <a href="#" th:href="@{/forgot-password}">Mot de passe oublié</a><br><br>
+
+    <a href="#" th:href="@{/register}">Créer un compte</a>
+</form>
+</body>
+</html>
