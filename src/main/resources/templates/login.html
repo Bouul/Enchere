@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="fragments/head :: uikit-head('login')"></head>
+<head>
+    <th:block th:replace="fragments/head :: uikit-head('login')"></th:block>
+    <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/login.css}">
+</head>
 <body>
 
 <div class="uk-section uk-section-muted uk-flex uk-flex-middle uk-animation-fade" uk-height-viewport>
@@ -54,8 +57,4 @@
     </div>
 </div>
 </body>
-<style>
-
-</style>
-
 </html>
