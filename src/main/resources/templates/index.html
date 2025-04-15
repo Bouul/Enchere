@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENI-Enchères</title>
-</head>
+<head th:replace="fragments/head :: uikit-head('home')"></head>
 <body>
-<nav th:replace="~{fragments :: navbar}"></nav>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
 <h2>Filtres :</h2>
 <label for="categories">Catégories:</label>

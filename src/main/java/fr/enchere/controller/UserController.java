@@ -30,7 +30,7 @@ public class UserController {
         User user = userService.findByUsername(username);
         if (user != null) {
             model.addAttribute("user", user);
-            return "profilView"; // Page de profil (vue)
+            return "profile-view"; // Page de profil (vue)
         } else {
             model.addAttribute("error", "Utilisateur non trouvé");
             return "error"; // Vue d'erreur (ou une redirection vers une autre page)
