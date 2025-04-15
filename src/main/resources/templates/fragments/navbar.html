@@ -15,7 +15,7 @@
 <nav th:fragment="navbar" class="uk-navbar-container uk-margin" uk-navbar>
     <!-- Partie gauche avec le logo -->
     <div class="uk-navbar-left">
-        <a th:href="@{/}" class="uk-navbar-item uk-logo">ENI-Enchères</a>
+        <a th:href="@{/static}" class="uk-navbar-item uk-logo">ENI-Enchères</a>
     </div>
 
     <!-- Menu mobile (hamburger) -->
@@ -26,7 +26,7 @@
     <!-- Menu principal pour écran large -->
     <div class="uk-navbar-right uk-visible@m">
         <ul class="uk-navbar-nav">
-            <li><a th:href="@{/}">Index</a></li>
+            <li><a th:href="@{/static}">Index</a></li>
             <li><a th:href="@{/acquisition-page}">Acquisition</a></li>
             <li><a th:href="@{/auction-list-pages}">Listes d'enchères</a></li>
             <li><a th:href="@{/bidding-page}">Enchérir</a></li>
@@ -42,7 +42,7 @@
     <div id="mobile-nav" uk-offcanvas="overlay: true">
         <div class="uk-offcanvas-bar">
             <ul class="uk-nav uk-nav-default">
-                <li><a th:href="@{/}">Index</a></li>
+                <li><a th:href="@{/static}">Index</a></li>
                 <li><a th:href="@{/acquisition-page}">Acquisition</a></li>
                 <li><a th:href="@{/auction-list-pages}">Listes d'enchères</a></li>
                 <li><a th:href="@{/bidding-page}">Enchérir</a></li>
