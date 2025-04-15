@@ -5,6 +5,7 @@
     <title>Modifier Mon Profil</title>
 </head>
 <body>
+<nav th:replace="~{fragments :: navbar}"></nav>
 
 <h1>ENI-Enchères</h1>
 <h2>Modifier Mon Profil</h2>
@@ -46,7 +47,9 @@
 
     <div class="btn-group">
         <button type="submit">Enregistrer</button>
-        <button type="button" th:onclick="window.location.href='/profil?username=${user.username}'">Retour</button>
+        <a th:href="@{/profil(username=${user.username})}">
+            <button type="button">retour</button>
+        </a>
     </div>
 </form>
 
