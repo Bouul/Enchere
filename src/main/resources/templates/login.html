@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
 </head>
 <body>
+<nav th:replace="~{fragments :: navbar}"></nav>
+
 <form th:action="@{/login}" method="post">
     <label for="identifiant">Identifiant :</label>
     <input type="text" id="identifiant" name="identifiant" th:value="${identifiant}"/><br><br>
