@@ -2,20 +2,58 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ENI-Enchères</title>
+    <link rel="stylesheet" th:href="@{/vendor/uikit/css/uikit.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/navbar.css}">
+    <script th:src="@{/vendor/uikit/js/uikit.min.js}"></script>
+    <script th:src="@{/vendor/uikit/js/uikit-icons.min.js}"></script>
 </head>
 <body>
-<h1>ENI-Enchères</h1>
-<nav th:fragment="navbar">
-    <a th:href="@{/}">index</a>
-    <a th:href="@{/acquisition-page}">acquisition-page</a>
-    <a th:href="@{/auction-list-pages}">auction-list-pages</a>
-    <a th:href="@{/bidding-page}">bidding-page</a>
-    <a th:href="@{/login}">login</a>
-    <a th:href="@{/profile-modification}">profileModification</a>
-    <a th:href="@{/profilView}">profilView</a>
-    <a th:href="@{/sell-item-page}">sell-item-page</a>
-    <a th:href="@{/signup}">signup</a>
+<h1 class="uk-text-center uk-margin-top">ENI-Enchères</h1>
+
+<!-- Navbar -->
+<nav th:fragment="navbar" class="uk-navbar-container uk-margin" uk-navbar>
+    <!-- Partie gauche avec le logo -->
+    <div class="uk-navbar-left">
+        <a th:href="@{/}" class="uk-navbar-item uk-logo">ENI-Enchères</a>
+    </div>
+
+    <!-- Menu mobile (hamburger) -->
+    <div class="uk-navbar-right uk-hidden@m">
+        <a class="uk-navbar-toggle" uk-navbar-toggle-icon href="#" uk-toggle="target: #mobile-nav"></a>
+    </div>
+
+    <!-- Menu principal pour écran large -->
+    <div class="uk-navbar-right uk-visible@m">
+        <ul class="uk-navbar-nav">
+            <li><a th:href="@{/}">Index</a></li>
+            <li><a th:href="@{/acquisition-page}">Acquisition</a></li>
+            <li><a th:href="@{/auction-list-pages}">Listes d'enchères</a></li>
+            <li><a th:href="@{/bidding-page}">Enchérir</a></li>
+            <li><a th:href="@{/login}">Login</a></li>
+            <li><a th:href="@{/profile-modification}">Modifier Profil</a></li>
+            <li><a th:href="@{/profilView}">Profil</a></li>
+            <li><a th:href="@{/sell-item-page}">Vendre</a></li>
+            <li><a th:href="@{/signup}">Signup</a></li>
+        </ul>
+    </div>
+
+    <!-- Menu mobile (visible en petit écran) -->
+    <div id="mobile-nav" uk-offcanvas="overlay: true">
+        <div class="uk-offcanvas-bar">
+            <ul class="uk-nav uk-nav-default">
+                <li><a th:href="@{/}">Index</a></li>
+                <li><a th:href="@{/acquisition-page}">Acquisition</a></li>
+                <li><a th:href="@{/auction-list-pages}">Listes d'enchères</a></li>
+                <li><a th:href="@{/bidding-page}">Enchérir</a></li>
+                <li><a th:href="@{/login}">Login</a></li>
+                <li><a th:href="@{/profile-modification}">Modifier Profil</a></li>
+                <li><a th:href="@{/profilView}">Profil</a></li>
+                <li><a th:href="@{/sell-item-page}">Vendre</a></li>
+                <li><a th:href="@{/signup}">Signup</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>
 </body>
 </html>
