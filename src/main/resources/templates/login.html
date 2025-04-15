@@ -10,27 +10,30 @@
                 <div class="uk-width-1-1@m">
                     <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
                         <h3 class="uk-card-title uk-text-center">Connexion à ENI Enchère</h3>
-                        <form th:action="@{/login}" method="post">
+                        <form th:action="@{/perform_login}" method="post">
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                    <input class="uk-input uk-form-large" type="text" id="identifiant" name="identifiant"
-                                           placeholder="Identifiant" th:value="${identifiant}" required>
+                                    <input class="uk-input uk-form-large" type="text" id="username" name="username"
+                                           placeholder="Identifiant" required>
                                 </div>
                             </div>
 
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                                    <input class="uk-input uk-form-large" type="password" id="mot_de_passe" name="mot_de_passe"
+                                    <input class="uk-input uk-form-large" type="password" id="password" name="password"
                                            placeholder="Mot de passe" required>
                                 </div>
                             </div>
 
                             <div class="uk-margin uk-flex uk-flex-middle">
-                                <input class="uk-checkbox" type="checkbox" id="souvenir" name="souvenir">
-                                <label class="uk-margin-small-left" for="souvenir">Se souvenir de moi</label>
+                                <input class="uk-checkbox" type="checkbox" id="remember-me" name="remember-me">
+                                <label class="uk-margin-small-left" for="remember-me">Se souvenir de moi</label>
                             </div>
+
+                            <!-- Token CSRF (ajouté automatiquement par Thymeleaf avec Spring Security) -->
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                             <div class="uk-margin">
                                 <button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Connexion</button>

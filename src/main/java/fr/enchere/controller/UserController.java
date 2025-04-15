@@ -21,6 +21,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Page inscription
+    @GetMapping("/signup")
+    public String inscription(@ModelAttribute User user, Model model) {
+        userService.createUser(user);
+        return "signup";
+    }
+
+
+
     // Page profilView
 
     // Afficher le profil (view profil)
