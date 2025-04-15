@@ -2,6 +2,7 @@ package fr.enchere.security;
 
 import fr.enchere.model.User;
 import fr.enchere.service.UserService;
+import fr.enchere.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class GestionPersonaliseeUtilisateurs implements UserDetailsService {
 
     @Autowired
-    private UserService UserService;
+    private UserServiceImpl UserService;
 
     /*
      * Elle doit donc définir comment on recupère un UtilisateurSpringSecurity
@@ -26,8 +27,10 @@ public class GestionPersonaliseeUtilisateurs implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User membreTrouve =  UserService.getPersonByPseudo(username);
-
-        return new UtilisateurSpringSecurity(membreTrouve);
+        User userFound = UserService.findByUsername(username);
+        if (userFound == null) {
+            throw new UsernameNotFoundException("Utilisateur non trouvé avec le pseudo: " + username);
+        }
+        return new UtilisateurSpringSecurity(userFound);
     }
 }
