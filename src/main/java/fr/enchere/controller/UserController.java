@@ -49,7 +49,7 @@ public class UserController {
         if (user != null) {
             // Passe l'utilisateur à la vue (profil-modification.html)
             model.addAttribute("user", user);
-            return "profil-modification"; // Vue de modification du profil
+            return "profile-modification"; // Vue de modification du profil
         } else {
             // Si l'utilisateur n'existe pas, redirige vers une page d'erreur ou une autre page
             model.addAttribute("error", "Utilisateur non trouvé");
