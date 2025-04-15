@@ -3,7 +3,7 @@ package fr.enchere.model;
 import jakarta.persistence.*;
 
 @Entity
-public class ItemForSale {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
@@ -16,37 +16,57 @@ public class ItemForSale {
     private String saleStatus;
 
     @ManyToOne
-    @JoinColumn(name = "pickupLocation")
-    private PickupLocation pickupLocation;
-
-    @ManyToOne
     @JoinColumn(name = "category")
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "seller")
+    @JoinColumn(name = "seller_id")
     private User seller;
+
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pickupLocation")
+    private PickupLocation pickupLocationBid;
 
     // Constructors
 
-    public ItemForSale() {
+    public Item() {
         // Default constructor
     }
 
-    public ItemForSale(Long itemId, String itemName, String description, String startDate, String endDate, int startingPrice, int salePrice, String saleStatus, PickupLocation pickupLocation, Category category, User seller) {
+    public Item(Long itemId, PickupLocation pickupLocationBid, User buyer, User seller, Category category, String saleStatus, int salePrice, int startingPrice, String endDate, String startDate, String description, String itemName) {
         this.itemId = itemId;
-        this.itemName = itemName;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startingPrice = startingPrice;
-        this.salePrice = salePrice;
-        this.saleStatus = saleStatus;
-        this.pickupLocation = pickupLocation;
-        this.category = category;
+        this.pickupLocationBid = pickupLocationBid;
+        this.buyer = buyer;
         this.seller = seller;
+        this.category = category;
+        this.saleStatus = saleStatus;
+        this.salePrice = salePrice;
+        this.startingPrice = startingPrice;
+        this.endDate = endDate;
+        this.startDate = startDate;
+        this.description = description;
+        this.itemName = itemName;
     }
 
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
+    }
+
+    public PickupLocation getPickupLocationBid() {
+        return pickupLocationBid;
+    }
+
+    public void setPickupLocationBid(PickupLocation pickupLocationBid) {
+        this.pickupLocationBid = pickupLocationBid;
+    }
 
     // Getters and setters
 
@@ -72,14 +92,6 @@ public class ItemForSale {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public PickupLocation getPickupLocation() {
-        return pickupLocation;
-    }
-
-    public void setPickupLocation(PickupLocation pickupLocation) {
-        this.pickupLocation = pickupLocation;
     }
 
     public String getSaleStatus() {

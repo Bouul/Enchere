@@ -16,8 +16,8 @@ public class Bid {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "itemForSale")
-    private ItemForSale itemForSale;
+    @JoinColumn(name = "item")
+    private Item item;
 
     // Constructors
 
@@ -25,12 +25,12 @@ public class Bid {
         // Default constructor
     }
 
-    public Bid(Long bidId, LocalDateTime bidDate, int bidAmount, User user, ItemForSale itemForSale) {
+    public Bid(Long bidId, LocalDateTime bidDate, int bidAmount, User user, Item item) {
         this.bidId = bidId;
         this.bidDate = bidDate;
         this.bidAmount = bidAmount;
         this.user = user;
-        this.itemForSale = itemForSale;
+        this.item = item;
     }
 
 
@@ -44,12 +44,12 @@ public class Bid {
         this.bidId = bidId;
     }
 
-    public ItemForSale getItemForSale() {
-        return itemForSale;
+    public Item getItemForSale() {
+        return item;
     }
 
-    public void setItemForSale(ItemForSale itemForSale) {
-        this.itemForSale = itemForSale;
+    public void setItemForSale(Item item) {
+        this.item = item;
     }
 
     public User getUser() {
