@@ -43,7 +43,7 @@ public class HomeController {
 
     @GetMapping("/profilView")
     public String profilView() {
-        return "/profilView";
+        return "profile-view";
     }
 
     @GetMapping("/sell-item-page")

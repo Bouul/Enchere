@@ -1,0 +1,68 @@
+/* Navbar container styling */
+.uk-navbar-container {
+    background-color: #ffffff !important; /* Fond blanc pour un look clair et épuré */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    padding: 0 20px;
+}
+
+/* Logo styling */
+.uk-navbar-item.uk-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333333; /* Gris foncé */
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Navbar links */
+.uk-navbar-nav > li > a {
+    font-size: 1rem !important;
+    color: #333333 !important;
+    text-transform: uppercase !important;
+    padding: 12px 18px !important;
+    transition: background-color 0.3s ease, color 0.3s ease !important;
+}
+
+/* Hover effect on navbar links */
+.uk-navbar-nav > li > a:hover {
+    background-color: #5c6bc0 !important; /* Bleu sobre */
+    color: #ffffff !important;
+}
+
+/* Toggle icon for mobile menu */
+.uk-navbar-toggle-icon {
+    color: #333333; /* Gris foncé */
+}
+
+/* Offcanvas menu (mobile) */
+.uk-offcanvas-bar {
+    background-color: #f7f7f7 !important;
+    color: #333333 !important;
+}
+
+/* Mobile menu links */
+.uk-offcanvas-bar .uk-nav-default .uk-nav-link,
+.uk-offcanvas-bar .uk-nav-default a {
+    color: #333333 !important;
+    font-size: 1.1rem;
+    padding: 15px;
+    transition: background-color 0.3s ease, color 0.3s ease !important;
+}
+
+/* Hover on mobile links */
+.uk-offcanvas-bar .uk-nav-default .uk-nav-link:hover,
+.uk-offcanvas-bar .uk-nav-default a:hover,
+.uk-offcanvas-bar .uk-nav-default .uk-nav-link:focus {
+    background-color: #5c6bc0 !important;
+    color: #ffffff !important;
+}
+
+/* Responsive enhancements */
+@media (min-width: 960px) {
+    .uk-navbar-left .uk-navbar-item.uk-logo {
+        font-size: 1.8rem;
+    }
+    .uk-navbar-nav > li > a {
+        font-size: 1.2rem;
+    }
+}
