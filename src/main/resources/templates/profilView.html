@@ -18,6 +18,8 @@
   <p><strong>Code postal :</strong> <span th:text="${user.postalCode}">Code postal</span></p>
   <p><strong>Ville :</strong> <span th:text="${user.city}">Ville</span></p>
 </div>
-<button type="button">Modifier</button>
+<a th:href="@{/profil/modifier(username=${user.username})}">
+  <button type="button">Modifier</button>
+</a>
 </body>
 </html>
