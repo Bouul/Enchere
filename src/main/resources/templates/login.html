@@ -1,26 +1,103 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/vendor/uikit/css/uikit.min.css}">
+    <script th:src="@{/vendor/uikit/js/uikit.min.js}"></script>
+    <script th:src="@{/vendor/uikit/js/uikit-icons.min.js}"></script>
     <title>Login</title>
 </head>
 <body>
-<nav th:replace="~{fragments :: navbar}"></nav>
+<div class="uk-section uk-section-muted uk-flex uk-flex-middle uk-animation-fade" uk-height-viewport>
+    <div class="uk-width-1-1">
+        <div class="uk-container">
+            <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
+                <div class="uk-width-1-1@m">
+                    <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+                        <h3 class="uk-card-title uk-text-center">Connexion à ENI Enchère</h3>
+                        <form th:action="@{/login}" method="post">
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                    <input class="uk-input uk-form-large" type="text" id="identifiant" name="identifiant"
+                                           placeholder="Identifiant" th:value="${identifiant}" required>
+                                </div>
+                            </div>
 
-<form th:action="@{/login}" method="post">
-    <label for="identifiant">Identifiant :</label>
-    <input type="text" id="identifiant" name="identifiant" th:value="${identifiant}"/><br><br>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input class="uk-input uk-form-large" type="password" id="mot_de_passe" name="mot_de_passe"
+                                           placeholder="Mot de passe" required>
+                                </div>
+                            </div>
 
-    <label for="mot_de_passe">Mot de passe :</label>
-    <input type="password" id="mot_de_passe" name="mot_de_passe"/><br><br>
+                            <div class="uk-margin uk-flex uk-flex-middle">
+                                <input class="uk-checkbox" type="checkbox" id="souvenir" name="souvenir">
+                                <label class="uk-margin-small-left" for="souvenir">Se souvenir de moi</label>
+                            </div>
 
-    <input type="checkbox" id="souvenir" name="souvenir"/>
-    <label for="souvenir">Se souvenir de moi</label><br><br>
+                            <div class="uk-margin">
+                                <button type="submit" class="uk-button uk-button-primary uk-button-large uk-width-1-1">Connexion</button>
+                            </div>
 
-    <input type="submit" value="Connexion"/>
-    <a href="#" th:href="@{/forgot-password}">Mot de passe oublié</a><br><br>
+                            <div class="uk-width-1-1 uk-text-small uk-text-center">
+                                <a th:href="@{/register}">Créer un compte</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-    <a href="#" th:href="@{/register}">Créer un compte</a>
-</form>
+            <div class="uk-margin-top uk-width-1-1 uk-text-small uk-text-center">
+                <a th:href="@{/forgot-password}">Mot de passe oublié ?</a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<style>
+    .uk-box-shadow-large {
+        border-radius: 15px;
+    }
+
+    .uk-input,
+    .uk-select,
+    .uk-textarea,
+    .uk-button {
+        border-radius: 33px;
+    }
+
+    /* ------- styles overwrites -------- */
+
+    /* Décale légèrement l'icône à gauche */
+    .uk-form-icon:not(a):not(button):not(input) {
+        left: 5px;
+    }
+
+    /* Ajoute de l'espace pour l'icône */
+    .uk-form-icon:not(.uk-form-icon-flip)~.uk-input {
+        padding-left: 45px !important;
+    }
+
+    /* Couleur de base du bouton primaire */
+    .uk-button-primary {
+        background-color: #0A74BA; /* Bleu personnalisé */
+        color: white;
+    }
+
+    /* Hover + Focus */
+    .uk-button-primary:hover,
+    .uk-button-primary:focus {
+        background-color: #198FD4;
+    }
+
+    /* OnClick + Active */
+    .uk-button-primary:active,
+    .uk-button-primary.uk-active {
+        background-color: #085A91;
+    }
+</style>
+
 </html>
