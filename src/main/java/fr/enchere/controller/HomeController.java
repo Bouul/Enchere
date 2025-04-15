@@ -36,9 +36,9 @@ public class HomeController {
         return "/bidding-page";
     }
 
-    @GetMapping("/profileModification")
+    @GetMapping("/profile-modification")
     public String profileModification() {
-        return "/profileModification";
+        return "/profile-modification";
     }
 
     @GetMapping("/profilView")
