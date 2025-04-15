@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping("/profil")
     public String getProfil(@RequestParam String username, Model model) {
         // Récupérer l'utilisateur par son pseudo
-        User user = userService.getUserByUsername(username);
+        User user = userService.findByUsername(username);
         if (user != null) {
             model.addAttribute("user", user);
             return "profilView"; // Page de profil (vue)
@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/profil/modifier")
     public String getProfilModif(@RequestParam("username") String username, Model model) {
         // Récupère l'utilisateur depuis la base de données via le UserService
-        User user = userService.getUserByUsername(username);
+        User user = userService.findByUsername(username);
 
         if (user != null) {
             // Passe l'utilisateur à la vue (profil-modification.html)
