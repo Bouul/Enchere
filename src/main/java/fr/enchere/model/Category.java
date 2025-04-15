@@ -11,7 +11,7 @@ public class Category {
     private String label;
 
     @OneToMany(mappedBy = "category")
-    private List<ItemForSale> itemsForSale;
+    private List<Item> items;
 
 
     // Constructors
@@ -20,10 +20,10 @@ public class Category {
         // Default constructor
     }
 
-    public Category(Long categoryId, String label, List<ItemForSale> itemsForSale) {
+    public Category(Long categoryId, String label, List<Item> items) {
         this.categoryId = categoryId;
         this.label = label;
-        this.itemsForSale = itemsForSale;
+        this.items = items;
     }
 
 
@@ -37,12 +37,12 @@ public class Category {
         this.categoryId = categoryId;
     }
 
-    public List<ItemForSale> getItemsForSale() {
-        return itemsForSale;
+    public List<Item> getItemsForSale() {
+        return items;
     }
 
-    public void setItemsForSale(List<ItemForSale> itemsForSale) {
-        this.itemsForSale = itemsForSale;
+    public void setItemsForSale(List<Item> items) {
+        this.items = items;
     }
 
     public String getLabel() {

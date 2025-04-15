@@ -24,7 +24,10 @@ public class User {
     private List<Bid> bids;
 
     @OneToMany(mappedBy = "seller")
-    private List<ItemForSale> itemsForSale;
+    private List<Item> itemsSold;
+
+    @OneToMany(mappedBy = "buyer")
+    private List<Item> itemsBought;
 
 
     //Consqtructors
@@ -32,9 +35,10 @@ public class User {
         // Default constructor
     }
 
-    public User(Long userId, List<ItemForSale> itemsForSale, List<Bid> bids, boolean administrator, boolean credit, String password, String city, String postalCode, String street, String phone, String email, String firstName, String lastName, String username) {
+    public User(Long userId, List<Item> itemsBought, List<Item> itemsSold, List<Bid> bids, boolean administrator, boolean credit, String password, String city, String postalCode, String street, String phone, String email, String firstName, String lastName, String username) {
         this.userId = userId;
-        this.itemsForSale = itemsForSale;
+        this.itemsBought = itemsBought;
+        this.itemsSold = itemsSold;
         this.bids = bids;
         this.administrator = administrator;
         this.credit = credit;
@@ -49,18 +53,20 @@ public class User {
         this.username = username;
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public List<Item> getItemsSold() {
+        return itemsSold;
     }
 
-    // Getters and setters
-    public List<ItemForSale> getItemsForSale() {
-        return itemsForSale;
+    public void setItemsSold(List<Item> itemsSold) {
+        this.itemsSold = itemsSold;
     }
 
-    public void setItemsForSale(List<ItemForSale> itemsForSale) {
-        this.itemsForSale = itemsForSale;
+    public List<Item> getItemsBought() {
+        return itemsBought;
+    }
+
+    public void setItemsBought(List<Item> itemsBought) {
+        this.itemsBought = itemsBought;
     }
 
     public List<Bid> getBids() {
