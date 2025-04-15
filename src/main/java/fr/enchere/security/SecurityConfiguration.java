@@ -23,11 +23,21 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/**").permitAll() // Configuration minimale pour les ressources publiques
+                        .requestMatchers("/css/**", "/js/**", "/vendor/**","/images/**", "/connexion", "/inscription").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
-                .logout((logout) -> logout.logoutSuccessUrl("/"));
+                .formLogin(form -> form
+                        .loginPage("/login") // URL de votre page de connexion personnalisée
+                        .loginProcessingUrl("/perform_login") // URL pour traiter la soumission du formulaire
+                        .defaultSuccessUrl("/", true) // Redirection après connexion réussie
+                        .failureUrl("/connexion?error=true") // Redirection en cas d'échec
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/connexion?logout=true")
+                        .permitAll());
+
         return http.build();
     }
 
