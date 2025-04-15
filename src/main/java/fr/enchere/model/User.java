@@ -27,7 +27,6 @@ public class User {
     private List<ItemForSale> itemsForSale;
 
 
-
     //Consqtructors
     public User() {
         // Default constructor
@@ -48,6 +47,11 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     // Getters and setters
