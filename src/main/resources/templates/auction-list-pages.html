@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ENI-Enchères</title>
-</head>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: uikit-head('auction-list')"></head>
 <body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+
+<h1>ENI-Enchères // </h1>
+<a href="#">S'inscrire // </a>
+<a href="#">se connecter // </a>
 <h1>ENI-Enchères</h1>
 <div class="user-info">
   <p>NineJea est connectée</p>
@@ -16,13 +17,16 @@
 
 <h2>Filtres</h2>
 <div>
-  <h3>Achats</h3>
+  <input type="radio" id="Achat" name="test" value="Achat" checked />
+  <label for="Achat">Achat</label> <br>
   <label><input type="checkbox"> enchères ouvertes</label><br>
   <label><input type="checkbox"> mes enchères en cours</label><br>
   <label><input type="checkbox"> mes enchères remportées</label><br>
 </div>
+<br>
 <div>
-  <h3>Mes ventes</h3>
+  <input type="radio" id="Mes ventes" name="test" value="Mes ventes" checked />
+  <label for="Mes ventes">Mes ventes</label> <br>
   <label><input type="checkbox"> mes ventes en cours</label><br>
   <label><input type="checkbox"> ventes non débutées</label><br>
   <label><input type="checkbox"> ventes terminées</label><br>

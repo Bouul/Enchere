@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: uikit-head('profile-modification')"></head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+
+<h1>ENI-Enchères</h1>
+<h2>Modifier Mon Profil</h2>
+
+<form th:action="@{/profil/modifier}" method="post">
+
+    <label for="pseudo">Pseudo :</label>
+    <input type="text" id="pseudo" name="username" th:value="${user.username}" disabled />
+
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="lastName" th:value="${user.lastName}" />
+
+    <label for="prenom">Prénom :</label>
+    <input type="text" id="prenom" name="firstName" th:value="${user.firstName}" />
+
+    <label for="email">Email :</label>
+    <input type="email" id="email" name="email" th:value="${user.email}" />
+
+    <label for="telephone">Téléphone :</label>
+    <input type="tel" id="telephone" name="phone" th:value="${user.phone}" />
+
+    <label for="rue">Rue :</label>
+    <input type="text" id="rue" name="street" th:value="${user.street}" />
+
+    <label for="codePostal">Code postal :</label>
+    <input type="text" id="codePostal" name="postalCode" th:value="${user.postalCode}" />
+
+    <label for="ville">Ville :</label>
+    <input type="text" id="ville" name="city" th:value="${user.city}" />
+
+    <label for="motDePasse">Mot de passe :</label>
+    <input type="password" id="motDePasse" name="password" th:value="${user.password}" />
+
+    <label for="confirmation">Confirmation :</label>
+    <input type="password" id="confirmation" name="confirmation" th:value="${user.password}" />
+
+    <label for="credit">Crédit :</label>
+    <input type="number" id="credit" name="credit" th:value="${user.credit}" />
+
+    <div class="btn-group">
+        <button type="submit">Enregistrer</button>
+        <a th:href="@{/profil(username=${user.username})}">
+            <button type="button">retour</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
