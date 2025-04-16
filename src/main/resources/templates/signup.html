@@ -100,12 +100,15 @@
                                 </div>
                             </div>
 
-                            <!-- Champ pour le crédit (checkbox) -->
+
                             <div class="uk-margin">
-                                <label>
-                                    <input class="uk-checkbox" type="checkbox" th:field="*{credit}">
-                                    Crédits activés
-                                </label>
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: credit-card"></span>
+                                    <input class="uk-input" type="text" value="100" disabled placeholder="Crédits initiaux">
+                                    <!-- Champ caché pour transmettre la valeur -->
+                                    <input type="hidden" th:field="*{credit}" value="100">
+                                </div>
+                                <div class="uk-text-small uk-text-muted">Vous recevez 100 crédits à l'inscription</div>
                             </div>
 
                             <!-- Champ pour l'administrateur (checkbox) -->
