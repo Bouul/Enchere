@@ -55,4 +55,25 @@ public class UtilisateurSpringSecurity implements UserDetails {
     public String getUsername() {
         return this.membre.getUsername();
     }
+
+    // À ajouter dans la classe UtilisateurSpringSecurity
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;  // ou logique personnalisée
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;  // ou logique personnalisée
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;  // ou logique personnalisée
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;  // ou logique personnalisée selon l'état de l'utilisateur
+    }
 }
