@@ -1,5 +1,6 @@
 package fr.enchere.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -20,6 +21,10 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private GestionPersonaliseeUtilisateurs userDetailsService; // Injection de votre service personnalisé
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
@@ -36,7 +41,13 @@ public class SecurityConfiguration {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/connexion?logout=true")
-                        .permitAll());
+                        .permitAll())
+                .rememberMe(remember -> remember
+                        .key("uniqueAndSecretKey") // Clé pour signer le cookie
+                        .tokenValiditySeconds(86400) // Durée de validité (24 heures)
+                        .userDetailsService(userDetailsService)
+                        .rememberMeParameter("remember-me") // Doit correspondre au nom dans le formulaire
+                );
 
         return http.build();
     }
