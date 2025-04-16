@@ -27,7 +27,7 @@ public class SecurityConfiguration {
                         .loginPage("/login")
                         .loginProcessingUrl("/perform_login")
                         .defaultSuccessUrl("/", true)
-                        .failureUrl("/connexion?error=true")
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -42,11 +42,6 @@ public class SecurityConfiguration {
                         .tokenValiditySeconds(86400)
                         .userDetailsService(userDetailsService)
                         .rememberMeParameter("remember-me")
-                )
-                .sessionManagement(session -> session
-                        .invalidSessionUrl("/connexion?timeout=true")
-                        .maximumSessions(1)
-                        .expiredUrl("/connexion?expired=true")
                 );
 
         return http.build();
