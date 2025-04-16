@@ -3,7 +3,6 @@ package fr.enchere.controller;
 import fr.enchere.model.User;
 import fr.enchere.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,10 +62,10 @@ public class UserController {
     // Afficher le profil (view profil)
     @GetMapping("/profil")
     public String getProfil(@RequestParam Long userId, Model model) {
-        User user = userService.getUserById(userId);
+        User user = userService.findByUserId(userId);
         if (user != null) {
             model.addAttribute("user", user);
-            return "profilView"; // Page de profil (vue)
+            return "profile-view"; // Page de profil (vue)
         } else {
             model.addAttribute("error", "Utilisateur non trouvé");
             return "error";
@@ -79,7 +78,7 @@ public class UserController {
     // Méthode pour afficher les informations du profil pour les modifiers
     @GetMapping("/profil/modifier")
     public String getProfilModif(@RequestParam("userId") Long userId, Model model) {
-        User user = userService.getUserById(userId);
+        User user = userService.findByUserId(userId);
         if (user != null) {
             // Passe l'utilisateur à la vue (profil-modification.html)
             model.addAttribute("user", user);
