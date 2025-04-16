@@ -5,7 +5,6 @@
     <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/signup.css}">
 </head>
 <body>
-<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
 <div class="uk-section uk-section-muted uk-flex uk-flex-middle uk-animation-fade" uk-height-viewport>
     <div class="uk-width-1-1">
@@ -127,7 +126,7 @@
                             </div>
                         </form>
 
-                        <div class="uk-margin-top uk-text-center">
+                        <div class="uk-margin-top uk-width-1-1 uk-text-small uk-text-center">
                             <a th:href="@{/login}" class="uk-link-text">Déjà inscrit ? Connectez-vous</a>
                         </div>
                     </div>
