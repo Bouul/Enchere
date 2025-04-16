@@ -41,9 +41,12 @@
                 </a>
             </li>
             <li sec:authorize="isAuthenticated()">
-                <a th:href="@{/logout}" class="logout-link">
-                    <span uk-icon="icon: sign-out"></span> Déconnexion
-                </a>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="uk-button uk-button-text" style="display: flex; align-items: center;">
+                        <span uk-icon="icon: sign-out" style="margin-right: 5px;"></span> Déconnexion
+                    </button>
+                </form>
             </li>
             <li sec:authorize="isAnonymous()">
                 <a th:href="@{/login}">
@@ -73,9 +76,12 @@
                     </a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
-                    <a th:href="@{/logout}" class="logout-link">
-                        <span uk-icon="icon: sign-out"></span> Déconnexion
-                    </a>
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="uk-button uk-button-text" style="display: flex; align-items: center; width: 100%; text-align: left; padding: 0;">
+                            <span uk-icon="sign-out" style="margin-right: 5px;"></span> Déconnexion
+                        </button>
+                    </form>
                 </li>
                 <li sec:authorize="isAnonymous()">
                     <a th:href="@{/login}">

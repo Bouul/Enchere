@@ -6,56 +6,54 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.util.ArrayList;
-import java.util.List;
-
-// on a une classe dans laquelle on va définir la configuration de Spring Security
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
     @Autowired
-    private GestionPersonaliseeUtilisateurs userDetailsService; // Injection de votre service personnalisé
+    private GestionPersonaliseeUtilisateurs userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/css/**", "/js/**", "/vendor/**","/images/**", "/connexion", "/inscription","/signup","/").permitAll()
+        http.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/css/**", "/js/**", "/vendor/**", "/images/**", "/connexion", "/inscription", "/signup", "/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // URL de votre page de connexion personnalisée
-                        .loginProcessingUrl("/perform_login") // URL pour traiter la soumission du formulaire
-                        .defaultSuccessUrl("/", true) // Redirection après connexion réussie
-                        .failureUrl("/connexion?error=true") // Redirection en cas d'échec
+                        .loginPage("/login")
+                        .loginProcessingUrl("/perform_login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/connexion?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/connexion?logout=true")
-                        .permitAll())
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "remember-me")
+                        .permitAll()
+                )
                 .rememberMe(remember -> remember
-                        .key("uniqueAndSecretKey") // Clé pour signer le cookie
-                        .tokenValiditySeconds(86400) // Durée de validité (24 heures)
+                        .key("uniqueAndSecretKey")
+                        .tokenValiditySeconds(86400)
                         .userDetailsService(userDetailsService)
-                        .rememberMeParameter("remember-me") // Doit correspondre au nom dans le formulaire
+                        .rememberMeParameter("remember-me")
+                )
+                .sessionManagement(session -> session
+                        .invalidSessionUrl("/connexion?timeout=true")
+                        .maximumSessions(1)
+                        .expiredUrl("/connexion?expired=true")
                 );
 
         return http.build();
     }
 
-    @Bean // on définit un bean pour l'utilitaire d'encryption de mot de passe
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }
