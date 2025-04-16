@@ -3,18 +3,6 @@
 <head th:replace="fragments/head :: uikit-head('home')"></head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-
-
-<div class="uk-section uk-section-primary uk-light" sec:authorize="isAnonymous()">
-    <div class="uk-container uk-text-center">
-        <h2>Bienvenue sur notre site d'enchères</h2>
-        <div class="uk-margin">
-            <a th:href="@{/login}" class="uk-button uk-button-default uk-margin-right">Se connecter</a>
-            <a th:href="@{/signup}" class="uk-button uk-button-secondary">S'inscrire</a>
-        </div>
-    </div>
-</div>
-
 <h2>Filtres :</h2>
 <label for="categories">Catégories:</label>
 <select id="categories" name="categories">
