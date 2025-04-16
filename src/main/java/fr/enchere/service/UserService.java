@@ -8,21 +8,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;  // Pour accéder à la base de données
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    // Récupérer un utilisateur par son pseudo (username)
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    // Modification ici : String → Long
+    public User getUserById(Long userId) {
+        return userRepository.findByUserId(userId);
     }
 
-    // Mettre à jour un utilisateur
     public void updateUser(User user) {
-        // Tu peux ajouter de la logique ici, comme vérifier les informations avant de les sauvegarder
-        userRepository.save(user);  // Sauvegarde l'utilisateur mis à jour
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            User existingUser = userRepository.findByUserId(user.getUserId());
+            user.setPassword(existingUser.getPassword());
+        }
+        userRepository.save(user);
     }
 }

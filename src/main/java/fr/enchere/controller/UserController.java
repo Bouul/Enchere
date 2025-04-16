@@ -5,6 +5,7 @@ import fr.enchere.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,49 +26,58 @@ public class UserController {
 
     // Afficher le profil (view profil)
     @GetMapping("/profil")
-    public String getProfil(@RequestParam String username, Model model) {
-        // Récupérer l'utilisateur par son pseudo
-        User user = userService.getUserByUsername(username);
+    public String getProfil(@RequestParam Long userId, Model model) {
+        User user = userService.getUserById(userId);
         if (user != null) {
             model.addAttribute("user", user);
-            return "profilView"; // Page de profil (vue)
+            return "profilView";
         } else {
             model.addAttribute("error", "Utilisateur non trouvé");
-            return "error"; // Vue d'erreur (ou une redirection vers une autre page)
+            return "error";
         }
     }
 
 
-    // Page profil-modification
+    // Page profile-modification
 
     // Méthode pour afficher les informations du profil pour les modifiers
     @GetMapping("/profil/modifier")
-    public String getProfilModif(@RequestParam("username") String username, Model model) {
-        // Récupère l'utilisateur depuis la base de données via le UserService
-        User user = userService.getUserByUsername(username);
-
+    public String getProfilModif(@RequestParam("userId") Long userId, Model model) {
+        User user = userService.getUserById(userId);
         if (user != null) {
-            // Passe l'utilisateur à la vue (profil-modification.html)
             model.addAttribute("user", user);
-            return "profile-modification"; // Vue de modification du profil
+            return "profile-modification";
         } else {
-            // Si l'utilisateur n'existe pas, redirige vers une page d'erreur ou une autre page
             model.addAttribute("error", "Utilisateur non trouvé");
-            return "error"; // Vue d'erreur ou redirection
+            return "error";
         }
     }
 
     // Sauvegarder les modifications du profil (POST)
     @PostMapping("/profil/modifier")
-    public String enregistrerProfil(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
-        // Appeler le service pour mettre à jour les informations de l'utilisateur
+    public String enregistrerProfil(
+            @ModelAttribute User user,
+            @RequestParam String confirmation,
+            RedirectAttributes redirectAttributes,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Données invalides dans le formulaire.");
+            return "redirect:/profil/modifier?userId=" + user.getUserId();
+        }
+
+        if (user.getPassword() == null || !user.getPassword().equals(confirmation)) {
+            redirectAttributes.addFlashAttribute("error", "Les mots de passe ne correspondent pas.");
+            return "redirect:/profil/modifier?userId=" + user.getUserId();
+        }
+
         try {
             userService.updateUser(user);
             redirectAttributes.addFlashAttribute("success", "Profil mis à jour avec succès!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Erreur lors de la mise à jour du profil");
         }
-        // Rediriger vers la page de profil après la mise à jour
-        return "redirect:/profil?username=" + user.getUsername();
+
+        return "redirect:/profil?userId=" + user.getUserId();
     }
 }
