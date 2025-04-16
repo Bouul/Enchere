@@ -17,10 +17,7 @@ public class User {
     private String postalCode;
     private String city;
     private String password;
-
-    // Remplacez la variable boolean par int
     private int credit;
-
     private boolean administrator;
 
     @OneToMany(mappedBy = "user")
@@ -32,9 +29,10 @@ public class User {
     @OneToMany(mappedBy = "buyer")
     private List<Item> itemsBought;
 
-    // Constructeurs
+
+    //Constructeurs
     public User() {
-        // Constructeur par défaut
+        // Default constructor
     }
 
     public User(Long userId, List<Item> itemsBought, List<Item> itemsSold, List<Bid> bids, boolean administrator, int credit, String password, String city, String postalCode, String street, String phone, String email, String firstName, String lastName, String username) {
