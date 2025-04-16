@@ -41,7 +41,6 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-
     @Bean // on définit un bean pour l'utilitaire d'encryption de mot de passe
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

@@ -11,4 +11,5 @@ import java.util.List;
 public interface UserService {
     User updateUser (User user);
     User findByUsername(String username);
+    User createUser(User user);
 }

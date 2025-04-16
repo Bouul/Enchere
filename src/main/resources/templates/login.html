@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="fragments/head :: uikit-head('login')"></head>
+<head>
+    <th:block th:replace="fragments/head :: uikit-head('login')"></th:block>
+    <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/login.css}">
+</head>
 <body>
 
 <div class="uk-section uk-section-muted uk-flex uk-flex-middle uk-animation-fade" uk-height-viewport>
@@ -54,45 +57,4 @@
     </div>
 </div>
 </body>
-<style>
-    .uk-box-shadow-large {
-        border-radius: 15px;
-    }
-
-    .uk-input,
-    .uk-button {
-        border-radius: 33px;
-    }
-
-    /* ------- styles overwrites -------- */
-
-    /* Décale légèrement l'icône à gauche */
-    .uk-form-icon:not(a):not(button):not(input) {
-        left: 5px;
-    }
-
-    /* Ajoute de l'espace pour l'icône */
-    .uk-form-icon:not(.uk-form-icon-flip)~.uk-input {
-        padding-left: 45px !important;
-    }
-
-    /* Couleur de base du bouton primaire */
-    .uk-button-primary {
-        background-color: #0A74BA; /* Bleu personnalisé */
-        color: white;
-    }
-
-    /* Hover + Focus */
-    .uk-button-primary:hover,
-    .uk-button-primary:focus {
-        background-color: #198FD4;
-    }
-
-    /* OnClick + Active */
-    .uk-button-primary:active,
-    .uk-button-primary.uk-active {
-        background-color: #085A91;
-    }
-</style>
-
 </html>

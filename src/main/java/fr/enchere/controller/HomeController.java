@@ -16,10 +16,6 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping("/signup")
-    public String signup() {
-        return "signup";
-    }
 
     @GetMapping("/acquisition-page")
     public String acquisitionPage() {
