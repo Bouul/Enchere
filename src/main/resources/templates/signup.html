@@ -1,43 +1,145 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: uikit-head('signup')"></head>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/head :: uikit-head('login')"></th:block>
+    <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/signup.css}">
+</head>
 <body>
-<nav th:replace="~{fragments :: navbar}"></nav>
 
-<h1>Créer un compte</h1>
-<form th:action="@{/register}" method="post">
-    <label for="pseudo">Pseudo :</label>
-    <input type="text" id="pseudo" name="pseudo"/><br><br>
+<div class="uk-section uk-section-muted uk-flex uk-flex-middle uk-animation-fade" uk-height-viewport>
+    <div class="uk-width-1-1">
+        <div class="uk-container">
+            <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
+                <div class="uk-width-1-1@m">
+                    <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+                        <h3 class="uk-card-title uk-text-center">Créer un compte</h3>
 
-    <label for="nom">Nom :</label>
-    <input type="text" id="nom" name="nom"/><br><br>
+                        <div th:if="${error}" class="uk-alert-danger" uk-alert>
+                            <p th:text="${error}"></p>
+                        </div>
 
-    <label for="prenom">Prénom :</label>
-    <input type="text" id="prenom" name="prenom"/><br><br>
+                        <form th:action="@{/signup}" method="post" th:object="${user}">
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                    <input class="uk-input" type="text" th:field="*{username}" placeholder="Pseudo"
+                                           required>
+                                </div>
+                            </div>
 
-    <label for="email">Email :</label>
-    <input type="email" id="email" name="email"/><br><br>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                    <!-- Utilise lastName avec la majuscule pour coller à la propriété de la classe -->
+                                    <input class="uk-input" type="text" th:field="*{lastName}" placeholder="Nom"
+                                           required>
+                                </div>
+                            </div>
 
-    <label for="telephone">Téléphone :</label>
-    <input type="tel" id="telephone" name="telephone"/><br><br>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                    <!-- Utilise firstName pour coller à la propriété -->
+                                    <input class="uk-input" type="text" th:field="*{firstName}" placeholder="Prénom"
+                                           required>
+                                </div>
+                            </div>
 
-    <label for="rue">Rue :</label>
-    <input type="text" id="rue" name="rue"/><br><br>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                                    <input class="uk-input" type="email" th:field="*{email}" placeholder="Email"
+                                           required>
+                                </div>
+                            </div>
 
-    <label for="code_postal">Code postal :</label>
-    <input type="text" id="code_postal" name="code_postal"/><br><br>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: receiver"></span>
+                                    <input class="uk-input" type="tel" th:field="*{phone}" placeholder="Téléphone">
+                                </div>
+                            </div>
 
-    <label for="ville">Ville :</label>
-    <input type="text" id="ville" name="ville"/><br><br>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: location"></span>
+                                    <input class="uk-input" type="text" th:field="*{street}" placeholder="Rue" required>
+                                </div>
+                            </div>
 
-    <label for="mot_de_passe">Mot de passe :</label>
-    <input type="password" id="mot_de_passe" name="mot_de_passe"/><br><br>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: location"></span>
+                                    <input class="uk-input" type="text" th:field="*{postalCode}"
+                                           placeholder="Code postal" required>
+                                </div>
+                            </div>
 
-    <label for="confirmation">Confirmation :</label>
-    <input type="password" id="confirmation" name="confirmation"/><br><br>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: location"></span>
+                                    <input class="uk-input" type="text" th:field="*{city}" placeholder="Ville" required>
+                                </div>
+                            </div>
 
-    <input type="submit" value="Créer"/>
-    <input type="reset" value="Annuler"/>
-</form>
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input class="uk-input" type="password" th:field="*{password}"
+                                           placeholder="Mot de passe" required>
+                                </div>
+                            </div>
+
+                            <!-- Champ de confirmation du mot de passe non lié à l'objet User -->
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                    <input class="uk-input" type="password" name="confirmation"
+                                           placeholder="Confirmer le mot de passe" required>
+                                </div>
+                            </div>
+
+
+                            <div class="uk-margin">
+                                <div class="uk-inline uk-width-1-1">
+                                    <span class="uk-form-icon" uk-icon="icon: credit-card"></span>
+                                    <input class="uk-input" type="text" value="100" disabled placeholder="Crédits initiaux">
+                                    <!-- Champ caché pour transmettre la valeur -->
+                                    <input type="hidden" th:field="*{credit}" value="100">
+                                </div>
+                                <div class="uk-text-small uk-text-muted">Vous recevez 100 crédits à l'inscription</div>
+                            </div>
+
+                            <!-- Champ pour l'administrateur (checkbox) -->
+                            <div class="uk-margin">
+                                <label>
+                                    <input class="uk-checkbox" type="checkbox" th:field="*{administrator}">
+                                    Administrateur
+                                </label>
+                            </div>
+
+                            <div class="uk-margin">
+                                <button type="submit" class="uk-button uk-button-primary uk-width-1-1">Créer mon
+                                    compte
+                                </button>
+                            </div>
+
+                            <div class="uk-margin">
+                                <button type="reset" class="uk-button uk-button-default uk-width-1-1">Annuler</button>
+                            </div>
+                        </form>
+
+                        <div class="uk-margin-top uk-width-1-1 uk-text-small uk-text-center">
+                            <a th:href="@{/login}" class="uk-link-text">Déjà inscrit ? Connectez-vous</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<style>
+
+</style>
 </html>

@@ -3,6 +3,8 @@ package fr.enchere.controller;
 import fr.enchere.model.User;
 import fr.enchere.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,17 +17,42 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     // Page inscription
     @GetMapping("/signup")
-    public String inscription(@ModelAttribute User user, Model model) {
-        userService.createUser(user);
+    public String showSignup(Model model) {
+        model.addAttribute("user", new User());
         return "signup";
+    }
+
+    @PostMapping("/signup")
+    public String signup(@ModelAttribute User user, @RequestParam String confirmation,
+                                     Model model, RedirectAttributes redirectAttributes) {
+        // Vérifier que les mots de passe correspondent
+        if (!user.getPassword().equals(confirmation)) {
+            model.addAttribute("error", "Les mots de passe ne correspondent pas");
+            return "signup";
+        }
+
+        try {
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
+            user.setCredit(100);
+            userService.createUser(user);
+            redirectAttributes.addFlashAttribute("success", "Compte créé avec succès");
+            return "redirect:/login";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "signup";
+        }
     }
 
 

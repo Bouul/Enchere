@@ -1,22 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/head :: uikit-head('profile-view')"></head>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <th:block th:replace="fragments/head :: uikit-head('Profile')"></th:block>
+    <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/profile.css}">
+</head>
 <body>
-<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
-<h1>ENI-Enchères</h1>
-<h2 th:text="${user.username}">Pseudo</h2>
-<div class="infos-profil">
-  <p><strong>Nom :</strong> <span th:text="${user.lastName}">Nom</span></p>
-  <p><strong>Prénom :</strong> <span th:text="${user.firstName}">Prénom</span></p>
-  <p><strong>Email :</strong> <span th:text="${user.email}">Email</span></p>
-  <p><strong>Téléphone :</strong> <span th:text="${user.phone}">Téléphone</span></p>
-  <p><strong>Rue :</strong> <span th:text="${user.street}">Rue</span></p>
-  <p><strong>Code postal :</strong> <span th:text="${user.postalCode}">Code postal</span></p>
-  <p><strong>Ville :</strong> <span th:text="${user.city}">Ville</span></p>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+
+<div class="uk-section uk-section-muted">
+    <div class="uk-container uk-container-small">
+        <div class="uk-card uk-card-default uk-card-body uk-box-shadow-large uk-border-rounded">
+            <div class="uk-flex uk-flex-middle uk-flex-between uk-flex-wrap">
+                <div class="uk-flex uk-flex-middle">
+                    <img src="/images/profile-picture.webp" alt="Avatar"
+                         class="uk-border-circle uk-margin-right"
+                         width="80" height="80">
+                    <div>
+                        <h3 class="uk-margin-remove" th:text="${user.username}">Pseudo</h3>
+                        <p class="uk-text-meta uk-margin-remove-top" th:text="${user.email}">email</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="uk-grid-small uk-child-width-1-2@s uk-margin-top" uk-grid>
+                <div><strong>Pseudo :</strong> <span th:text="${user.username}">Pseudo</span></div>
+                <div><strong>Nom :</strong> <span th:text="${user.lastName}">Nom</span></div>
+                <div><strong>Prénom :</strong> <span th:text="${user.firstName}">Prénom</span></div>
+                <div><strong>Email :</strong> <span th:text="${user.email}">Email</span></div>
+                <div><strong>Téléphone :</strong> <span th:text="${user.phone}">Téléphone</span></div>
+                <div><strong>Rue :</strong> <span th:text="${user.street}">Rue</span></div>
+                <div><strong>Code postal :</strong> <span th:text="${user.postalCode}">Code postal</span></div>
+                <div><strong>Ville :</strong> <span th:text="${user.city}">Ville</span></div>
+            </div>
+        </div>
+        <div class="uk-text-center uk-margin-top">
+            <a class="uk-button uk-button-primary uk-border-rounded"
+               th:href="@{/profil/modifier(username=${user.username})}">
+                Modifier le profil
+            </a>
+        </div>
+    </div>
 </div>
-<a th:href="@{/profil/modifier(username=${user.username})}">
-  <button type="button">Modifier</button>
-</a>
+
 </body>
 </html>
