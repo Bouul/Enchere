@@ -45,6 +45,7 @@ public class UserController {
         try {
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
+            user.setCredit(100);
             userService.createUser(user);
             redirectAttributes.addFlashAttribute("success", "Compte créé avec succès");
             return "redirect:/login";
