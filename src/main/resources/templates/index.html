@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:replace="fragments/head :: uikit-head('home')"></head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-
 <h2>Filtres :</h2>
 <label for="categories">Catégories:</label>
 <select id="categories" name="categories">

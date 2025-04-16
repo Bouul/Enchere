@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>ENI-Enchères</title>
@@ -9,51 +10,87 @@
     <script th:src="@{/vendor/uikit/js/uikit-icons.min.js}"></script>
 </head>
 <body>
-<h1 class="uk-text-center uk-margin-top">ENI-Enchères</h1>
 
 <!-- Navbar -->
-<nav th:fragment="navbar" class="uk-navbar-container uk-margin" uk-navbar>
-    <!-- Partie gauche avec le logo -->
+<nav th:fragment="navbar" class="uk-navbar-container uk-navbar uk-background-muted uk-box-shadow-small" uk-navbar>
     <div class="uk-navbar-left">
-        <a th:href="@{/static}" class="uk-navbar-item uk-logo">ENI-Enchères</a>
+        <a th:href="@{/}" class="uk-navbar-item uk-logo">
+            <img src="/images/logo-eni.png" alt="Logo" width="32" height="32" style="margin-right: 8px;">
+            <span class="uk-text-bold uk-text-primary">ENI-Enchères</span>
+        </a>
     </div>
 
-    <!-- Menu mobile (hamburger) -->
+    <!-- Toggle bouton mobile -->
     <div class="uk-navbar-right uk-hidden@m">
-        <a class="uk-navbar-toggle" uk-navbar-toggle-icon href="#" uk-toggle="target: #mobile-nav"></a>
+        <a class="uk-navbar-toggle" href="#" uk-toggle="target: #mobile-nav">
+            <span uk-navbar-toggle-icon></span>
+        </a>
     </div>
 
-    <!-- Menu principal pour écran large -->
+    <!-- Menu desktop -->
     <div class="uk-navbar-right uk-visible@m">
         <ul class="uk-navbar-nav">
-            <li><a th:href="@{/static}">Index</a></li>
-            <li><a th:href="@{/acquisition-page}">Acquisition</a></li>
-            <li><a th:href="@{/auction-list-pages}">Listes d'enchères</a></li>
-            <li><a th:href="@{/bidding-page}">Enchérir</a></li>
-            <li><a th:href="@{/login}">Login</a></li>
-            <li><a th:href="@{/profile-modification}">Modifier Profil</a></li>
-            <li><a th:href="@{/profil}">Profil</a></li>
-            <li><a th:href="@{/sell-item-page}">Vendre</a></li>
-            <li><a th:href="@{/signup}">Signup</a></li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/sell-item-page}">
+                    <span uk-icon="icon: upload"></span> Vendre
+                </a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/profil}">
+                    <span uk-icon="icon: user"></span> Profil
+                </a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}" class="logout-link">
+                    <span uk-icon="icon: sign-out"></span> Déconnexion
+                </a>
+            </li>
+            <li sec:authorize="isAnonymous()">
+                <a th:href="@{/login}">
+                    <span uk-icon="icon: sign-in"></span> Connexion
+                </a>
+            </li>
+            <li sec:authorize="isAnonymous()">
+                <a th:href="@{/signup}">
+                    <span uk-icon="icon: pencil"></span> Inscription
+                </a>
+            </li>
         </ul>
     </div>
 
-    <!-- Menu mobile (visible en petit écran) -->
+    <!-- Menu mobile -->
     <div id="mobile-nav" uk-offcanvas="overlay: true">
         <div class="uk-offcanvas-bar">
             <ul class="uk-nav uk-nav-default">
-                <li><a th:href="@{/static}">Index</a></li>
-                <li><a th:href="@{/acquisition-page}">Acquisition</a></li>
-                <li><a th:href="@{/auction-list-pages}">Listes d'enchères</a></li>
-                <li><a th:href="@{/bidding-page}">Enchérir</a></li>
-                <li><a th:href="@{/login}">Login</a></li>
-                <li><a th:href="@{/profile-modification}">Modifier Profil</a></li>
-                <li><a th:href="@{/profil}">Profil</a></li>
-                <li><a th:href="@{/sell-item-page}">Vendre</a></li>
-                <li><a th:href="@{/signup}">Signup</a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/sell-item-page}">
+                        <span uk-icon="upload"></span>Vendre
+                    </a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/profil}">
+                        <span uk-icon="user"></span> Mon Profil
+                    </a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/logout}" class="logout-link">
+                        <span uk-icon="icon: sign-out"></span> Déconnexion
+                    </a>
+                </li>
+                <li sec:authorize="isAnonymous()">
+                    <a th:href="@{/login}">
+                        <span uk-icon="sign-in"></span> Connexion
+                    </a>
+                </li>
+                <li sec:authorize="isAnonymous()">
+                    <a th:href="@{/signup}">
+                        <span uk-icon="pencil"></span> Inscription
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
 </body>
 </html>

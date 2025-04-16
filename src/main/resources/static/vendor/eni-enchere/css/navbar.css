@@ -66,3 +66,50 @@
         font-size: 1.2rem;
     }
 }
+
+/* Ajout d'une icône/logo à gauche du texte ENI-Enchères */
+.uk-navbar-item.uk-logo img {
+    height: 28px;
+    width: auto;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Optionnel : Accentuation des couleurs sur hover pour donner plus de vie */
+.uk-navbar-nav > li > a:hover {
+    background-color: #3f51b5 !important; /* bleu plus profond */
+    color: #ffffff !important;
+}
+
+/* Icônes dans le menu */
+.uk-navbar-nav > li > a span[uk-icon] {
+    margin-right: 6px;
+}
+
+/* Offcanvas icônes */
+.uk-offcanvas-bar .uk-nav-default .uk-nav-link span[uk-icon] {
+    margin-right: 8px;
+}
+
+/* Marge pour le menu mobile */
+.uk-offcanvas-bar .uk-nav-default {
+    margin-top: 20px;
+}
+
+/* Amélioration mobile : espacement entre les items */
+.uk-offcanvas-bar .uk-nav-default > li + li {
+    margin-top: 5px;
+}
+
+.uk-navbar-container .uk-navbar-nav > li > a.logout-link,
+.uk-offcanvas-bar .uk-nav > li > a.logout-link {
+    color: #d32f2f !important;
+    font-weight: bold;
+}
+
+.uk-navbar-container .uk-navbar-nav > li > a.logout-link:hover,
+.uk-offcanvas-bar .uk-nav > li > a.logout-link:hover {
+    background-color: #d32f2f !important;
+    color: #ffffff !important;
+}
+
