@@ -35,9 +35,8 @@
             </div>
         </div>
         <div class="uk-text-center uk-margin-top">
-            <a class="uk-button uk-button-primary uk-border-rounded"
-               th:href="@{/profil/modifier(username=${user.username})}">
-                Modifier le profil
+            <a th:href="@{/profil/modifier(userId=${user.userId})}">
+                <button type="button">Modifier</button>
             </a>
         </div>
     </div>

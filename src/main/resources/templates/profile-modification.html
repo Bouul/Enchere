@@ -9,8 +9,10 @@
 
 <form th:action="@{/profil/modifier}" method="post">
 
-    <label for="pseudo">Pseudo :</label>
-    <input type="text" id="pseudo" name="username" th:value="${user.username}" disabled />
+    <label for="pseudo">Username :</label>
+    <input type="hidden" name="userId" th:value="${user.userId}" />
+    <input type="text" id="pseudo" th:value="${user.username}" disabled />
+    <input type="hidden" name="username" th:value="${user.username}" />
 
     <label for="nom">Nom :</label>
     <input type="text" id="nom" name="lastName" th:value="${user.lastName}" />
@@ -34,21 +36,26 @@
     <input type="text" id="ville" name="city" th:value="${user.city}" />
 
     <label for="motDePasse">Mot de passe :</label>
-    <input type="password" id="motDePasse" name="password" th:value="${user.password}" />
+    <input type="password" id="motDePasse" name="password"  />
 
     <label for="confirmation">Confirmation :</label>
-    <input type="password" id="confirmation" name="confirmation" th:value="${user.password}" />
+    <input type="password" id="confirmation" name="confirmation"  />
 
     <label for="credit">Crédit :</label>
     <input type="number" id="credit" name="credit" th:value="${user.credit}" />
 
     <div class="btn-group">
-        <button type="submit">Enregistrer</button>
-        <a th:href="@{/profil(username=${user.username})}">
+        <a th:href="@{/profil(userId=${user.userId})}">
+            <button type="submit">Enregistrer</button>
+        </a>
+        <a th:href="@{/profil(userId=${user.userId})}">
             <button type="button">retour</button>
         </a>
     </div>
 </form>
+<br>
+<div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
 </body>
 </html>
