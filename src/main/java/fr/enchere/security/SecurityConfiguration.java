@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,27 +22,43 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    @Autowired
+    private GestionPersonaliseeUtilisateurs userDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/css/**", "/js/**", "/vendor/**","/images/**", "/connexion", "/inscription", "/signup","/api/**").permitAll()
+        http.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/css/**", "/js/**", "/vendor/**", "/images/**", "/connexion", "/inscription", "/signup", "/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // URL de votre page de connexion personnalisée
-                        .loginProcessingUrl("/perform_login") // URL pour traiter la soumission du formulaire
-                        .defaultSuccessUrl("/", true) // Redirection après connexion réussie
-                        .failureUrl("/connexion?error=true") // Redirection en cas d'échec
+                        .loginPage("/login")
+                        .loginProcessingUrl("/perform_login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/connexion?logout=true")
-                        .permitAll())
-                .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/api/**") // désactive CSRF pour les routes REST
-        );
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "remember-me")
+                        .permitAll()
+                )
+                .rememberMe(remember -> remember
+                        .key("uniqueAndSecretKey")
+                        .tokenValiditySeconds(86400)
+                        .userDetailsService(userDetailsService)
+                        .rememberMeParameter("remember-me")
+                )
+                .sessionManagement(session -> session
+                        .invalidSessionUrl("/login?invalid=true")
+                        .sessionFixation(fixation -> fixation.migrateSession())
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .sessionAuthenticationErrorUrl("/login?authError=true")
+                        .maximumSessions(1)
+                        .expiredUrl("/login?expired=true")
+                );
 
         return http.build();
     }
