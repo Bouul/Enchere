@@ -1,61 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: uikit-head('profile-modification')"></head>
+<head>
+    <th:block th:replace="fragments/head :: uikit-head('Modification profil')"></th:block>
+    <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/signup.css}">
+</head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
-<h1>ENI-Enchères</h1>
-<h2>Modifier Mon Profil</h2>
+<div class="uk-container uk-margin-large-top uk-margin-large-bottom">
+    <h2><span>Modifier mon profil</span></h2>
 
-<form th:action="@{/profil/modifier}" method="post">
-
-    <label for="pseudo">Username :</label>
-    <input type="hidden" name="userId" th:value="${user.userId}" />
-    <input type="text" id="pseudo" th:value="${user.username}" disabled />
-    <input type="hidden" name="username" th:value="${user.username}" />
-
-    <label for="nom">Nom :</label>
-    <input type="text" id="nom" name="lastName" th:value="${user.lastName}" />
-
-    <label for="prenom">Prénom :</label>
-    <input type="text" id="prenom" name="firstName" th:value="${user.firstName}" />
-
-    <label for="email">Email :</label>
-    <input type="email" id="email" name="email" th:value="${user.email}" />
-
-    <label for="telephone">Téléphone :</label>
-    <input type="tel" id="telephone" name="phone" th:value="${user.phone}" />
-
-    <label for="rue">Rue :</label>
-    <input type="text" id="rue" name="street" th:value="${user.street}" />
-
-    <label for="codePostal">Code postal :</label>
-    <input type="text" id="codePostal" name="postalCode" th:value="${user.postalCode}" />
-
-    <label for="ville">Ville :</label>
-    <input type="text" id="ville" name="city" th:value="${user.city}" />
-
-    <label for="motDePasse">Mot de passe :</label>
-    <input type="password" id="motDePasse" name="password"  />
-
-    <label for="confirmation">Confirmation :</label>
-    <input type="password" id="confirmation" name="confirmation"  />
-
-    <label for="credit">Crédit :</label>
-    <input type="number" id="credit" name="credit" th:value="${user.credit}" />
-
-    <div class="btn-group">
-        <a th:href="@{/profil(userId=${user.userId})}">
-            <button type="submit">Enregistrer</button>
-        </a>
-        <a th:href="@{/profil(userId=${user.userId})}">
-            <button type="button">retour</button>
-        </a>
+    <div th:if="${success}" class="uk-alert-success" uk-alert>
+        <p th:text="${success}"></p>
     </div>
-</form>
-<br>
-<div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${error}" class="uk-alert-danger" uk-alert>
+        <p th:text="${error}"></p>
+    </div>
 
+    <form th:action="@{/profil/modifier}" method="post">
+        <input type="hidden" name="userId" th:value="${user.userId}" />
+        <input type="hidden" name="username" th:value="${user.username}" />
+
+        <div class="uk-grid-small" uk-grid>
+            <!-- COLONNE GAUCHE -->
+            <div class="uk-width-1-1 uk-width-1-2@m">
+                <!-- Pseudo (disabled) -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: user"></span>
+                        <input class="uk-input" type="text" th:value="${user.username}" placeholder="Pseudo">
+                    </div>
+                </div>
+
+                <!-- Nom -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: user"></span>
+                        <input class="uk-input" type="text" name="lastName" th:value="${user.lastName}" placeholder="Nom" required>
+                    </div>
+                </div>
+
+                <!-- Prénom -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: user"></span>
+                        <input class="uk-input" type="text" name="firstName" th:value="${user.firstName}" placeholder="Prénom" required>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                        <input class="uk-input" type="email" name="email" th:value="${user.email}" placeholder="Email" required>
+                    </div>
+                </div>
+
+                <!-- Téléphone -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: receiver"></span>
+                        <input class="uk-input" type="tel" name="phone" th:value="${user.phone}" placeholder="Téléphone">
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE DROITE -->
+            <div class="uk-width-1-1 uk-width-1-2@m">
+
+                <!-- Rue -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: location"></span>
+                        <input class="uk-input" type="text" name="street" th:value="${user.street}" placeholder="Rue" required>
+                    </div>
+                </div>
+
+                <!-- Code postal -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: location"></span>
+                        <input class="uk-input" type="text" name="postalCode" th:value="${user.postalCode}" placeholder="Code postal" required>
+                    </div>
+                </div>
+
+                <!-- Ville -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: location"></span>
+                        <input class="uk-input" type="text" name="city" th:value="${user.city}" placeholder="Ville" required>
+                    </div>
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                        <input class="uk-input" type="password" name="password" placeholder="Nouveau mot de passe">
+                    </div>
+                </div>
+
+                <!-- Confirmation mot de passe -->
+                <div class="uk-margin">
+                    <div class="uk-inline uk-width-1-1">
+                        <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                        <input class="uk-input" type="password" name="confirmation" placeholder="Confirmer le mot de passe">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crédit -->
+        <div class="uk-margin">
+            <div class="uk-inline uk-width-1-1">
+                <span class="uk-form-icon" uk-icon="icon: credit-card"></span>
+                <input class="uk-input" type="number" name="credit" th:value="${user.credit}" placeholder="Crédit" disabled>
+            </div>
+        </div>
+
+        <!-- Boutons -->
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-1-2@s">
+                <button type="submit" class="uk-button uk-button-primary uk-width-1-1">Enregistrer</button>
+            </div>
+            <div class="uk-width-1-2@s">
+                <a th:href="@{/profil(userId=${user.userId})}" class="uk-button uk-button-default uk-width-1-1">Retour</a>
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
