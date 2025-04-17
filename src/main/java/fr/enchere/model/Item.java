@@ -1,5 +1,6 @@
 package fr.enchere.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +18,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "category")
+    @JsonBackReference
     private Category category;
 
     @ManyToOne
@@ -27,8 +29,8 @@ public class Item {
     @JoinColumn(name = "buyer_id")
     private User buyer;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pickupLocation")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pickup_location")
     private PickupLocation pickupLocationBid;
 
     // Constructors

@@ -12,15 +12,7 @@
             <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
                 <div class="uk-width-1-1@m">
                     <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
-
-                        <div class="uk-text-center uk-margin-bottom">
-                            <img th:src="@{/images/logo-eni.png}" alt="Logo ENI" width="150">
-                        </div>
                         <h3 class="uk-card-title uk-text-center">Connexion à ENI Enchère</h3>
-                        <!-- Message d'erreur -->
-                        <div th:if="${param.error}" class="uk-alert uk-alert-danger uk-text-center">
-                            <p>Identifiant ou mot de passe incorrect. Veuillez réessayer.</p>
-                        </div>
                         <form th:action="@{/perform_login}" method="post">
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
@@ -51,7 +43,7 @@
                             </div>
 
                             <div class="uk-width-1-1 uk-text-small uk-text-center">
-                                <a th:href="@{/signup}">Créer un compte</a>
+                                <a th:href="@{/register}">Créer un compte</a>
                             </div>
                         </form>
                     </div>

@@ -1,5 +1,6 @@
 package fr.enchere.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -11,13 +12,10 @@ public class Category {
     private String label;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     private List<Item> items;
 
-
-    // Constructors
-
     public Category() {
-        // Default constructor
     }
 
     public Category(Long categoryId, String label, List<Item> items) {
