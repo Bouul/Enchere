@@ -17,7 +17,7 @@ public class User {
     private String postalCode;
     private String city;
     private String password;
-    private boolean credit;
+    private int credit;
     private boolean administrator;
 
     @OneToMany(mappedBy = "user")
@@ -30,12 +30,12 @@ public class User {
     private List<Item> itemsBought;
 
 
-    //Consqtructors
+
     public User() {
         // Default constructor
     }
 
-    public User(Long userId, List<Item> itemsBought, List<Item> itemsSold, List<Bid> bids, boolean administrator, boolean credit, String password, String city, String postalCode, String street, String phone, String email, String firstName, String lastName, String username) {
+    public User(Long userId, List<Item> itemsBought, List<Item> itemsSold, List<Bid> bids, boolean administrator, int credit, String password, String city, String postalCode, String street, String phone, String email, String firstName, String lastName, String username) {
         this.userId = userId;
         this.itemsBought = itemsBought;
         this.itemsSold = itemsSold;
@@ -85,11 +85,11 @@ public class User {
         this.administrator = administrator;
     }
 
-    public boolean isCredit() {
+    public int getCredit() {
         return credit;
     }
 
-    public void setCredit(boolean credit) {
+    public void setCredit(int credit) {
         this.credit = credit;
     }
 
