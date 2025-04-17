@@ -30,8 +30,9 @@ public class User {
     private List<Item> itemsBought;
 
 
-
+    //Consqtructors
     public User() {
+        // Default constructor
     }
 
     public User(Long userId, List<Item> itemsBought, List<Item> itemsSold, List<Bid> bids, boolean administrator, int credit, String password, String city, String postalCode, String street, String phone, String email, String firstName, String lastName, String username) {
