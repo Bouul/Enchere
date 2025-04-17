@@ -66,6 +66,16 @@ public class UserController {
         User user = userService.findByUserId(userId);
         if (user != null) {
             model.addAttribute("user", user);
+            
+            // Calcul et ajout du pourcentage de complétion du profil
+            int profileCompletion = userService.getProfileCompletion(userId);
+            model.addAttribute("profileCompletion", profileCompletion);
+            
+            // Ajout des statistiques d'activité
+            model.addAttribute("createdAuctions", user.getCreatedAuctionsCount());
+            model.addAttribute("wonAuctions", user.getWonAuctionsCount());
+            model.addAttribute("activeAuctions", user.getActiveAuctionsCount());
+            
             return "profile-view"; // Page de profil (vue)
         } else {
             model.addAttribute("error", "Utilisateur non trouvé");
