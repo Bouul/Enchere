@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <th:block th:replace="fragments/head :: uikit-head('login')"></th:block>
+    <th:block th:replace="~{fragments/head :: uikit-head('login')}"></th:block>
     <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/login.css}">
 </head>
 <body>
@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="uk-width-1-1 uk-text-small uk-text-center">
-                                <a th:href="@{/register}">Créer un compte</a>
+                                <a th:href="@{/signup}">Créer un compte</a>
                             </div>
                         </form>
                     </div>
