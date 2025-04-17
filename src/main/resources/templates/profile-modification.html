@@ -24,39 +24,30 @@
         <div class="uk-grid-small" uk-grid>
             <!-- COLONNE GAUCHE -->
             <div class="uk-width-1-1 uk-width-1-2@m">
-                <!-- Pseudo (disabled) -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: user"></span>
-                        <input class="uk-input" type="text" th:value="${user.username}" placeholder="Pseudo">
+                        <input class="uk-input" type="text" th:value="${user.username}" placeholder="Pseudo" disabled>
                     </div>
                 </div>
-
-                <!-- Nom -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: user"></span>
                         <input class="uk-input" type="text" name="lastName" th:value="${user.lastName}" placeholder="Nom" required>
                     </div>
                 </div>
-
-                <!-- Prénom -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: user"></span>
                         <input class="uk-input" type="text" name="firstName" th:value="${user.firstName}" placeholder="Prénom" required>
                     </div>
                 </div>
-
-                <!-- Email -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: mail"></span>
                         <input class="uk-input" type="email" name="email" th:value="${user.email}" placeholder="Email" required>
                     </div>
                 </div>
-
-                <!-- Téléphone -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: receiver"></span>
@@ -67,40 +58,31 @@
 
             <!-- COLONNE DROITE -->
             <div class="uk-width-1-1 uk-width-1-2@m">
-
-                <!-- Rue -->
-                <div class="uk-margin">
+                <div class="uk-margin uk-position-relative">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: location"></span>
-                        <input class="uk-input" type="text" name="street" th:value="${user.street}" placeholder="Rue" required>
+                        <input class="uk-input" type="text" name="street" id="street" th:value="${user.street}" placeholder="Rue" required autocomplete="off">
+                        <div id="autocomplete-results"></div>
                     </div>
                 </div>
-
-                <!-- Code postal -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: location"></span>
                         <input class="uk-input" type="text" name="postalCode" th:value="${user.postalCode}" placeholder="Code postal" required>
                     </div>
                 </div>
-
-                <!-- Ville -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: location"></span>
                         <input class="uk-input" type="text" name="city" th:value="${user.city}" placeholder="Ville" required>
                     </div>
                 </div>
-
-                <!-- Mot de passe -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: lock"></span>
                         <input class="uk-input" type="password" name="password" placeholder="Nouveau mot de passe">
                     </div>
                 </div>
-
-                <!-- Confirmation mot de passe -->
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: lock"></span>
@@ -110,7 +92,6 @@
             </div>
         </div>
 
-        <!-- Crédit -->
         <div class="uk-margin">
             <div class="uk-inline uk-width-1-1">
                 <span class="uk-form-icon" uk-icon="icon: credit-card"></span>
@@ -118,7 +99,6 @@
             </div>
         </div>
 
-        <!-- Boutons -->
         <div class="uk-grid-small" uk-grid>
             <div class="uk-width-1-2@s">
                 <button type="submit" class="uk-button uk-button-primary uk-width-1-1">Enregistrer</button>
@@ -132,5 +112,50 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const streetInput = document.getElementById("street");
+        const resultsList = document.getElementById("autocomplete-results");
+
+        streetInput.addEventListener("input", function () {
+            const query = streetInput.value;
+            if (query.length < 3) {
+                resultsList.style.display = "none";
+                return;
+            }
+
+            fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5`)
+                .then(response => response.json())
+                .then(data => {
+                    resultsList.innerHTML = "";
+                    if (data.features.length > 0) {
+                        resultsList.style.display = "block";
+                        data.features.forEach(feature => {
+                            const div = document.createElement("div");
+                            div.textContent = feature.properties.label;
+                            div.className = "uk-dropdown-item";
+                            div.addEventListener("click", function () {
+                                streetInput.value = feature.properties.name;
+                                document.querySelector("input[name='postalCode']").value = feature.properties.postcode;
+                                document.querySelector("input[name='city']").value = feature.properties.city;
+                                resultsList.style.display = "none";
+                            });
+                            resultsList.appendChild(div);
+                        });
+                    } else {
+                        resultsList.style.display = "none";
+                    }
+                })
+                .catch(error => console.error("Erreur API adresse :", error));
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!resultsList.contains(event.target) && event.target !== streetInput) {
+                resultsList.style.display = "none";
+            }
+        });
+    });
+</script>
 </body>
 </html>
