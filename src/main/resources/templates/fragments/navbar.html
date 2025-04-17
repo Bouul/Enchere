@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li sec:authorize="isAuthenticated()">
-                <a th:href="@{/profil}">
+                <a th:href="@{/profil(userId=${#authentication.principal.userId})}">
                     <span uk-icon="icon: user"></span> Profil
                 </a>
             </li>
@@ -71,7 +71,7 @@
                     </a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
-                    <a th:href="@{/profil}">
+                    <a th:href="@{/profil(userId=${#authentication.principal.userId})}">
                         <span uk-icon="user"></span> Mon Profil
                     </a>
                 </li>

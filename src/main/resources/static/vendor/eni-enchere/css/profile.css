@@ -8,14 +8,19 @@
     font-weight: bold;
 }
 
+/* Couleur de base du bouton primaire */
 .uk-button-primary {
-    background-color: #5c6bc0;
+    background-color: #0A74BA; /* Bleu personnalisé */
+    color: white;
+    border-radius: 33px;
 }
-
-.uk-button-primary:hover {
-    background-color: #3f51b5;
+/* Hover + Focus */
+.uk-button-primary:hover,
+.uk-button-primary:focus {
+    background-color: #198FD4;
 }
-
-.uk-section-muted {
-    background-color: #ffffff !important;
+/* OnClick + Active */
+.uk-button-primary:active,
+.uk-button-primary.uk-active {
+    background-color: #085A91;
 }
