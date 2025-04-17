@@ -54,4 +54,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserId(userId);
     }
 
+    @Override
+    public int getProfileCompletion(Long userId) {
+        User user = findByUserId(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + userId);
+        }
+        return user.calculateProfileCompletion();
+    }
+
 }
