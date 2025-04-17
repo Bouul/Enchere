@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-    <th:block th:replace="fragments/head :: uikit-head('Profil Utilisateur')"></th:block>
+    <th:block th:replace="~{fragments/head :: uikit-head('Profil Utilisateur')}"></th:block>
     <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/profile.css}">
 </head>
 <body>
