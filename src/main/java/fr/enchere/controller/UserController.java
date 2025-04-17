@@ -104,18 +104,32 @@ public class UserController {
             return "redirect:/profil/modifier?userId=" + user.getUserId();
         }
 
-        if (user.getPassword() == null || !user.getPassword().equals(confirmation)) {
-            redirectAttributes.addFlashAttribute("error", "Les mots de passe ne correspondent pas.");
-            return "redirect:/profil/modifier?userId=" + user.getUserId();
+        // Récupérer l'utilisateur existant
+        User existingUser = userService.findByUserId(user.getUserId());
+
+        // Vérifier si l'utilisateur souhaite modifier son mot de passe
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            // Vérifier que les mots de passe correspondent
+            if (!user.getPassword().equals(confirmation)) {
+                redirectAttributes.addFlashAttribute("error", "Les mots de passe ne correspondent pas.");
+                return "redirect:/profil/modifier?userId=" + user.getUserId();
+            }
+
+            // Vérifier que le mot de passe respecte les critères
+            if (!isValidPassword(user.getPassword())) {
+                redirectAttributes.addFlashAttribute("error",
+                        "Le mot de passe doit contenir au moins une majuscule, un caractère spécial et un chiffre.");
+                return "redirect:/profil/modifier?userId=" + user.getUserId();
+            }
+
+            // Encoder le nouveau mot de passe
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            // Si le mot de passe est vide, conserver l'ancien
+            user.setPassword(existingUser.getPassword());
         }
 
         try {
-            // Si un nouveau mot de passe est fourni, on l’encode
-            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-                String encodedPassword = passwordEncoder.encode(user.getPassword());
-                user.setPassword(encodedPassword);
-            }
-
             userService.updateUser(user);
             redirectAttributes.addFlashAttribute("success", "Profil mis à jour avec succès!");
         } catch (Exception e) {
@@ -123,5 +137,23 @@ public class UserController {
         }
 
         return "redirect:/profil?userId=" + user.getUserId();
+    }
+
+    /**
+     * Vérifie si le mot de passe respecte les critères de sécurité
+     * @param password Le mot de passe à vérifier
+     * @return true si le mot de passe est valide, false sinon
+     */
+    private boolean isValidPassword(String password) {
+        // Vérifier la présence d'au moins une majuscule
+        boolean hasUppercase = !password.equals(password.toLowerCase());
+
+        // Vérifier la présence d'au moins un chiffre
+        boolean hasDigit = password.matches(".*\\d.*");
+
+        // Vérifier la présence d'au moins un caractère spécial
+        boolean hasSpecialChar = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*");
+
+        return hasUppercase && hasDigit && hasSpecialChar;
     }
 }
