@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <th:block th:replace="~{fragments/head :: uikit-head('login')}"></th:block>
+    <th:block th:replace="~{fragments/head :: uikit-head('Connexion')}"></th:block>
     <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/login.css}">
 </head>
 <body>
@@ -12,7 +12,24 @@
             <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
                 <div class="uk-width-1-1@m">
                     <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+
+                        <!-- Message pour session expirée ou invalide -->
+                        <div th:if="${sessionMessage}" class="uk-alert uk-alert-warning">
+                            <p th:text="${sessionMessage}">Message de session</p>
+                        </div>
+
+                        <!-- Message d'erreur de connexion -->
+                        <div th:if="${errorMessage}" class="uk-alert uk-alert-danger">
+                            <p th:text="${errorMessage}">Message d'erreur</p>
+                        </div>
+                        <div class="uk-text-center uk-margin-bottom">
+                            <img th:src="@{/images/logo-eni.png}" alt="Logo ENI" width="150">
+                        </div>
                         <h3 class="uk-card-title uk-text-center">Connexion à ENI Enchère</h3>
+                        <!-- Message d'erreur -->
+                        <div th:if="${param.error}" class="uk-alert uk-alert-danger uk-text-center">
+                            <p>Identifiant ou mot de passe incorrect. Veuillez réessayer.</p>
+                        </div>
                         <form th:action="@{/perform_login}" method="post">
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">

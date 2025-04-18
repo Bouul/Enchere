@@ -25,6 +25,7 @@
     background-color: #085A91;
 }
 
+/* Barre de progression - style de base */
 .uk-progress {
     height: 20px;
     border-radius: 10px;
@@ -36,6 +37,43 @@
 }
 
 .uk-progress::-webkit-progress-value {
-    background-color: #0A74BA;
     border-radius: 10px;
+    background-color: #0A74BA; /* Couleur par défaut */
+}
+
+/* Couleurs spécifiques pour différents niveaux de progression */
+.progress-low::-webkit-progress-value {
+    background: #ff0000 !important; /* Rouge pour progression faible */
+}
+
+.progress-medium::-webkit-progress-value {
+    background: #ff8800 !important; /* Orange pour progression moyenne */
+}
+
+.progress-high::-webkit-progress-value {
+    background: #00cc00 !important; /* Vert pour progression élevée */
+}
+
+/* Couleur de fond pour les cartes */
+.uk-card {
+    background-color: #f9f9f9; /* Couleur de fond personnalisée */
+    color: #333; /* Couleur du texte */
+}
+
+/* Style spécifique pour les cartes secondaires */
+.uk-card-secondary {
+    background-color: #f9f9f9 !important; /* Fond plus clair */
+    color: #333 !important; /* Couleur de texte foncée */
+}
+
+/* S'assurer que tous les textes dans les cartes secondaires sont bien visibles */
+.uk-card-secondary .uk-text-bold, 
+.uk-card-secondary .uk-text-large, 
+.uk-card-secondary span:not(.uk-text-meta) {
+    color: #333 !important;
+}
+
+/* Style pour les méta-textes dans les cartes secondaires */
+.uk-card-secondary .uk-text-meta {
+    color: #555 !important; /* Légèrement plus foncé que le texte standard pour la lisibilité */
 }
