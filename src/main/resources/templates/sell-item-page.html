@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: uikit-head('sell-item')"></head>
+<head th:replace="~{fragments/head :: uikit-head('sell-item')}"></head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
 <h1>ENI-Enchères</h1>
 <h2>Nouvelle vente</h2>
 
-<label for="article">Article :</label>
-<input type="text" id="article" name="article"><br><br>
+<form th:action="@{/api/saveItem}" method="post" enctype="multipart/form-data">
+    <label for="article">Article :</label>
+    <input type="text" id="article" name="itemName"><br><br>
 
-<label for="categorie">Catégorie :</label>
-<select id="categorie" name="categorie">
-</select><br><br>
+    <label for="category">Catégorie :</label>
+    <select id="category" name="category">
+        <!-- Exemples -->
+        <option value=1>Informatique</option>
+        <option value=2>Mobilier</option>
+    </select><br><br>
 
-<label for="description">Description :</label><br>
-<textarea id="description" name="description"></textarea><br><br>
+    <label for="description">Description :</label><br>
+    <textarea id="description" name="description"></textarea><br><br>
 
-<label for="photo">Photo de l'article :</label><br>
-<input type="file" id="photo" name="photo"><br><br>
+    <label for="photo">Photo de l'article :</label><br>
+    <input type="file" id="photo" name="photo"><br><br>
 
-<label for="prix">Prix initial :</label>
-<input type="number" id="prix" name="prix" value="150"><br><br>
+    <label for="prix">Prix initial :</label>
+    <input type="number" id="prix" name="startingPrice" value="150"><br><br>
 
-<label for="debut">Début de l'enchère :</label>
-<input type="date" id="debut" name="debut"> <br><br>
+    <label for="debut">Début de l'enchère :</label>
+    <input type="date" id="debut" name="startDate"> <br><br>
 
-<label for="fin">Fin de l'enchère :</label>
-<input type="date" id="fin" name="fin"><br><br>
+    <label for="fin">Fin de l'enchère :</label>
+    <input type="date" id="fin" name="endDate"><br><br>
 
-<label for="retrait">Retrait :</label><br>
-<label type="text" id="retrait" for="retrait">adress**</label><br><br>
+    <label for="pickupLocationBid">Adresse de Retrait :</label><br>
+    <select id="pickupLocationBid" name="pickupLocationBid">
+        <!-- Exemples -->
+        <option value=1>Adresse 1</option>
+        <option value=2>Adresse 2</option>
+    </select><br><br>
 
-<button type="submit">Enregistrer</button>
-<button type="reset">Annuler</button>
+    <button type="submit">Enregistrer</button>
+    <button type="reset">Annuler</button>
+</form>
 
 </body>
 </html>

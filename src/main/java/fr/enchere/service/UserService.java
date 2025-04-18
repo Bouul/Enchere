@@ -11,5 +11,9 @@ import java.util.List;
 public interface UserService {
     User updateUser (User user);
     User findByUsername(String username);
+    User findByUserId(Long userId);
     User createUser(User user);
+    int getProfileCompletion(Long userId);
+    void deactivateUser(Long userId);
 }
+

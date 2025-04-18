@@ -48,4 +48,30 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    @Override
+    public User findByUserId(Long userId) {
+        return userRepository.findByUserId(userId);
+    }
+
+    @Override
+    public int getProfileCompletion(Long userId) {
+        User user = findByUserId(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + userId);
+        }
+        return user.calculateProfileCompletion();
+    }
+
+    @Override
+    public void deactivateUser(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user != null) {
+            user.setActive(false);
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + userId);
+        }
+    }
+
 }

@@ -1,6 +1,9 @@
 package fr.enchere.model;
 
 import jakarta.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,6 +22,7 @@ public class User {
     private String password;
     private int credit;
     private boolean administrator;
+    private boolean active = true; // Par défaut, le compte est actif
 
     @OneToMany(mappedBy = "user")
     private List<Bid> bids;
@@ -30,8 +34,9 @@ public class User {
     private List<Item> itemsBought;
 
 
-
+    //Consqtructors
     public User() {
+        // Default constructor
     }
 
     public User(Long userId, List<Item> itemsBought, List<Item> itemsSold, List<Bid> bids, boolean administrator, int credit, String password, String city, String postalCode, String street, String phone, String email, String firstName, String lastName, String username) {
@@ -171,4 +176,77 @@ public class User {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
+     * Calcule le pourcentage de complétion du profil utilisateur
+     * en vérifiant quels champs sont renseignés
+     * @return pourcentage de complétion (0-100)
+     */
+    public int calculateProfileCompletion() {
+        int completedFields = 0;
+        int totalFields = 8; // Nombre total de champs à vérifier
+        
+        if (username != null && !username.isEmpty()) completedFields++;
+        if (lastName != null && !lastName.isEmpty()) completedFields++;
+        if (firstName != null && !firstName.isEmpty()) completedFields++;
+        if (email != null && !email.isEmpty()) completedFields++;
+        if (phone != null && !phone.isEmpty()) completedFields++;
+        if (street != null && !street.isEmpty()) completedFields++;
+        if (postalCode != null && !postalCode.isEmpty()) completedFields++;
+        if (city != null && !city.isEmpty()) completedFields++;
+        
+        return (completedFields * 100) / totalFields;
+    }
+    
+    /**
+     * Retourne le nombre total d'enchères créées par l'utilisateur
+     * @return nombre d'enchères créées
+     */
+    public int getCreatedAuctionsCount() {
+        return itemsSold != null ? itemsSold.size() : 0;
+    }
+    
+    /**
+     * Retourne le nombre d'enchères remportées par l'utilisateur
+     * @return nombre d'enchères remportées
+     */
+    public int getWonAuctionsCount() {
+        return itemsBought != null ? itemsBought.size() : 0;
+    }
+    
+    /**
+     * Retourne le nombre d'enchères actives (en cours) de l'utilisateur
+     * @return nombre d'enchères actives
+     */
+    public int getActiveAuctionsCount() {
+        if (itemsSold == null) return 0;
+        
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Ajustez le format selon votre application
+        
+        return (int) itemsSold.stream()
+            .filter(item -> {
+                try {
+                    String endDateStr = item.getEndDate();
+                    if (endDateStr == null || endDateStr.isEmpty()) {
+                        return false;
+                    }
+                    Date endDate = dateFormat.parse(endDateStr);
+                    return endDate.after(currentDate);
+                } catch (ParseException e) {
+                    // Log l'erreur ou gère-la selon les besoins de l'application
+                    return false;
+                }
+            })
+            .count();
+    }
 }
+

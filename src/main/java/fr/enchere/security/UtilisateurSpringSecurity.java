@@ -76,4 +76,8 @@ public class UtilisateurSpringSecurity implements UserDetails {
     public boolean isEnabled() {
         return true;  // ou logique personnalisée selon l'état de l'utilisateur
     }
+
+    public Long getUserId() {
+        return this.membre.getUserId();
+    }
 }
