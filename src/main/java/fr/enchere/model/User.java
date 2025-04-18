@@ -1,5 +1,6 @@
 package fr.enchere.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +28,7 @@ public class User {
     private List<Bid> bids;
 
     @OneToMany(mappedBy = "seller")
+    @JsonManagedReference
     private List<Item> itemsSold;
 
     @OneToMany(mappedBy = "buyer")
