@@ -3,6 +3,8 @@ package fr.enchere.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Item {
     @Id
@@ -28,6 +30,10 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
+
+    @OneToMany(mappedBy = "item")
+    @JsonBackReference
+    private List<Bid> bids;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pickup_location")
@@ -123,6 +129,8 @@ public class Item {
     public String getEndDate() {
         return endDate;
     }
+
+
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;

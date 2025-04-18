@@ -4,6 +4,8 @@ import fr.enchere.model.Category;
 import fr.enchere.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
 
@@ -17,5 +19,8 @@ public class CategoryService {
         return categoryRepository.findById(id).orElse(null);
     }
 
-
+    public List<Category> findAll() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories;
+    };
 }

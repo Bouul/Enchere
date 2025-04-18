@@ -1,5 +1,6 @@
 package fr.enchere.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,12 +25,15 @@ public class User {
     private boolean administrator;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Bid> bids;
 
     @OneToMany(mappedBy = "seller")
+    @JsonIgnore
     private List<Item> itemsSold;
 
     @OneToMany(mappedBy = "buyer")
+    @JsonIgnore
     private List<Item> itemsBought;
 
 

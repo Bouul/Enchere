@@ -1,13 +1,17 @@
 package fr.enchere.controller;
 
 import fr.enchere.model.Bid;
+import fr.enchere.model.Category;
 import fr.enchere.service.BidService;
+import fr.enchere.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -16,13 +20,34 @@ public class HomeController {
     @Autowired
     private BidService bidService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @GetMapping("/")
     public String home(Model model) {
         List<Bid> bids = bidService.getBids();
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("bids", bids);
+        model.addAttribute("categories", categories);
         return "index";
     }
 
+    // Endpoint REST pour le filtrage AJAX
+    @GetMapping("/api/bids/filter")
+    @ResponseBody
+    public List<Bid> filterBids(@RequestParam(required = false) Long categoryId) {
+        List<Bid> result;
+        if (categoryId == null || categoryId == 0) {
+            result = bidService.getBids();
+        } else {
+            result = bidService.getBidsByCategory(categoryId);
+        }
+        // Vérification pour éviter les NPE
+        if (result == null) {
+            return new ArrayList<>();
+        }
+        return result;
+    }
 
     @GetMapping("/login")
     public String showLoginPage(

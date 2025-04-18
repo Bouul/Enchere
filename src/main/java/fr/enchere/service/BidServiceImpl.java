@@ -25,6 +25,11 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
+    public List<Bid> getBidsByCategory(Long categoryId) {
+        return bidRepository.findByItemCategoryId(categoryId);
+    }
+
+    @Override
     public Bid findByBidId(Long bidId) {
        Bid bid = bidRepository.findByBidId(bidId);
         return bid;

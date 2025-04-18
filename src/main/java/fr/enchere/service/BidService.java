@@ -14,4 +14,5 @@ public interface BidService {
     Bid updateBid(Bid bid);
     void deleteBid(Long bidId);
     Bid findHighestBidByItemId(Long itemId);
+    List<Bid> getBidsByCategory(Long categoryId);
 }

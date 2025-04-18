@@ -12,7 +12,11 @@
             <div class="uk-width-1-4@m">
                 <label for="categories">Catégories:</label>
                 <select class="uk-select" id="categories" name="categories">
-                    <option value="toutes">Toutes</option>
+                    <option value="0">Toutes</option>
+                    <!-- On affiche dynamiquement toutes les catégories -->
+                    <option th:each="category : ${categories}"
+                            th:value="${category.categoryId}"
+                            th:text="${category.label}">Catégorie</option>
                 </select>
             </div>
             <div class="uk-width-1-2@m">
@@ -20,7 +24,7 @@
                 <input class="uk-input" type="text" id="search" name="search">
             </div>
             <div class="uk-width-1-4@m uk-flex uk-flex-bottom">
-                <button class="uk-button uk-button-primary" type="submit">Rechercher</button>
+                <button class="uk-button uk-button-primary" id="search-button" type="button">Rechercher</button>
             </div>
         </div>
     </div>
@@ -30,12 +34,12 @@
 <div class="uk-section">
     <div class="uk-container">
         <!-- Message si aucune enchère -->
-        <div th:if="${#lists.isEmpty(bids)}" class="uk-alert uk-alert-warning">
+        <div id="no-bids-message" th:if="${#lists.isEmpty(bids)}" class="uk-alert uk-alert-warning">
             <p>Aucune enchère disponible pour le moment.</p>
         </div>
 
         <!-- Affichage des enchères -->
-        <div class="uk-grid uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid>
+        <div id="bids-container" class="uk-grid uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid>
             <div th:each="bid : ${bids}" class="uk-card uk-card-default uk-margin-bottom">
                 <div class="uk-card-media-top">
                     <div class="uk-height-medium uk-background-muted uk-flex uk-flex-center uk-flex-middle">
@@ -43,20 +47,121 @@
                     </div>
                 </div>
                 <div class="uk-card-body">
-                    <h3 class="uk-card-title" th:text="${bid.itemForSale.itemName}">Titre de l'article</h3>
+                    <h3 class="uk-card-title" th:text="${bid.item.itemName}">Titre de l'article</h3>
                     <p><strong>Prix:</strong> <span th:text="${bid.bidAmount + ' €'}">0.00 €</span></p>
-                    <p><strong>Fin de l'enchère:</strong> <span th:text="${bid.itemForSale.endDate}">01/01/2023</span></p>
-                    <p><strong>Retrait:</strong> <span th:text="${bid.itemForSale.pickupLocationBid != null ?
-                        (bid.itemForSale.pickupLocationBid.street + ', ' +
-                         bid.itemForSale.pickupLocationBid.postalCode + ' ' +
-                         bid.itemForSale.pickupLocationBid.city) : 'Non spécifié'}">Adresse</span></p>
-                    <p><strong>Vendeur:</strong> <span th:text="${bid.itemForSale.seller != null ? bid.itemForSale.seller.username : 'Inconnu'}">Nom du vendeur</span></p>
-                    <a th:href="@{'/bidding-page?id=' + ${bid.itemForSale.itemId}}" class="uk-button uk-button-primary uk-width-1-1">Voir détails</a>
+                    <p><strong>Fin de l'enchère:</strong> <span th:text="${bid.item.endDate}">01/01/2023</span></p>
+                    <p><strong>Retrait:</strong> <span th:text="${bid.item.pickupLocationBid != null ?
+                        (bid.item.pickupLocationBid.street + ', ' +
+                         bid.item.pickupLocationBid.postalCode + ' ' +
+                         bid.item.pickupLocationBid.city) : 'Non spécifié'}">Adresse</span></p>
+                    <p><strong>Vendeur:</strong> <span th:text="${bid.item.seller != null ? bid.item.seller.username : 'Inconnu'}">Nom du vendeur</span></p>
+                    <a th:href="@{'/bidding-page?id=' + ${bid.item.itemId}}" class="uk-button uk-button-primary uk-width-1-1">Voir détails</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Script AJAX pour le filtrage -->
+<script>
+    function updateBidsDisplay(bids) {
+        const container = document.getElementById('bids-container');
+        const noResultsMessage = document.getElementById('no-bids-message');
+
+        // Vider le conteneur d'enchères
+        container.innerHTML = '';
+
+        if (!bids || bids.length === 0) {
+            // Afficher un message si aucune enchère n'est disponible
+            if (!noResultsMessage) {
+                const messageDiv = document.createElement('div');
+                messageDiv.id = 'no-bids-message';
+                messageDiv.className = 'uk-alert uk-alert-warning';
+                messageDiv.innerHTML = '<p>Aucune enchère disponible pour le moment.</p>';
+                container.parentNode.insertBefore(messageDiv, container);
+            } else {
+                noResultsMessage.style.display = 'block';
+            }
+            return;
+        }
+
+        // Masquer le message "aucune enchère" s'il existe
+        if (noResultsMessage) {
+            noResultsMessage.style.display = 'none';
+        }
+
+        // Créer les cartes d'enchères
+        bids.forEach(bid => {
+            const bidCard = document.createElement('div');
+            bidCard.className = 'uk-card uk-card-default uk-margin-bottom';
+
+            // Vérifier que l'objet item existe
+            const item = bid.item;
+            if (!item) {
+                console.error("L'objet 'item' est manquant pour cette enchère :", bid);
+                return;
+            }
+
+            // Déterminer l'adresse de retrait
+            let pickupAddress = 'Non spécifié';
+            if (item.pickupLocationBid) {
+                pickupAddress = `${item.pickupLocationBid.street}, ${item.pickupLocationBid.postalCode} ${item.pickupLocationBid.city}`;
+            }
+
+            // Construire le contenu de la carte
+            bidCard.innerHTML = `
+            <div class="uk-card-media-top">
+                <div class="uk-height-medium uk-background-muted uk-flex uk-flex-center uk-flex-middle">
+                    <span>Pas d'image disponible</span>
+                </div>
+            </div>
+            <div class="uk-card-body">
+                <h3 class="uk-card-title">${item.itemName || 'Nom non disponible'}</h3>
+                <p><strong>Prix:</strong> <span>${bid.bidAmount} €</span></p>
+                <p><strong>Fin de l'enchère:</strong> <span>${item.endDate || 'Non spécifié'}</span></p>
+                <p><strong>Retrait:</strong> <span>${pickupAddress}</span></p>
+                <p><strong>Vendeur:</strong> <span>${item.seller ? item.seller.username : 'Inconnu'}</span></p>
+                <a href="/bidding-page?id=${item.itemId}" class="uk-button uk-button-primary uk-width-1-1">Voir détails</a>
+            </div>
+        `;
+
+            container.appendChild(bidCard);
+        });
+    }
+
+    // Fonction de filtrage des enchères
+    function filterBids() {
+        const categoryId = document.getElementById('categories').value;
+
+        fetch(`/api/bids/filter?categoryId=${categoryId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur réseau');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Données reçues :", data); // Ajoutez ceci pour voir les données
+                updateBidsDisplay(data);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+    }
+
+    // Initialisation des gestionnaires d'événements
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('categories');
+        if (categorySelect) {
+            categorySelect.addEventListener('change', filterBids);
+        }
+
+        const searchButton = document.getElementById('search-button');
+        if (searchButton) {
+            searchButton.addEventListener('click', filterBids);
+        }
+    });
+</script>
 
 </body>
 </html>

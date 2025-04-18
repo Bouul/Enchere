@@ -31,7 +31,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/css/**", "/js/**", "/vendor/**", "/images/**", "/connexion", "/inscription", "/signup", "/").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/vendor/**", "/api/bids/filter","/images/**", "/connexion", "/inscription", "/signup", "/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -61,6 +61,8 @@ public class SecurityConfiguration {
                         .sessionAuthenticationErrorUrl("/login?authError=true")
                         .maximumSessions(1)
                         .expiredUrl("/login?expired=true")
+                ).csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")  // Ignorer CSRF pour les APIs
                 );
 
         return http.build();
