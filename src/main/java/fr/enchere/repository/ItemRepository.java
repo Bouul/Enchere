@@ -7,4 +7,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
+    Item findByItemId(Long itemId);
+
+    Item findByItemName(String itemName);
+
+    Item findByDescription(String description);
+
+    Item findByStartingPrice(Double startingPrice);
+
+    Item findByEndDate(String endDate);
+
 }

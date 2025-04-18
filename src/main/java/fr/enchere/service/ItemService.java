@@ -53,4 +53,8 @@ public class ItemService {
         //@TODO //  retourner l'index avec un modal de la création de l'objet
         return itemRepository.save(item);
     }
+
+    public Item findByItemId(Long itemId) {
+        return itemRepository.findByItemId(itemId);
+    }
 }

@@ -1,33 +1,29 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: uikit-head('bidding')}"></head>
+<head th:replace="~{fragments/head :: uikit-head('Détail Enchère')}"></head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
+<div class="uk-container uk-margin-large-top">
+    <h1 th:text="${item.itemName}">Nom de l'article</h1>
+    <h2>Détail de l'enchère</h2>
 
-<h1>ENI-Enchères // </h1>
-<a href="#">S'inscrire // </a>
-<a href="#">se connecter // </a>
-<h1>ENI-Enchères</h1>
-<h2>Détail vente</h2>
-<h3>PC Gamer pour travailler</h3>
+    <p><strong>Description :</strong> <span th:text="${item.description}">Description de l'article</span></p>
+    <p><strong>Catégorie :</strong> <span th:text="${item.category.label}">Catégorie</span></p>
+    <p><strong>Meilleure offre :</strong> <span th:text="${highestBid != null ? highestBid.bidAmount : 'Aucune enchère'}">0</span> €</p>
+    <p><strong>Mise à prix :</strong> <span th:text="${item.salePrice}">0</span> €</p>
+    <p><strong>Fin de l'enchère :</strong> <span th:text="${#dates.format(item.endDate, 'dd/MM/yyyy')}">Date</span></p>
+    <p><strong>Retrait :</strong> <span th:text="${item.pickupLocationBid.street + ', ' + item.pickupLocationBid.postalCode + ' ' + item.pickupLocationBid.city}">Adresse</span></p>
+    <p><strong>Vendeur :</strong> <span th:text="${item.seller.username}">Nom du vendeur</span></p>
 
-<div class="image"></div>
+    <form th:action="@{/bidding}" method="post">
+        <label for="ma_proposition">Ma proposition :</label>
+        <input type="number" id="ma_proposition" name="bidAmount" min="${highestBid != null ? highestBid.bidAmount + 1 : item.startingPrice}" required>
+        <input type="hidden" name="itemId" th:value="${item.itemId}">
+        <button type="submit" class="uk-button uk-button-primary">Enchérir</button>
+    </form>
 
-<p><strong>Description :</strong> <span id="description"> </span></p>
-
-<p><strong>Catégorie :</strong> </p>
-<p><strong>Meilleure offre :</strong> </p>
-<p><strong>Mise à prix :</strong> </p>
-<p><strong>Fin de l'enchère :</strong> </p>
-<p><strong>Retrait :</strong> adresse</p>
-<p><strong>Vendeur :</strong> </p>
-
-<label for="ma_proposition">Ma proposition :</label>
-<input type="number" id="ma_proposition" name="ma_proposition" value="">
-<button type="button">Enchérir</button><br><br>
-
-<button type="button">Back</button>
-
+    <a th:href="@{/}" class="uk-button uk-button-default">Retour</a>
+</div>
 </body>
 </html>
