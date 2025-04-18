@@ -1,7 +1,10 @@
 package fr.enchere.controller;
 
 import fr.enchere.model.Bid;
+import fr.enchere.model.Item;
+import fr.enchere.repository.ItemRepository;
 import fr.enchere.service.BidService;
+import fr.enchere.service.ItemService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +56,6 @@ public class HomeController {
     @GetMapping("/auction-list-pages")
     public String acquisitionListPage() {
         return "auction-list-pages";
-    }
-
-    @GetMapping("/bidding-page")
-    public String biddingPage() {
-        return "/bidding-page";
     }
 
     @GetMapping("/profile-modification")
