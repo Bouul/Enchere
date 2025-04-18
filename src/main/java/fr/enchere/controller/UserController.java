@@ -2,6 +2,7 @@ package fr.enchere.controller;
 
 import fr.enchere.model.User;
 import fr.enchere.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -147,6 +148,27 @@ public class UserController {
         }
 
         return "redirect:/profil?userId=" + user.getUserId();
+    }
+
+    @PostMapping("/profil/supprimer")
+    public String supprimerCompte(@RequestParam Long userId,
+                                  RedirectAttributes redirectAttributes,
+                                  HttpServletRequest request) {
+        User user = userService.findByUserId(userId);
+        if (user != null) {
+            user.setActive(false); // Désactiver le compte
+            userService.updateUser(user);
+
+            // Invalider la session
+            request.getSession().invalidate();
+
+            // Rediriger vers la page de déconnexion
+            redirectAttributes.addFlashAttribute("success", "Votre compte a été désactivé avec succès.");
+            return "redirect:/deconnexion-confirmation";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Utilisateur non trouvé.");
+            return "redirect:/profil?userId=" + userId;
+        }
     }
 
     /**

@@ -14,4 +14,6 @@ public interface UserService {
     User findByUserId(Long userId);
     User createUser(User user);
     int getProfileCompletion(Long userId);
+    void deactivateUser(Long userId);
 }
+
