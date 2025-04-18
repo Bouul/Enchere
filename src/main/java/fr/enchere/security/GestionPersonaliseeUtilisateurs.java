@@ -31,6 +31,12 @@ public class GestionPersonaliseeUtilisateurs implements UserDetailsService {
         if (userFound == null) {
             throw new UsernameNotFoundException("Utilisateur non trouvé avec le pseudo: " + username);
         }
+
+        // Vérification si le compte est actif
+        if (!userFound.isActive()) {
+            throw new UsernameNotFoundException("Ce compte est désactivé. Veuillez contacter l'administrateur.");
+        }
+
         return new UtilisateurSpringSecurity(userFound);
     }
 }

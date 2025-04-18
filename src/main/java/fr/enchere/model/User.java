@@ -23,6 +23,7 @@ public class User {
     private String password;
     private int credit;
     private boolean administrator;
+    private boolean active = true; // Par défaut, le compte est actif
 
     @OneToMany(mappedBy = "user")
     private List<Bid> bids;
@@ -176,6 +177,14 @@ public class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     /**
