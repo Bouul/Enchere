@@ -1,5 +1,8 @@
 package fr.enchere.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -17,6 +20,7 @@ public class Bid {
 
     @ManyToOne
     @JoinColumn(name = "item")
+    @JsonManagedReference
     private Item item;
 
     // Constructors
@@ -36,6 +40,15 @@ public class Bid {
 
     // Getters and setters
 
+    // Bid.java
+    public Item getItem() {
+        return this.item;
+    }
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+
     public Long getBidId() {
         return bidId;
     }
@@ -44,13 +57,6 @@ public class Bid {
         this.bidId = bidId;
     }
 
-    public Item getItemForSale() {
-        return item;
-    }
-
-    public void setItemForSale(Item item) {
-        this.item = item;
-    }
 
     public User getUser() {
         return user;

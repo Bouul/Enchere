@@ -1,5 +1,6 @@
 package fr.enchere.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.text.ParseException;
@@ -26,13 +27,17 @@ public class User {
     private boolean active = true; // Par défaut, le compte est actif
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Bid> bids;
 
     @OneToMany(mappedBy = "seller")
+
+
     @JsonManagedReference
     private List<Item> itemsSold;
 
     @OneToMany(mappedBy = "buyer")
+    @JsonIgnore
     private List<Item> itemsBought;
 
 
