@@ -88,11 +88,17 @@ public class ItemController {
         }
 
 
+        // Vérifie si j'ai plus de crédit que le montant de l'enchère
+        if (user.getCredit() < bidAmount) {
+            redirectAttributes.addFlashAttribute("error", "Vous n'avez pas assez de crédit pour enchérir.");
+            return "redirect:/bidding-page?id=" + itemId;
+        }
+
 
         Bid highestBid = bidService.findHighestBidByItemId(itemId);
 
         if (bidAmount <= highestBid.getBidAmount()) {
-            redirectAttributes.addFlashAttribute("error", "Le montant doit être supérieur à " + highestBid.getBidAmount() + " €.");
+            redirectAttributes.addFlashAttribute("error", "Le montant doit être supérieur à " + highestBid.getBidAmount() + " .");
             return "redirect:/bidding-page?id=" + itemId;
         }
 
@@ -102,6 +108,9 @@ public class ItemController {
         bid.setItem(item);
         bid.setUser(user);
         bidRepository.save(bid);
+
+        user.setCredit(user.getCredit()-bid.getBidAmount());
+        userService.updateUser(user);
 
         redirectAttributes.addFlashAttribute("success", "Votre enchère a bien été enregistrée !");
         return "redirect:/bidding-page?id=" + itemId;

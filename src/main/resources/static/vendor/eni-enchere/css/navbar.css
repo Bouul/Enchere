@@ -145,3 +145,33 @@
     color: #ffffff !important;
 }
 
+/* Crédit utilisateur dans la navbar */
+.uk-navbar-nav > li > .user-credit {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #5c6bc0;
+    display: flex;
+    align-items: center;
+    height: 80px; /* pour l'alignement vertical comme les <a> */
+    padding: 0 18px;
+}
+
+/* Icône de crédit */
+.uk-navbar-nav > li > .user-credit span[uk-icon] {
+    margin-right: 6px;
+    color: #5c6bc0;
+}
+
+/* Crédit dans menu mobile */
+.uk-offcanvas-bar .user-credit {
+    font-size: 1.05rem;
+    color: #5c6bc0;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+.uk-offcanvas-bar .user-credit span[uk-icon] {
+    margin-right: 8px;
+}
+
+
