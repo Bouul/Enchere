@@ -3,6 +3,7 @@ package fr.enchere.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,8 +13,8 @@ public class Item {
     private Long itemId;
     private String itemName;
     private String description;
-    private String startDate;
-    private String endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private int startingPrice;
     private int salePrice;
     private String saleStatus;
@@ -46,7 +47,7 @@ public class Item {
         // Default constructor
     }
 
-    public Item(Long itemId, PickupLocation pickupLocationBid, User buyer, User seller, Category category, String saleStatus, int salePrice, int startingPrice, String endDate, String startDate, String description, String itemName) {
+    public Item(Long itemId, PickupLocation pickupLocationBid, User buyer, User seller, Category category, String saleStatus, int salePrice, int startingPrice, LocalDateTime endDate, LocalDateTime startDate, String description, String itemName) {
         this.itemId = itemId;
         this.pickupLocationBid = pickupLocationBid;
         this.buyer = buyer;
@@ -127,21 +128,21 @@ public class Item {
         this.startingPrice = startingPrice;
     }
 
-    public String getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
 
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
-    public String getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 

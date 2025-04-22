@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -236,19 +237,16 @@ public class User {
     public int getActiveAuctionsCount() {
         if (itemsSold == null) return 0;
         
-        Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Ajustez le format selon votre application
-        
+        LocalDateTime currentDate = LocalDateTime.now();
         return (int) itemsSold.stream()
             .filter(item -> {
                 try {
-                    String endDateStr = item.getEndDate();
-                    if (endDateStr == null || endDateStr.isEmpty()) {
+                    LocalDateTime endDateStr = item.getEndDate();
+                    if (endDateStr == null) {
                         return false;
                     }
-                    Date endDate = dateFormat.parse(endDateStr);
-                    return endDate.after(currentDate);
-                } catch (ParseException e) {
+                    return endDateStr.isAfter(currentDate);
+                } catch (Exception e) {
                     // Log l'erreur ou gère-la selon les besoins de l'application
                     return false;
                 }
