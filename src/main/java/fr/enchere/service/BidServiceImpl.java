@@ -31,8 +31,7 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public Bid findByBidId(Long bidId) {
-       Bid bid = bidRepository.findByBidId(bidId);
-        return bid;
+        return bidRepository.findByBidId(bidId);
     }
 
     @Override
@@ -46,7 +45,12 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public List<Bid> getBidsByUsername(String username) {
+    public Bid saveBid(Bid bid) {
+        return bidRepository.save(bid);
+    }
+  
+     @Override
+     public List<Bid> getBidsByUsername(String username) {
         return bidRepository.findByUserUsername(username);
     }
 

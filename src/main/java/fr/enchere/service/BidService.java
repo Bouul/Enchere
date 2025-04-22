@@ -11,7 +11,7 @@ public interface BidService {
     //USE
     List<Bid> getBids();
     Bid findByBidId(Long bidId);
-    ServiceResponse<Bid> createBid(Bid bid);
+    Bid saveBid(Bid bid);
     List<Bid> getBidsByItemName(String itemName);
     List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName);
     List<Bid> getBidsByUsername(String username);
@@ -21,6 +21,5 @@ public interface BidService {
     //NO USE
     Bid updateBid(Bid bid);
     void deleteBid(Long bidId);
-
     List<Bid> getBidsByCategory(Long categoryId);
 }
