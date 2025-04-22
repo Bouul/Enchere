@@ -75,4 +75,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     AND i.endDate < CURRENT_TIMESTAMP
 """)
    List<Bid> findWonBidsByUsername(@Param("username") String username);
+
+   @Query("SELECT b FROM Bid b WHERE b.item.itemId = :itemId ORDER BY b.bidAmount DESC LIMIT 1")
+   Bid findHighestBidByItemId(Long itemId);
 }

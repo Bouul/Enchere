@@ -107,6 +107,6 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public Bid findHighestBidByItemId(Long itemId) {
-        return null;
+        return bidRepository.findHighestBidByItemId(itemId);
     }
 }
