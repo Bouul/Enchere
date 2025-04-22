@@ -2,11 +2,18 @@ package fr.enchere.controller;
 
 import fr.enchere.model.Bid;
 import fr.enchere.model.Category;
+import fr.enchere.model.Item;
+import fr.enchere.repository.ItemRepository;
+import fr.enchere.model.Item;
+import fr.enchere.repository.ItemRepository;
 import fr.enchere.service.BidService;
 import fr.enchere.service.CategoryService;
+import fr.enchere.service.ItemService;
+import fr.enchere.service.ItemService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,30 +46,76 @@ public class HomeController {
     @ResponseBody
     public List<Bid> filterBids(
             @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) String search) {
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String filterType,
+            Authentication authentication) {
 
         List<Bid> result;
+        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
+        String username = isAuthenticated ? authentication.getName() : null;
 
-        // Si aucun filtre n'est appliqué
-        if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
-            result = bidService.getBids();
-        }
-        // Si seule la catégorie est spécifiée
-        else if (search == null || search.isEmpty()) {
-            result = bidService.getBidsByCategory(categoryId);
-        }
-        // Si seul le nom est spécifié
-        else if (categoryId == null || categoryId == 0) {
-            result = bidService.getBidsByItemName(search);
-        }
-        // Si les deux filtres sont spécifiés
-        else {
-            result = bidService.getBidsByCategoryAndItemName(categoryId, search);
-        }
+        // Non connectés
+        if (!isAuthenticated || filterType == null) {
+            if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
+                result = bidService.getBids();
+            } else if (search == null || search.isEmpty()) {
+                result = bidService.getBidsByCategory(categoryId);
+            } else if (categoryId == null || categoryId == 0) {
+                result = bidService.getBidsByItemName(search);
+            } else {
+                result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+            }
+        } else {
+            switch (filterType) {
+                case "my-bids":
+                    List<Bid> userBids = bidService.getBidsByUsername(username);
 
-        // Vérification pour éviter les NPE
-        if (result == null) {
-            return new ArrayList<>();
+                    if (categoryId != null && categoryId > 0) {
+                        userBids = userBids.stream()
+                                .filter(bid -> bid.getItem().getCategory().getCategoryId().equals(categoryId))
+                                .toList();
+                    }
+
+                    if (search != null && !search.isEmpty()) {
+                        userBids = userBids.stream()
+                                .filter(bid -> bid.getItem().getItemName().toLowerCase().contains(search.toLowerCase()))
+                                .toList();
+                    }
+
+                    result = userBids;
+                    break;
+
+                case "my-wins":
+                    List<Bid> wonBids = bidService.getWonBidsByUsername(username);
+
+                    if (categoryId != null && categoryId > 0) {
+                        wonBids = wonBids.stream()
+                                .filter(bid -> bid.getItem().getCategory().getCategoryId().equals(categoryId))
+                                .toList();
+                    }
+
+                    if (search != null && !search.isEmpty()) {
+                        wonBids = wonBids.stream()
+                                .filter(bid -> bid.getItem().getItemName().toLowerCase().contains(search.toLowerCase()))
+                                .toList();
+                    }
+
+                    result = wonBids;
+                    break;
+
+                default:
+                    if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
+                        result = bidService.getBids();
+                    } else if (search == null || search.isEmpty()) {
+                        result = bidService.getBidsByCategory(categoryId);
+                    } else if (categoryId == null || categoryId == 0) {
+                        result = bidService.getBidsByItemName(search);
+                    } else {
+                        result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+                    }
+            }
+
+            return result != null ? result : new ArrayList<>();
         }
         return result;
     }
@@ -94,11 +147,6 @@ public class HomeController {
     @GetMapping("/auction-list-pages")
     public String acquisitionListPage() {
         return "auction-list-pages";
-    }
-
-    @GetMapping("/bidding-page")
-    public String biddingPage() {
-        return "/bidding-page";
     }
 
     @GetMapping("/profile-modification")

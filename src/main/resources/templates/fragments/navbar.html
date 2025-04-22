@@ -31,6 +31,11 @@
     <div class="uk-navbar-right uk-visible@m">
         <ul class="uk-navbar-nav">
             <li sec:authorize="isAuthenticated()">
+                <div class="user-credit">
+                    <span uk-icon="icon: credit-card"></span> Crédit : <span th:text="${#authentication.principal.credits}">0</span>
+                </div>
+            </li>
+            <li sec:authorize="isAuthenticated()">
                 <a th:href="@{/sell-item-page}">
                     <span uk-icon="icon: upload"></span> Vendre
                 </a>
@@ -42,7 +47,7 @@
             </li>
             <li sec:authorize="isAuthenticated()">
                 <form th:action="@{/logout}" method="post" style="display: inline;">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <button type="submit" class="uk-button uk-button-text" style="display: flex; align-items: center;">
                         <span uk-icon="icon: sign-out" style="margin-right: 5px;"></span> Déconnexion
                     </button>
@@ -66,6 +71,12 @@
         <div class="uk-offcanvas-bar">
             <ul class="uk-nav uk-nav-default">
                 <li sec:authorize="isAuthenticated()">
+                    <div class="user-credit">
+                        <span uk-icon="icon: credit-card"></span> Crédit : <span th:text="${#authentication.principal.credits}">0</span>
+                    </div>
+                </li>
+
+                <li sec:authorize="isAuthenticated()">
                     <a th:href="@{/sell-item-page}">
                         <span uk-icon="upload"></span>Vendre
                     </a>
@@ -77,8 +88,9 @@
                 </li>
                 <li sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}" method="post" style="display: inline;">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                        <button type="submit" class="uk-button uk-button-text" style="display: flex; align-items: center; width: 100%; text-align: left; padding: 0;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit" class="uk-button uk-button-text"
+                                style="display: flex; align-items: center; width: 100%; text-align: left; padding: 0;">
                             <span uk-icon="sign-out" style="margin-right: 5px;"></span> Déconnexion
                         </button>
                     </form>

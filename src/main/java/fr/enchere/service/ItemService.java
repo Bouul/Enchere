@@ -10,8 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -25,6 +23,7 @@ public class ItemService {
 
     @Autowired
     public ItemService(ItemRepository itemRepository, UserService userService, PickupLocationRepository pickupLocationRepository, CategoryService categoryService, BidRepository bidRepository) {
+
         this.itemRepository = itemRepository;
         this.userService = userService;
         this.pickupLocationRepository = pickupLocationRepository;
@@ -65,5 +64,9 @@ public class ItemService {
         bidRepository.save(bid);
         //@TODO //  retourner l'index avec un modal de la création de l'objet
         return item;
+    }
+
+    public Item findByItemId(Long itemId) {
+        return itemRepository.findByItemId(itemId);
     }
 }

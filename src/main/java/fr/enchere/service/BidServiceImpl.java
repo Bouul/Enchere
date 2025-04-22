@@ -11,8 +11,7 @@ import java.util.List;
 @Service
 public class BidServiceImpl implements BidService {
 
-    @Autowired
-    private BidRepository bidRepository;
+    private final BidRepository bidRepository;
 
 
     public BidServiceImpl(BidRepository bidRepository) {
@@ -30,11 +29,6 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Bid findByBidId(Long bidId) {
-        return bidRepository.findByBidId(bidId);
-    }
-
-    @Override
     public List<Bid> getBidsByItemName(String itemName) {
         return bidRepository.findByItemNameContainingIgnoreCase(itemName);
     }
@@ -43,9 +37,19 @@ public class BidServiceImpl implements BidService {
     public List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName) {
         return bidRepository.findByItemCategoryIdAndItemNameContainingIgnoreCase(categoryId, itemName);
     }
+  
+     @Override
+     public List<Bid> getBidsByUsername(String username) {
+        return bidRepository.findByUserUsername(username);
+    }
 
     @Override
-    public Bid saveBid(Bid bid) {
-        return bidRepository.save(bid);
+    public List<Bid> getWonBidsByUsername(String username) {
+        return bidRepository.findWonBidsByUsername(username, LocalDateTime.now());
+    }
+
+    @Override
+    public Bid findHighestBidByItemId(Long itemId) {
+        return bidRepository.findHighestBidByItemId(itemId);
     }
 }

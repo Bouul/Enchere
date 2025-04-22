@@ -8,10 +8,12 @@ import java.util.List;
 @Service
 public interface BidService {
 
+    //USE
     List<Bid> getBids();
-    Bid findByBidId(Long bidId);
-    Bid saveBid(Bid bid);
+    List<Bid> getBidsByCategory(Long categoryId);
     List<Bid> getBidsByItemName(String itemName);
     List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName);
-    List<Bid> getBidsByCategory(Long categoryId);
+    List<Bid> getBidsByUsername(String username);
+    List<Bid> getWonBidsByUsername(String username);
+    Bid findHighestBidByItemId(Long itemId);
 }

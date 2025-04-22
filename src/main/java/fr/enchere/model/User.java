@@ -236,22 +236,15 @@ public class User {
      */
     public int getActiveAuctionsCount() {
         if (itemsSold == null) return 0;
-        
+
         LocalDateTime currentDate = LocalDateTime.now();
+
         return (int) itemsSold.stream()
-            .filter(item -> {
-                try {
-                    LocalDateTime endDateStr = item.getEndDate();
-                    if (endDateStr == null) {
-                        return false;
-                    }
-                    return endDateStr.isAfter(currentDate);
-                } catch (Exception e) {
-                    // Log l'erreur ou gère-la selon les besoins de l'application
-                    return false;
-                }
-            })
-            .count();
+                .filter(item -> {
+                    LocalDateTime endDate = item.getEndDate();
+                    return endDate != null && endDate.isAfter(currentDate);
+                })
+                .count();
     }
 }
 
