@@ -17,6 +17,7 @@ public class Item {
     private int startingPrice;
     private int salePrice;
     private String saleStatus;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "category")
@@ -59,6 +60,14 @@ public class Item {
         this.startDate = startDate;
         this.description = description;
         this.itemName = itemName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public User getBuyer() {
