@@ -4,6 +4,7 @@ import fr.enchere.model.Bid;
 import fr.enchere.model.DTO.ItemDTO;
 import fr.enchere.model.Item;
 import fr.enchere.model.User;
+import fr.enchere.repository.BidRepository;
 import fr.enchere.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -22,17 +23,18 @@ import java.util.Date;
 public class ItemController {
 
 
-     private final ItemService itemService;
-
+    private final ItemService itemService;
     private final UserService userService;
-    @Autowired
-    private BidService bidService;
+    private final BidService bidService;
+    private final BidRepository bidRepository;
 
 
 
-     public ItemController(UserService userService, ItemService itemService) {
+     public ItemController(UserService userService, ItemService itemService, BidService bidService, BidRepository bidRepository) {
          this.userService = userService;
          this.itemService = itemService;
+         this.bidService = bidService;
+         this.bidRepository = bidRepository;
      }
 
      @PostMapping("/saveItem")
@@ -99,7 +101,7 @@ public class ItemController {
         bid.setBidDate(LocalDateTime.now());
         bid.setItem(item);
         bid.setUser(user);
-        bidService.createBid(bid);
+        bidRepository.save(bid);
 
         redirectAttributes.addFlashAttribute("success", "Votre enchère a bien été enregistrée !");
         return "redirect:/bidding-page?id=" + itemId;

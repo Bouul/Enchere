@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface BidRepository extends JpaRepository<Bid, Long> {
-   Bid findByBidId(Long bidId);
+
    @Query("""
       SELECT b 
       FROM Bid b

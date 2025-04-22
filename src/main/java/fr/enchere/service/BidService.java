@@ -11,9 +11,9 @@ public interface BidService {
     //USE
     List<Bid> getBids();
     List<Bid> getBidsByCategory(Long categoryId);
-    Bid findByBidId(Long bidId);
     List<Bid> getBidsByItemName(String itemName);
     List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName);
     List<Bid> getBidsByUsername(String username);
     List<Bid> getWonBidsByUsername(String username);
+    Bid findHighestBidByItemId(Long itemId);
 }
