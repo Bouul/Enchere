@@ -3,6 +3,7 @@ package fr.enchere.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,8 +13,8 @@ public class Item {
     private Long itemId;
     private String itemName;
     private String description;
-    private String startDate;
-    private String endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private int startingPrice;
     private int salePrice;
     private String saleStatus;
@@ -47,19 +48,20 @@ public class Item {
         // Default constructor
     }
 
-    public Item(Long itemId, PickupLocation pickupLocationBid, User buyer, User seller, Category category, String saleStatus, int salePrice, int startingPrice, String endDate, String startDate, String description, String itemName) {
+    public Item(Long itemId, String itemName, String description, LocalDateTime startDate, LocalDateTime endDate, int startingPrice, int salePrice, String saleStatus, Category category, User seller, User buyer, List<Bid> bids, PickupLocation pickupLocationBid) {
         this.itemId = itemId;
-        this.pickupLocationBid = pickupLocationBid;
-        this.buyer = buyer;
-        this.seller = seller;
-        this.category = category;
-        this.saleStatus = saleStatus;
-        this.salePrice = salePrice;
-        this.startingPrice = startingPrice;
-        this.endDate = endDate;
-        this.startDate = startDate;
-        this.description = description;
         this.itemName = itemName;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.startingPrice = startingPrice;
+        this.salePrice = salePrice;
+        this.saleStatus = saleStatus;
+        this.category = category;
+        this.seller = seller;
+        this.buyer = buyer;
+        this.bids = bids;
+        this.pickupLocationBid = pickupLocationBid;
     }
 
     public String getImage() {
@@ -136,22 +138,28 @@ public class Item {
         this.startingPrice = startingPrice;
     }
 
-    public String getEndDate() {
-        return endDate;
-    }
-
-
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 
     public String getDescription() {

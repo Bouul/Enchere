@@ -8,7 +8,9 @@
 <div class="uk-section uk-section-small">
     <div class="uk-container">
         <h2>Filtres :</h2>
-        <div class="uk-grid-small" uk-grid>
+
+        <!-- Filtres pour utilisateurs NON connectés -->
+        <div sec:authorize="!isAuthenticated()" class="uk-grid-small" uk-grid>
             <div class="uk-width-1-4@m">
                 <label for="categories">Catégories:</label>
                 <select class="uk-select" id="categories" name="categories">
@@ -25,6 +27,34 @@
             </div>
             <div class="uk-width-1-4@m uk-flex uk-flex-bottom">
                 <button class="uk-button uk-button-primary" id="search-button" type="button">Rechercher</button>
+            </div>
+        </div>
+
+        <!-- Filtres pour utilisateurs connectés -->
+        <div sec:authorize="isAuthenticated()" class="uk-grid-small" uk-grid>
+            <div class="uk-width-1-4@m">
+                <label for="categories-auth">Catégories:</label>
+                <select class="uk-select" id="categories-auth" name="categories">
+                    <option value="0">Toutes</option>
+                    <option th:each="category : ${categories}"
+                            th:value="${category.categoryId}"
+                            th:text="${category.label}">Catégorie</option>
+                </select>
+            </div>
+            <div class="uk-width-1-4@m">
+                <label for="search-auth">Le nom de l'article contient:</label>
+                <input class="uk-input" type="text" id="search-auth" name="search">
+            </div>
+            <div class="uk-width-1-4@m">
+                <label for="filter-type">Mes enchères:</label>
+                <select class="uk-select" id="filter-type" name="filter-type">
+                    <option value="all">Toutes</option>
+                    <option value="my-bids">Mes enchères en cours</option>
+                    <option value="my-wins">Mes enchères remportées</option>
+                </select>
+            </div>
+            <div class="uk-width-1-4@m uk-flex uk-flex-bottom">
+                <button class="uk-button uk-button-primary" id="search-button-auth" type="button">Rechercher</button>
             </div>
         </div>
     </div>
@@ -166,18 +196,74 @@
             });
     }
 
+    function filterBidsAuth() {
+        const categoryId = document.getElementById('categories-auth').value;
+        const searchText = document.getElementById('search-auth').value.trim();
+        const filterType = document.getElementById('filter-type').value;
+
+        let url = `/api/bids/filter?`;
+
+        // Ajout du paramètre de catégorie si sélectionné
+        if (categoryId && categoryId !== '0') {
+            url += `categoryId=${categoryId}`;
+        }
+
+        // Ajout du paramètre de recherche si saisi
+        if (searchText) {
+            if (url.endsWith('?')) {
+                url += `search=${encodeURIComponent(searchText)}`;
+            } else {
+                url += `&search=${encodeURIComponent(searchText)}`;
+            }
+        }
+
+        // Ajout du type de filtre pour les enchères de l'utilisateur
+        if (filterType && filterType !== 'all') {
+            if (url.endsWith('?')) {
+                url += `filterType=${filterType}`;
+            } else {
+                url += `&filterType=${filterType}`;
+            }
+        }
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => updateBidsDisplay(data))
+            .catch(error => console.error('Erreur:', error));
+    }
+
     // Initialisation des gestionnaires d'événements
     document.addEventListener('DOMContentLoaded', function() {
+        // Gestion des filtres pour utilisateurs non connectés
         const categorySelect = document.getElementById('categories');
+        const searchButton = document.getElementById('search-button');
+
         if (categorySelect) {
             categorySelect.addEventListener('change', filterBids);
         }
 
-        const searchButton = document.getElementById('search-button');
         if (searchButton) {
             searchButton.addEventListener('click', filterBids);
         }
+
+        // Gestion des filtres pour utilisateurs connectés
+        const categorySelectAuth = document.getElementById('categories-auth');
+        const searchButtonAuth = document.getElementById('search-button-auth');
+        const filterType = document.getElementById('filter-type');
+
+        if (categorySelectAuth) {
+            categorySelectAuth.addEventListener('change', filterBidsAuth);
+        }
+
+        if (searchButtonAuth) {
+            searchButtonAuth.addEventListener('click', filterBidsAuth);
+        }
+
+        if (filterType) {
+            filterType.addEventListener('change', filterBidsAuth);
+        }
     });
+
 </script>
 
 </body>

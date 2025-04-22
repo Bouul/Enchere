@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ItemService {
 
@@ -19,7 +21,7 @@ public class ItemService {
     private final CategoryService categoryService;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, UserService userService, PickupLocationService pickupLocationService, PickupLocationRepository pickupLocationRepository, CategoryService categoryService) {
+    public ItemService(ItemRepository itemRepository, UserService userService, PickupLocationRepository pickupLocationRepository, CategoryService categoryService) {
         this.itemRepository = itemRepository;
         this.userService = userService;
         this.pickupLocationRepository = pickupLocationRepository;
@@ -42,15 +44,15 @@ public class ItemService {
         pickupLocation.setStreet(user.getStreet());
         item.setItemName(form.getItemName());
         item.setDescription(form.getDescription());
-        item.setStartDate(form.getStartDate());
-        item.setEndDate(form.getEndDate());
+        item.setStartDate(LocalDateTime.parse(form.getStartDate()));
+        item.setEndDate(LocalDateTime.parse(form.getEndDate()));
         item.setStartingPrice(form.getStartingPrice());
         item.setCategory(categoryService.findById(form.getCategory()));
         item.setSeller(user);
         item.setPickupLocationBid(pickupLocation);
         item.setSaleStatus(String.valueOf(SalesStatusCycle.CREATED));
         pickupLocationRepository.save(pickupLocation);
-        //@TODO //  retourner l'index avec un modal de la création de l'objet
+
         return itemRepository.save(item);
     }
 
