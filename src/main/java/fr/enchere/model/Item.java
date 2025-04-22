@@ -73,24 +73,6 @@ public class Item {
         this.image = image;
     }
 
-    public User getBuyer() {
-        return buyer;
-    }
-
-    public void setBuyer(User buyer) {
-        this.buyer = buyer;
-    }
-
-    public PickupLocation getPickupLocationBid() {
-        return pickupLocationBid;
-    }
-
-    public void setPickupLocationBid(PickupLocation pickupLocationBid) {
-        this.pickupLocationBid = pickupLocationBid;
-    }
-
-    // Getters and setters
-
     public Long getItemId() {
         return itemId;
     }
@@ -99,53 +81,24 @@ public class Item {
         this.itemId = itemId;
     }
 
-    public User getSeller() {
-        return seller;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setSeller(User seller) {
-        this.seller = seller;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setDescription(String description) {
+        this.description = description;
     }
-
-    public String getSaleStatus() {
-        return saleStatus;
-    }
-
-    public void setSaleStatus(String saleStatus) {
-        this.saleStatus = saleStatus;
-    }
-
-    public int getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(int salePrice) {
-        this.salePrice = salePrice;
-    }
-
-    public int getStartingPrice() {
-        return startingPrice;
-    }
-
-    public void setStartingPrice(int startingPrice) {
-        this.startingPrice = startingPrice;
-    }
-
-
-    public LocalDateTime getEndDate() {
-        return endDate;
 
     public LocalDateTime getStartDate() {
         return startDate;
-
     }
 
     public void setStartDate(LocalDateTime startDate) {
@@ -160,13 +113,53 @@ public class Item {
         this.endDate = endDate;
     }
 
-
-    public LocalDateTime getStartDate() {
-        return startDate;
+    public int getStartingPrice() {
+        return startingPrice;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
+    public void setStartingPrice(int startingPrice) {
+        this.startingPrice = startingPrice;
+    }
+
+    public int getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(int salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public String getSaleStatus() {
+        return saleStatus;
+    }
+
+    public void setSaleStatus(String saleStatus) {
+        this.saleStatus = saleStatus;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
+
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
+    }
 
     public List<Bid> getBids() {
         return bids;
@@ -176,19 +169,11 @@ public class Item {
         this.bids = bids;
     }
 
-    public String getDescription() {
-        return description;
+    public PickupLocation getPickupLocationBid() {
+        return pickupLocationBid;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setPickupLocationBid(PickupLocation pickupLocationBid) {
+        this.pickupLocationBid = pickupLocationBid;
     }
 }
