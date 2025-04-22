@@ -25,7 +25,6 @@ public class ItemController {
      private final ItemService itemService;
 
     private final UserService userService;
-    private final ItemService itemService;
     @Autowired
     private BidService bidService;
 
@@ -72,10 +71,16 @@ public class ItemController {
             return "redirect:/";
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate endDate = LocalDate.parse(item.getEndDate(), formatter);
+        // Vérifie si l'utilisateur est le vendeur
+        if (item.getSeller().getUserId().equals(user.getUserId())) {
+            redirectAttributes.addFlashAttribute("error", "Vous ne pouvez pas enchérir sur votre propre article.");
+            return "redirect:/bidding-page?id=" + itemId;
+        }
 
-        if (endDate.isBefore(LocalDate.now())) {
+        LocalDateTime endDate = item.getEndDate();
+
+
+        if (endDate.isBefore(LocalDateTime.now())) {
             redirectAttributes.addFlashAttribute("error", "L'enchère est terminée.");
             return "redirect:/bidding-page?id=" + itemId;
         }
