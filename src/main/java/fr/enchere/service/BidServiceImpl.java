@@ -36,6 +36,16 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
+    public List<Bid> getBidsByItemName(String itemName) {
+        return bidRepository.findByItemNameContainingIgnoreCase(itemName);
+    }
+
+    @Override
+    public List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName) {
+        return bidRepository.findByItemCategoryIdAndItemNameContainingIgnoreCase(categoryId, itemName);
+    }
+
+    @Override
     public ServiceResponse<Bid> createBid(Bid bid) {
         // Vérification que l'enchère n'est pas null
         if (bid == null) {

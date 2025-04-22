@@ -21,4 +21,30 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
       WHERE i.category.categoryId = :categoryId
     """)
    List<Bid> findByItemCategoryId(@Param("categoryId") Long categoryId);
+
+   @Query("""
+    SELECT b 
+    FROM Bid b
+    JOIN FETCH b.item i
+    JOIN FETCH i.category
+    JOIN FETCH i.seller
+    LEFT JOIN FETCH i.pickupLocationBid
+    WHERE LOWER(i.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
+""")
+
+   List<Bid> findByItemNameContainingIgnoreCase(@Param("itemName") String itemName);
+
+   @Query("""
+    SELECT b 
+    FROM Bid b
+    JOIN FETCH b.item i
+    JOIN FETCH i.category
+    JOIN FETCH i.seller
+    LEFT JOIN FETCH i.pickupLocationBid
+    WHERE i.category.categoryId = :categoryId 
+    AND LOWER(i.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
+""")
+   List<Bid> findByItemCategoryIdAndItemNameContainingIgnoreCase(
+           @Param("categoryId") Long categoryId,
+           @Param("itemName") String itemName);
 }

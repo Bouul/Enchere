@@ -132,8 +132,25 @@
     // Fonction de filtrage des enchères
     function filterBids() {
         const categoryId = document.getElementById('categories').value;
+        const searchText = document.getElementById('search').value.trim();
 
-        fetch(`/api/bids/filter?categoryId=${categoryId}`)
+        let url = `/api/bids/filter?`;
+
+        // Ajout du paramètre de catégorie si sélectionné
+        if (categoryId && categoryId !== '0') {
+            url += `categoryId=${categoryId}`;
+        }
+
+        // Ajout du paramètre de recherche si saisi
+        if (searchText) {
+            // Ajouter un & si le paramètre précédent existe
+            if (categoryId && categoryId !== '0') {
+                url += '&';
+            }
+            url += `search=${encodeURIComponent(searchText)}`;
+        }
+
+        fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erreur réseau');
@@ -141,7 +158,7 @@
                 return response.json();
             })
             .then(data => {
-                console.log("Données reçues :", data); // Ajoutez ceci pour voir les données
+                console.log("Données reçues :", data);
                 updateBidsDisplay(data);
             })
             .catch(error => {

@@ -32,16 +32,32 @@ public class HomeController {
         return "index";
     }
 
-    // Endpoint REST pour le filtrage AJAX
+
     @GetMapping("/api/bids/filter")
     @ResponseBody
-    public List<Bid> filterBids(@RequestParam(required = false) Long categoryId) {
+    public List<Bid> filterBids(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String search) {
+
         List<Bid> result;
-        if (categoryId == null || categoryId == 0) {
+
+        // Si aucun filtre n'est appliqué
+        if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
             result = bidService.getBids();
-        } else {
+        }
+        // Si seule la catégorie est spécifiée
+        else if (search == null || search.isEmpty()) {
             result = bidService.getBidsByCategory(categoryId);
         }
+        // Si seul le nom est spécifié
+        else if (categoryId == null || categoryId == 0) {
+            result = bidService.getBidsByItemName(search);
+        }
+        // Si les deux filtres sont spécifiés
+        else {
+            result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+        }
+
         // Vérification pour éviter les NPE
         if (result == null) {
             return new ArrayList<>();
