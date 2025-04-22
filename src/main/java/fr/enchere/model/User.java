@@ -1,6 +1,7 @@
 package fr.enchere.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,13 +24,16 @@ public class User {
     private String password;
     private int credit;
     private boolean administrator;
+    private boolean active = true; // Par défaut, le compte est actif
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Bid> bids;
 
     @OneToMany(mappedBy = "seller")
-    @JsonIgnore
+
+
+    @JsonManagedReference
     private List<Item> itemsSold;
 
     @OneToMany(mappedBy = "buyer")
@@ -178,6 +182,14 @@ public class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     /**

@@ -63,4 +63,15 @@ public class UserServiceImpl implements UserService {
         return user.calculateProfileCompletion();
     }
 
+    @Override
+    public void deactivateUser(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user != null) {
+            user.setActive(false);
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + userId);
+        }
+    }
+
 }

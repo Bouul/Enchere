@@ -1,0 +1,53 @@
+#autocomplete-results {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+    border-radius: 12px;
+}
+
+.uk-dropdown-item {
+    padding: 10px 15px;
+    font-size: 14px;
+    transition: background 0.2s;
+    border-radius: 8px;
+}
+
+.uk-dropdown-item:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+/* Champs de formulaire arrondis */
+.uk-input, .uk-textarea, .uk-select {
+    border-radius: 12px;
+    padding: 10px 14px;
+}
+
+/* Boutons arrondis */
+.uk-button {
+    border-radius: 12px;
+}
+
+/* Image preview arrondie */
+#imagePreview {
+    border-radius: 12px;
+}
+
+/* Carte principale */
+.uk-card {
+    border-radius: 18px;
+}
+
+.uk-input:focus, .uk-textarea:focus, .uk-select:focus {
+    box-shadow: 0 0 4px rgba(100, 150, 255, 0.3);
+    border-color: #1e87f0;
+}

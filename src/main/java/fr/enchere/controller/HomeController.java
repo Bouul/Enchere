@@ -4,6 +4,8 @@ import fr.enchere.model.Bid;
 import fr.enchere.model.Category;
 import fr.enchere.service.BidService;
 import fr.enchere.service.CategoryService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -112,6 +114,11 @@ public class HomeController {
     @GetMapping("/sell-item-page")
     public String sellItemPage() {
         return "/sell-item-page";
+    }
+
+    @GetMapping("/deconnexion-confirmation")
+    public String deconnexionPage() {
+        return "deconnexion";
     }
 
 }
