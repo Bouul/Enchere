@@ -13,8 +13,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Item findByDescription(String description);
 
-    Item findByStartingPrice(Double startingPrice);
-
-    Item findByEndDate(String endDate);
+//    Item findByStartingPrice(Double startingPrice);
+//
+//    Item findByEndDate(String endDate);
 
 }

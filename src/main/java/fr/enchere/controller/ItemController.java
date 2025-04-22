@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class ItemController {
 
+
      private final ItemService itemService;
+
     @Autowired
     private BidService bidService;
 
