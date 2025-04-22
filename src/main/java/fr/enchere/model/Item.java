@@ -158,9 +158,7 @@ public class Item {
         return bids;
     }
 
-    public void setBids(List<Bid> bids) {
-        this.bids = bids;
-    }
+    public void setBids(List<Bid> bids) { this.bids = bids; }
 
     public String getDescription() {
         return description;
