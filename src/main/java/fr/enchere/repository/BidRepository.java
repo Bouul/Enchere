@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -72,9 +73,11 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
         FROM Bid b2
         WHERE b2.item = i
     )
-    AND i.endDate < CURRENT_TIMESTAMP
+    AND i.endDate < :currentDate
 """)
-   List<Bid> findWonBidsByUsername(@Param("username") String username);
+   List<Bid> findWonBidsByUsername(
+           @Param("username") String username,
+           @Param("currentDate") LocalDateTime currentDate);
 
    @Query("SELECT b FROM Bid b WHERE b.item.itemId = :itemId ORDER BY b.bidAmount DESC LIMIT 1")
    Bid findHighestBidByItemId(Long itemId);
