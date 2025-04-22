@@ -1,5 +1,6 @@
 package fr.enchere.controller;
 
+import fr.enchere.model.DTO.ItemDTO;
 import fr.enchere.model.Item;
 import fr.enchere.model.User;
 import fr.enchere.service.CategoryService;
@@ -12,19 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class ItemController {
 
      private final ItemService itemService;
-     private final CategoryService categoryService;
-     private final PickupLocationService pickupLocationService;
 
-     public ItemController(ItemService itemService, CategoryService categoryService, PickupLocationService pickupLocationService) {
+     public ItemController(ItemService itemService) {
          this.itemService = itemService;
-         this.categoryService = categoryService;
-         this.pickupLocationService = pickupLocationService;
      }
 
      @PostMapping("/saveItem")
-     public Item createItem(@ModelAttribute Item item) {
+     public Item createItem(@ModelAttribute ItemDTO item) {
         return itemService.saveItem(item);
      }
-
-
 }

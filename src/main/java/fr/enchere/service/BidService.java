@@ -10,8 +10,8 @@ public interface BidService {
 
     List<Bid> getBids();
     Bid findByBidId(Long bidId);
-    ServiceResponse<Bid> createBid(Bid bid);
-    Bid updateBid(Bid bid);
-    void deleteBid(Long bidId);
-    Bid findHighestBidByItemId(Long itemId);
+    Bid saveBid(Bid bid);
+    List<Bid> getBidsByItemName(String itemName);
+    List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName);
+    List<Bid> getBidsByCategory(Long categoryId);
 }
