@@ -11,8 +11,7 @@ import java.util.List;
 @Service
 public class BidServiceImpl implements BidService {
 
-    @Autowired
-    private BidRepository bidRepository;
+    private final BidRepository bidRepository;
 
 
     public BidServiceImpl(BidRepository bidRepository) {
@@ -42,11 +41,6 @@ public class BidServiceImpl implements BidService {
     @Override
     public List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName) {
         return bidRepository.findByItemCategoryIdAndItemNameContainingIgnoreCase(categoryId, itemName);
-    }
-
-    @Override
-    public Bid saveBid(Bid bid) {
-        return bidRepository.save(bid);
     }
   
      @Override
