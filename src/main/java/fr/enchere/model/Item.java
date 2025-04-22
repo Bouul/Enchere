@@ -18,6 +18,7 @@ public class Item {
     private int startingPrice;
     private int salePrice;
     private String saleStatus;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "category")
@@ -26,6 +27,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
+    @JsonBackReference
     private User seller;
 
     @ManyToOne
@@ -60,6 +62,14 @@ public class Item {
         this.buyer = buyer;
         this.bids = bids;
         this.pickupLocationBid = pickupLocationBid;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public User getBuyer() {

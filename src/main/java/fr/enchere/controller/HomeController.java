@@ -2,8 +2,16 @@ package fr.enchere.controller;
 
 import fr.enchere.model.Bid;
 import fr.enchere.model.Category;
+import fr.enchere.model.Item;
+import fr.enchere.repository.ItemRepository;
+import fr.enchere.model.Item;
+import fr.enchere.repository.ItemRepository;
 import fr.enchere.service.BidService;
 import fr.enchere.service.CategoryService;
+import fr.enchere.service.ItemService;
+import fr.enchere.service.ItemService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -110,11 +118,6 @@ public class HomeController {
         return "auction-list-pages";
     }
 
-    @GetMapping("/bidding-page")
-    public String biddingPage() {
-        return "/bidding-page";
-    }
-
     @GetMapping("/profile-modification")
     public String profileModification() {
         return "/profile-modification";
@@ -128,6 +131,11 @@ public class HomeController {
     @GetMapping("/sell-item-page")
     public String sellItemPage() {
         return "/sell-item-page";
+    }
+
+    @GetMapping("/deconnexion-confirmation")
+    public String deconnexionPage() {
+        return "deconnexion";
     }
 
 }

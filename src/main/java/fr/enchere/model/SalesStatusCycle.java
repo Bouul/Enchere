@@ -2,9 +2,9 @@ package fr.enchere.model;
 
 public enum SalesStatusCycle {
 
-    created,
-    Inprogress,
-    AuctionsEnded,
-    withdrawalMade
+    CREATED,
+    IN_PROGRESS,
+    AUCTION_ENDED,
+    WITHDRAWAL_MADE
 
 }

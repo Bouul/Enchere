@@ -104,16 +104,54 @@
                 <button type="submit" class="uk-button uk-button-primary uk-width-1-1">Enregistrer</button>
             </div>
             <div class="uk-width-1-2@s">
-                <button class="uk-button uk-button-danger uk-width-1-1">Supprimer</button>
+                <button type="button" class="uk-button uk-button-danger uk-width-1-1" onclick="showCustomPopup()">Supprimer</button>
             </div>
             <div class="uk-width-1-1@s">
                 <a th:href="@{/profil(userId=${user.userId})}" class="uk-button uk-button-default uk-width-1-1">Retour</a>
             </div>
         </div>
     </form>
+
+    <!-- Formulaire de suppression -->
+    <form id="delete-form" th:action="@{/profil/supprimer}" method="post" style="display: none;">
+        <input type="hidden" name="userId" th:value="${user.userId}" />
+    </form>
+</div>
+<div id="custom-popup" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-card uk-card-default uk-card-hover uk-border-rounded">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+        <div class="uk-text-center">
+            <span class="uk-icon-button uk-margin-bottom" uk-icon="icon: warning; ratio: 2" style="color: #f0506e;"></span>
+            <h2 class="uk-modal-title uk-text-danger">Supprimer le compte</h2>
+            <p class="uk-text-muted">
+                Êtes-vous sûr de vouloir <strong>supprimer définitivement</strong> votre compte ?<br>
+                Cette action est <span class="uk-text-bold uk-text-danger">irréversible</span>.
+            </p>
+        </div>
+
+        <div class="uk-flex uk-flex-center uk-flex-middle uk-margin-top">
+            <button class="uk-button uk-button-default uk-modal-close uk-margin-small-right" type="button">
+                Annuler
+            </button>
+            <button class="uk-button uk-button-danger" type="button" onclick="submitDeleteForm()">
+                Oui, supprimer
+            </button>
+        </div>
+    </div>
 </div>
 
+
 <script>
+    function showCustomPopup() {
+        UIkit.modal('#custom-popup').show();
+    }
+
+    function submitDeleteForm() {
+        document.getElementById("delete-form").submit();
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         const streetInput = document.getElementById("street");
         const resultsList = document.getElementById("autocomplete-results");
