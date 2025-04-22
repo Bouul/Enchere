@@ -46,6 +46,16 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
+    public List<Bid> getBidsByUsername(String username) {
+        return bidRepository.findByUserUsername(username);
+    }
+
+    @Override
+    public List<Bid> getWonBidsByUsername(String username) {
+        return bidRepository.findWonBidsByUsername(username);
+    }
+
+    @Override
     public ServiceResponse<Bid> createBid(Bid bid) {
         // Vérification que l'enchère n'est pas null
         if (bid == null) {

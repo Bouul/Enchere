@@ -5,6 +5,7 @@ import fr.enchere.model.Category;
 import fr.enchere.service.BidService;
 import fr.enchere.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,32 +38,47 @@ public class HomeController {
     @ResponseBody
     public List<Bid> filterBids(
             @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) String search) {
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String filterType,
+            Authentication authentication) {
 
         List<Bid> result;
+        boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
+        String username = isAuthenticated ? authentication.getName() : null;
 
-        // Si aucun filtre n'est appliqué
-        if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
-            result = bidService.getBids();
+        // Filtres pour utilisateurs non connectés
+        if (!isAuthenticated || filterType == null) {
+            if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
+                result = bidService.getBids();
+            } else if (search == null || search.isEmpty()) {
+                result = bidService.getBidsByCategory(categoryId);
+            } else if (categoryId == null || categoryId == 0) {
+                result = bidService.getBidsByItemName(search);
+            } else {
+                result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+            }
         }
-        // Si seule la catégorie est spécifiée
-        else if (search == null || search.isEmpty()) {
-            result = bidService.getBidsByCategory(categoryId);
-        }
-        // Si seul le nom est spécifié
-        else if (categoryId == null || categoryId == 0) {
-            result = bidService.getBidsByItemName(search);
-        }
-        // Si les deux filtres sont spécifiés
+        // Filtres pour utilisateurs connectés
         else {
-            result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+            if ("my-bids".equals(filterType)) {
+                result = bidService.getBidsByUsername(username);
+            } else if ("my-wins".equals(filterType)) {
+                result = bidService.getWonBidsByUsername(username);
+            } else {
+                // Appliquer les autres filtres comme pour les non-connectés
+                if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
+                    result = bidService.getBids();
+                } else if (search == null || search.isEmpty()) {
+                    result = bidService.getBidsByCategory(categoryId);
+                } else if (categoryId == null || categoryId == 0) {
+                    result = bidService.getBidsByItemName(search);
+                } else {
+                    result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+                }
+            }
         }
 
-        // Vérification pour éviter les NPE
-        if (result == null) {
-            return new ArrayList<>();
-        }
-        return result;
+        return result != null ? result : new ArrayList<>();
     }
 
     @GetMapping("/login")
