@@ -47,4 +47,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
    List<Bid> findByItemCategoryIdAndItemNameContainingIgnoreCase(
            @Param("categoryId") Long categoryId,
            @Param("itemName") String itemName);
+
+   @Query("SELECT b FROM Bid b WHERE b.item.itemId = :itemId ORDER BY b.bidAmount DESC LIMIT 1")
+   Bid findHighestBidByItemId(Long itemId);
 }

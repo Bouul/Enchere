@@ -4,23 +4,32 @@ import fr.enchere.model.Bid;
 import fr.enchere.model.DTO.ItemDTO;
 import fr.enchere.model.Item;
 import fr.enchere.model.User;
-import fr.enchere.service.BidService;
-import fr.enchere.service.CategoryService;
-import fr.enchere.service.ItemService;
-import fr.enchere.service.PickupLocationService;
+import fr.enchere.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.math.BigDecimal;
+import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Controller
 public class ItemController {
 
-     private final ItemService itemService;
+    private final UserService userService;
+    private final ItemService itemService;
     @Autowired
     private BidService bidService;
 
-     public ItemController(ItemService itemService) {
+
+
+     public ItemController(UserService userService, ItemService itemService) {
+         this.userService = userService;
          this.itemService = itemService;
      }
 
@@ -44,4 +53,50 @@ public class ItemController {
             return "error"; // Vue d'erreur
         }
     }
+
+    @PostMapping("/bidding")
+    public String placeBid(@RequestParam("itemId") Long itemId,
+                           @RequestParam("bidAmount") int bidAmount,
+                           Principal principal,
+                           RedirectAttributes redirectAttributes) {
+
+        String username = principal.getName();
+        User user = userService.findByUsername(username);
+
+        Item item = itemService.findByItemId(itemId);
+        if (item == null) {
+            redirectAttributes.addFlashAttribute("error", "L'article n'existe pas.");
+            return "redirect:/";
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate endDate = LocalDate.parse(item.getEndDate(), formatter);
+
+        if (endDate.isBefore(LocalDate.now())) {
+            redirectAttributes.addFlashAttribute("error", "L'enchère est terminée.");
+            return "redirect:/bidding-page?id=" + itemId;
+        }
+
+
+
+        Bid highestBid = bidService.findHighestBidByItemId(itemId);
+
+        if (bidAmount <= highestBid.getBidAmount()) {
+            redirectAttributes.addFlashAttribute("error", "Le montant doit être supérieur à " + highestBid.getBidAmount() + " €.");
+            return "redirect:/bidding-page?id=" + itemId;
+        }
+
+        Bid bid = new Bid();
+        bid.setBidAmount(bidAmount);
+        bid.setBidDate(LocalDateTime.now());
+        bid.setItem(item);
+        bid.setUser(user);
+        bidService.createBid(bid);
+
+        redirectAttributes.addFlashAttribute("success", "Votre enchère a bien été enregistrée !");
+        return "redirect:/bidding-page?id=" + itemId;
+    }
+
+
+
 }
