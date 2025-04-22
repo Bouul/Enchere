@@ -47,8 +47,9 @@ public class Item {
     public Item() {
         // Default constructor
     }
-
+  
     public Item(Long itemId, String itemName, String description, LocalDateTime startDate, LocalDateTime endDate, int startingPrice, int salePrice, String saleStatus, Category category, User seller, User buyer, List<Bid> bids, PickupLocation pickupLocationBid) {
+
         this.itemId = itemId;
         this.itemName = itemName;
         this.description = description;
@@ -72,24 +73,6 @@ public class Item {
         this.image = image;
     }
 
-    public User getBuyer() {
-        return buyer;
-    }
-
-    public void setBuyer(User buyer) {
-        this.buyer = buyer;
-    }
-
-    public PickupLocation getPickupLocationBid() {
-        return pickupLocationBid;
-    }
-
-    public void setPickupLocationBid(PickupLocation pickupLocationBid) {
-        this.pickupLocationBid = pickupLocationBid;
-    }
-
-    // Getters and setters
-
     public Long getItemId() {
         return itemId;
     }
@@ -98,44 +81,20 @@ public class Item {
         this.itemId = itemId;
     }
 
-    public User getSeller() {
-        return seller;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setSeller(User seller) {
-        this.seller = seller;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getSaleStatus() {
-        return saleStatus;
-    }
-
-    public void setSaleStatus(String saleStatus) {
-        this.saleStatus = saleStatus;
-    }
-
-    public int getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(int salePrice) {
-        this.salePrice = salePrice;
-    }
-
-    public int getStartingPrice() {
-        return startingPrice;
-    }
-
-    public void setStartingPrice(int startingPrice) {
-        this.startingPrice = startingPrice;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getStartDate() {
@@ -154,25 +113,65 @@ public class Item {
         this.endDate = endDate;
     }
 
+    public int getStartingPrice() {
+        return startingPrice;
+    }
+
+    public void setStartingPrice(int startingPrice) {
+        this.startingPrice = startingPrice;
+    }
+
+    public int getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(int salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public String getSaleStatus() {
+        return saleStatus;
+    }
+
+    public void setSaleStatus(String saleStatus) {
+        this.saleStatus = saleStatus;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
+
+    public User getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
+    }
+
     public List<Bid> getBids() {
         return bids;
     }
 
     public void setBids(List<Bid> bids) { this.bids = bids; }
 
-    public String getDescription() {
-        return description;
+    public PickupLocation getPickupLocationBid() {
+        return pickupLocationBid;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setPickupLocationBid(PickupLocation pickupLocationBid) {
+        this.pickupLocationBid = pickupLocationBid;
     }
 }

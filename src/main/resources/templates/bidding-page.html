@@ -5,6 +5,13 @@
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
 <div class="uk-container uk-margin-large-top">
+    <div th:if="${success}" class="uk-alert-success" uk-alert>
+        <p th:text="${success}"></p>
+    </div>
+    <div th:if="${error}" class="uk-alert-danger" uk-alert>
+        <p th:text="${error}"></p>
+    </div>
+
     <div class="uk-card uk-card-default uk-card-body uk-box-shadow-large uk-border-rounded uk-animation-fade">
 
         <div class="uk-grid-large" uk-grid>
@@ -22,7 +29,8 @@
 
             <!-- Colonne droite : Infos détaillées -->
             <div class="uk-width-expand">
-                <h1 class="uk-heading-medium uk-text-primary uk-margin-small-bottom" th:text="${item.itemName}">Nom de l'article</h1>
+                <h1 class="uk-heading-medium uk-text-primary uk-margin-small-bottom" th:text="${item.itemName}">Nom de
+                    l'article</h1>
 
                 <dl class="uk-description-list uk-margin-remove-top uk-text-muted">
 
@@ -33,16 +41,24 @@
                     <dd class="uk-text-default" th:text="${item.category.label}">Catégorie</dd>
 
                     <dt><span uk-icon="icon: star"></span> Meilleure offre</dt>
-                    <dd class="uk-text-default" th:text="${highestBid != null ? highestBid.bidAmount + ' €' : 'Aucune enchère'}">0 €</dd>
+                    <dd class="uk-text-default"
+                        th:text="${highestBid != null ? highestBid.bidAmount + ' €' : 'Aucune enchère'}">0 €
+                    </dd>
 
                     <dt><span uk-icon="icon: credit-card"></span> Mise à prix</dt>
-                    <dd class="uk-text-default" th:text="${item.salePrice + ' €'}">0 €</dd>
+                    <dd class="uk-text-default" th:text="${item.startingPrice + ' €'}">0 €</dd>
 
                     <dt><span uk-icon="icon: calendar"></span> Fin de l'enchère</dt>
-                    <dd class="uk-text-default" th:text="${item.endDate instanceof T(java.util.Date) ? #dates.format(item.endDate, 'dd/MM/yyyy') : item.endDate}">Date</dd>
+                    <dd class="uk-text-default"
+                        th:text="${item.endDate instanceof T(java.util.Date) ? #dates.format(item.endDate, 'dd/MM/yyyy') : item.endDate}">
+                        Date
+                    </dd>
 
                     <dt><span uk-icon="icon: location"></span> Retrait</dt>
-                    <dd class="uk-text-default" th:text="${item.pickupLocationBid.street + ', ' + item.pickupLocationBid.postalCode + ' ' + item.pickupLocationBid.city}">Adresse</dd>
+                    <dd class="uk-text-default"
+                        th:text="${item.pickupLocationBid.street + ', ' + item.pickupLocationBid.postalCode + ' ' + item.pickupLocationBid.city}">
+                        Adresse
+                    </dd>
 
                     <dt><span uk-icon="icon: user"></span> Vendeur</dt>
                     <dd class="uk-text-default" th:text="${item.seller.username}">Nom du vendeur</dd>
@@ -55,11 +71,12 @@
             <label class="uk-form-label" for="ma_proposition">Votre enchère (€) :</label>
             <div class="uk-form-controls">
                 <input class="uk-input uk-border-rounded" type="number" id="ma_proposition" name="bidAmount"
-                       th:attr="min=${highestBid != null ? highestBid.bidAmount + 1 : item.startingPrice}"
                        placeholder="Entrez votre montant" required>
             </div>
             <input type="hidden" name="itemId" th:value="${item.itemId}">
-            <button type="submit" class="uk-button uk-button-primary uk-border-rounded uk-margin-top uk-width-1-1">Enchérir</button>
+            <button type="submit" class="uk-button uk-button-primary uk-border-rounded uk-margin-top uk-width-1-1">
+                Enchérir
+            </button>
         </form>
 
         <!-- Bouton retour -->

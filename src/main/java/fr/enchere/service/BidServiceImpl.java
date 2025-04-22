@@ -11,8 +11,7 @@ import java.util.List;
 @Service
 public class BidServiceImpl implements BidService {
 
-    @Autowired
-    private BidRepository bidRepository;
+    private final BidRepository bidRepository;
 
 
     public BidServiceImpl(BidRepository bidRepository) {
@@ -30,12 +29,6 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Bid findByBidId(Long bidId) {
-       Bid bid = bidRepository.findByBidId(bidId);
-        return bid;
-    }
-
-    @Override
     public List<Bid> getBidsByItemName(String itemName) {
         return bidRepository.findByItemNameContainingIgnoreCase(itemName);
     }
@@ -44,9 +37,9 @@ public class BidServiceImpl implements BidService {
     public List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName) {
         return bidRepository.findByItemCategoryIdAndItemNameContainingIgnoreCase(categoryId, itemName);
     }
-
-    @Override
-    public List<Bid> getBidsByUsername(String username) {
+  
+     @Override
+     public List<Bid> getBidsByUsername(String username) {
         return bidRepository.findByUserUsername(username);
     }
 
@@ -55,58 +48,9 @@ public class BidServiceImpl implements BidService {
         return bidRepository.findWonBidsByUsername(username);
     }
 
-    @Override
-    public ServiceResponse<Bid> createBid(Bid bid) {
-        // Vérification que l'enchère n'est pas null
-        if (bid == null) {
-            return ServiceResponse.buildResponse(
-                    ServiceConstant.CD_ERR_NOT_FOUND,
-                    "error.bid.null",
-                    null
-            );
-        }
-
-        // Vérification que l'enchère a un montant valide
-        if (bid.getBidAmount() <= 0) {
-            return ServiceResponse.buildResponse(
-                    ServiceConstant.CD_ERR_NOT_FOUND,
-                    "error.bid.amount.invalid",
-                    bid
-            );
-        }
-
-        // Autres vérifications...
-
-        try {
-            bidRepository.save(bid);
-            return ServiceResponse.buildResponse(
-                    ServiceConstant.CD_SUCCESS,
-                    "success.bid.created",
-                    bid
-            );
-        } catch (Exception e) {
-            return ServiceResponse.buildResponse(
-                    ServiceConstant.CD_ERR_TCH,
-                    "error.bid.save.failed",
-                    bid
-            );
-        }
-    }
-
-
-
-    @Override
-    public Bid updateBid(Bid bid) {
-        return null;
-    }
-
-    @Override
-    public void deleteBid(Long bidId) {
-
-    }
 
     @Override
     public Bid findHighestBidByItemId(Long itemId) {
-        return null;
+        return bidRepository.findHighestBidByItemId(itemId);
     }
 }
