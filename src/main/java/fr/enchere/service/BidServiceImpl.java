@@ -45,9 +45,8 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public List<Bid> getWonBidsByUsername(String username) {
-        return bidRepository.findWonBidsByUsername(username);
+        return bidRepository.findWonBidsByUsername(username, LocalDateTime.now());
     }
-
 
     @Override
     public Bid findHighestBidByItemId(Long itemId) {
