@@ -116,6 +116,11 @@ public class HomeController {
         return "/sell-item-page";
     }
 
+    @GetMapping("/modify-sell-item")
+    public String modifySellItem() {
+        return "/modify-sell-item";
+    }
+
     @GetMapping("/deconnexion-confirmation")
     public String deconnexionPage() {
         return "deconnexion";
