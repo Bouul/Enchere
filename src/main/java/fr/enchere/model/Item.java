@@ -47,8 +47,9 @@ public class Item {
     public Item() {
         // Default constructor
     }
-
+  
     public Item(Long itemId, String itemName, String description, LocalDateTime startDate, LocalDateTime endDate, int startingPrice, int salePrice, String saleStatus, Category category, User seller, User buyer, List<Bid> bids, PickupLocation pickupLocationBid) {
+
         this.itemId = itemId;
         this.itemName = itemName;
         this.description = description;
@@ -138,8 +139,13 @@ public class Item {
         this.startingPrice = startingPrice;
     }
 
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+
     public LocalDateTime getStartDate() {
         return startDate;
+
     }
 
     public void setStartDate(LocalDateTime startDate) {
@@ -153,6 +159,14 @@ public class Item {
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
+
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
 
     public List<Bid> getBids() {
         return bids;
