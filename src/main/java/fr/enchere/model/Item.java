@@ -18,6 +18,7 @@ public class Item {
     private int startingPrice;
     private int salePrice;
     private String saleStatus;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "category")
@@ -46,20 +47,30 @@ public class Item {
     public Item() {
         // Default constructor
     }
+  
+    public Item(Long itemId, String itemName, String description, LocalDateTime startDate, LocalDateTime endDate, int startingPrice, int salePrice, String saleStatus, Category category, User seller, User buyer, List<Bid> bids, PickupLocation pickupLocationBid) {
 
-    public Item(Long itemId, PickupLocation pickupLocationBid, User buyer, User seller, Category category, String saleStatus, int salePrice, int startingPrice, LocalDateTime endDate, LocalDateTime startDate, String description, String itemName) {
         this.itemId = itemId;
-        this.pickupLocationBid = pickupLocationBid;
-        this.buyer = buyer;
-        this.seller = seller;
-        this.category = category;
-        this.saleStatus = saleStatus;
-        this.salePrice = salePrice;
-        this.startingPrice = startingPrice;
-        this.endDate = endDate;
-        this.startDate = startDate;
-        this.description = description;
         this.itemName = itemName;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.startingPrice = startingPrice;
+        this.salePrice = salePrice;
+        this.saleStatus = saleStatus;
+        this.category = category;
+        this.seller = seller;
+        this.buyer = buyer;
+        this.bids = bids;
+        this.pickupLocationBid = pickupLocationBid;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public User getBuyer() {
@@ -128,15 +139,27 @@ public class Item {
         this.startingPrice = startingPrice;
     }
 
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
     public LocalDateTime getEndDate() {
         return endDate;
     }
 
-
-
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
+
 
     public LocalDateTime getStartDate() {
         return startDate;
@@ -144,6 +167,13 @@ public class Item {
 
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 
     public String getDescription() {

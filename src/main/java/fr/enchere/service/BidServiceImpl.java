@@ -48,4 +48,15 @@ public class BidServiceImpl implements BidService {
     public Bid saveBid(Bid bid) {
         return bidRepository.save(bid);
     }
+  
+     @Override
+     public List<Bid> getBidsByUsername(String username) {
+        return bidRepository.findByUserUsername(username);
+    }
+
+    @Override
+    public List<Bid> getWonBidsByUsername(String username) {
+        return bidRepository.findWonBidsByUsername(username);
+    }
+
 }
