@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:replace="~{fragments/head :: uikit-head('home')}"></head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
@@ -24,7 +25,8 @@
                     <!-- On affiche dynamiquement toutes les catégories -->
                     <option th:each="category : ${categories}"
                             th:value="${category.categoryId}"
-                            th:text="${category.label}">Catégorie</option>
+                            th:text="${category.label}">Catégorie
+                    </option>
                 </select>
             </div>
             <div class="uk-width-1-2@m">
@@ -44,7 +46,8 @@
                     <option value="0">Toutes</option>
                     <option th:each="category : ${categories}"
                             th:value="${category.categoryId}"
-                            th:text="${category.label}">Catégorie</option>
+                            th:text="${category.label}">Catégorie
+                    </option>
                 </select>
             </div>
             <div class="uk-width-1-4@m">
@@ -56,6 +59,7 @@
                 <select class="uk-select" id="filter-type" name="filter-type">
                     <option value="all">Toutes</option>
                     <option value="my-bids">Mes enchères en cours</option>
+                    <option value="my-bidding">Mes mises sur enchère</option>
                     <option value="my-wins">Mes enchères remportées</option>
                 </select>
             </div>
@@ -69,12 +73,6 @@
 <!-- Liste des enchères -->
 <div class="uk-section">
     <div class="uk-container">
-        <!-- Message si aucune enchère -->
-        <div id="no-bids-message" th:if="${#lists.isEmpty(bids)}" class="uk-alert uk-alert-warning">
-            <p>Aucune enchère disponible pour le moment.</p>
-        </div>
-
-        <!-- Affichage des enchères -->
         <div id="bids-container" class="uk-grid uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid>
             <div th:each="bid : ${bids}" class="uk-card uk-card-default uk-margin-bottom">
                 <div class="uk-card-media-top">
@@ -84,14 +82,20 @@
                 </div>
                 <div class="uk-card-body">
                     <h3 class="uk-card-title" th:text="${bid.item.itemName}">Titre de l'article</h3>
+                    <!-- Étiquette : en cours ou terminée -->
+                    <span th:if="${bid.item.saleStatus == 'EN_COURS'}" class="status-label en-cours">En cours</span>
+                    <span th:if="${bid.item.saleStatus == 'FINI'}" class="status-label terminée">Terminée</span>
                     <p><strong>Prix:</strong> <span th:text="${bid.bidAmount + ' €'}">0.00 €</span></p>
                     <p><strong>Fin de l'enchère:</strong> <span th:text="${bid.item.endDate}">01/01/2023</span></p>
                     <p><strong>Retrait:</strong> <span th:text="${bid.item.pickupLocationBid != null ?
                         (bid.item.pickupLocationBid.street + ', ' +
                          bid.item.pickupLocationBid.postalCode + ' ' +
                          bid.item.pickupLocationBid.city) : 'Non spécifié'}">Adresse</span></p>
-                    <p><strong>Vendeur:</strong> <span th:text="${bid.item.seller != null ? bid.item.seller.username : 'Inconnu'}">Nom du vendeur</span></p>
-                    <a th:href="@{'/bidding-page?id=' + ${bid.item.itemId}}" class="uk-button uk-button-primary uk-width-1-1">Voir détails</a>
+                    <p><strong>Vendeur:</strong> <span
+                            th:text="${bid.item.seller != null ? bid.item.seller.username : 'Inconnu'}">Nom du vendeur</span>
+                    </p>
+                    <a th:href="@{'/bidding-page?id=' + ${bid.item.itemId}}"
+                       class="uk-button uk-button-primary uk-width-1-1">Voir détails</a>
                 </div>
             </div>
         </div>
@@ -115,12 +119,83 @@
     UIkit.modal('#createdItemModal').show();
 </script>
 
+<style>
+    /* Grille avec un espacement de 20px entre les cartes */
+    #bids-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ajuste la largeur des cartes */
+        gap: 20px; /* Espacement entre les cartes */
+    }
+
+    /* Style de la carte */
+    .uk-card {
+        margin-bottom: 20px;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .uk-card-media-top {
+        height: 200px; /* Hauteur fixe pour l'image */
+        background-color: #f0f0f0; /* Couleur de fond si pas d'image */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .uk-card-media-top .uk-height-medium {
+        width: 100%; /* Prendre toute la largeur disponible */
+        height: 200px; /* Ajuster la hauteur selon votre besoin */
+        background-size: cover; /* Couvre l'espace sans déformer l'image */
+        background-position: center center; /* Centrer l'image */
+    }
+
+    .uk-card-media-top .uk-height-medium img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .uk-card-body {
+        padding: 15px;
+    }
+
+    /* Positionner l'étiquette à droite */
+    .status-label {
+        padding-top: 8px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        display: inline-block;
+        margin-left: 15px; /* Réduire l'écart entre le titre et l'étiquette */
+        line-height: 1; /* Ajuster la hauteur de ligne pour que l'étiquette s'adapte au texte */
+    }
+
+    .en-cours {
+        background-color: #28a745; /* Vert pour "En cours" */
+        color: white;
+    }
+
+    .terminée {
+        background-color: #dc3545; /* Rouge pour "Terminée" */
+        color: white;
+    }
+
+    .uk-card-title {
+        margin: 0; /* Supprimer la marge par défaut */
+    }
+
+
+
+
+</style>
+
 <!-- Script AJAX pour le filtrage -->
 <script>
     let currentPage = 0;
     const pageSize = 6;
 
-    // Affiche les enchères et la pagination
     function updateBidsDisplay(data) {
         const container = document.getElementById('bids-container');
         const noResultsMessage = document.getElementById('no-bids-message');
@@ -143,9 +218,17 @@
         data.bids.forEach(bid => {
             const item = bid.item;
             if (!item) return;
+
+            // Calculer si l'enchère est "En cours" ou "Terminée"
+            const endDate = new Date(item.endDate);
+            const currentDate = new Date();
+            const isOngoing = endDate > currentDate;
+
+            // Créer la carte d'enchère
             let pickupAddress = 'Non spécifié';
             if (item.pickupLocationBid)
                 pickupAddress = `${item.pickupLocationBid.street}, ${item.pickupLocationBid.postalCode} ${item.pickupLocationBid.city}`;
+
             const bidCard = document.createElement('div');
             bidCard.className = 'uk-card uk-card-default uk-margin-bottom';
             bidCard.innerHTML = `
@@ -155,7 +238,11 @@
                 </div>
             </div>
             <div class="uk-card-body">
-                <h3 class="uk-card-title">${item.itemName || 'Nom non disponible'}</h3>
+                <div class="uk-flex uk-flex-between">
+                    <h3 class="uk-card-title">${item.itemName || 'Nom non disponible'}</h3>
+                    <!-- Étiquette "En cours" ou "Terminée" -->
+                    <span class="status-label ${isOngoing ? 'en-cours' : 'terminée'}">${isOngoing ? 'En cours' : 'Terminée'}</span>
+                </div>
                 <p><strong>Prix:</strong> <span>${bid.bidAmount} €</span></p>
                 <p><strong>Fin de l'enchère:</strong> <span>${item.endDate || 'Non spécifié'}</span></p>
                 <p><strong>Retrait:</strong> <span>${pickupAddress}</span></p>
@@ -163,6 +250,8 @@
                 <a href="/bidding-page?id=${item.itemId}" class="uk-button uk-button-primary uk-width-1-1">Voir détails</a>
             </div>
         `;
+
+
             container.appendChild(bidCard);
         });
 
@@ -193,10 +282,19 @@
         pagination.innerHTML = html;
 
         // Gestion des clics
-        document.getElementById('prev-page').onclick = e => { e.preventDefault(); if (current > 0) goToPage(current - 1); };
-        document.getElementById('next-page').onclick = e => { e.preventDefault(); if (current < total - 1) goToPage(current + 1); };
+        document.getElementById('prev-page').onclick = e => {
+            e.preventDefault();
+            if (current > 0) goToPage(current - 1);
+        };
+        document.getElementById('next-page').onclick = e => {
+            e.preventDefault();
+            if (current < total - 1) goToPage(current + 1);
+        };
         document.querySelectorAll('.page-link').forEach(link => {
-            link.onclick = e => { e.preventDefault(); goToPage(parseInt(link.dataset.page)); };
+            link.onclick = e => {
+                e.preventDefault();
+                goToPage(parseInt(link.dataset.page));
+            };
         });
     }
 
@@ -219,7 +317,7 @@
     // Appel AJAX pour les utilisateurs non connectés
     function filterBids(page = 0) {
         currentPage = page;
-        const { categoryId, search } = getFilters(false);
+        const {categoryId, search} = getFilters(false);
         let url = `/api/bids/filter?page=${currentPage}&size=${pageSize}`;
         if (categoryId && categoryId !== '0') url += `&categoryId=${categoryId}`;
         if (search) url += `&search=${encodeURIComponent(search)}`;
@@ -232,7 +330,7 @@
     // Appel AJAX pour les utilisateurs connectés
     function filterBidsAuth(page = 0) {
         currentPage = page;
-        const { categoryId, search, filterType } = getFilters(true);
+        const {categoryId, search, filterType} = getFilters(true);
         let url = `/api/bids/filter?page=${currentPage}&size=${pageSize}`;
         if (categoryId && categoryId !== '0') url += `&categoryId=${categoryId}`;
         if (search) url += `&search=${encodeURIComponent(search)}`;
@@ -250,7 +348,7 @@
     }
 
     // Initialisation des événements
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Non connecté
         if (document.getElementById('categories')) {
             document.getElementById('categories').addEventListener('change', () => filterBids(0));

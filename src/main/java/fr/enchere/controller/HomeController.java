@@ -68,6 +68,7 @@ public class HomeController {
 
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
         String username = isAuthenticated ? authentication.getName() : null;
+        Long userId = isAuthenticated ? userService.findByUsername(username).getUserId() : null;
 
         Page<Bid> bidPage;
 
@@ -83,8 +84,11 @@ public class HomeController {
             }
         } else {
             switch (filterType) {
-                case "my-bids":
+                case "my-bidding":
                     bidPage = bidService.getBidsByUsernamePage(username, PageRequest.of(page, size));
+                    break;
+                case "my-bids":
+                    bidPage = bidService.getByUserIdPage(userId, PageRequest.of(page, size));
                     break;
                 case "my-wins":
                     bidPage = bidService.getWonBidsByUsernamePage(username, PageRequest.of(page, size));
