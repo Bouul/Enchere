@@ -3,14 +3,10 @@ package fr.enchere.controller;
 import fr.enchere.model.*;
 import fr.enchere.model.DTO.BidPageDTO;
 import fr.enchere.repository.BidRepository;
-import fr.enchere.repository.ItemRepository;
 import fr.enchere.model.Item;
-import fr.enchere.repository.ItemRepository;
 import fr.enchere.service.*;
 import fr.enchere.service.ItemService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -24,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
