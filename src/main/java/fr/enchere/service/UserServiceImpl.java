@@ -5,8 +5,11 @@ import fr.enchere.model.User;
 import fr.enchere.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -74,4 +77,38 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public String resetPassword(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new IllegalArgumentException("Aucun utilisateur trouvé avec cet email");
+        }
+
+        String token = UUID.randomUUID().toString();
+        LocalDateTime expiryDate = LocalDateTime.now().plusHours(1);
+
+        user.setResetToken(token);
+        user.setResetTokenExpiry(expiryDate);
+        userRepository.save(user);
+
+        return token;
+    }
+
+
+    public User validateResetToken(String token) {
+        User user = userRepository.findByResetToken(token);
+        if (user == null || user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Token invalide ou expiré");
+        }
+        return user;
+    }
+
+    @Override
+    public void updatePassword(String token, String newPassword) {
+        User user = validateResetToken(token);
+        user.setPassword(newPassword); // Assurez-vous d'encoder le mot de passe
+        user.setResetToken(null); // Supprimez le token après utilisation
+        user.setResetTokenExpiry(null);
+        userRepository.save(user);
+    }
 }

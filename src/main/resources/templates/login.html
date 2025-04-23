@@ -17,6 +17,12 @@
                         <div th:if="${sessionMessage}" class="uk-alert uk-alert-warning">
                             <p th:text="${sessionMessage}">Message de session</p>
                         </div>
+                        <div th:if="${success}" class="uk-alert uk-alert-success">
+                            <p th:text="${success}">Message de succès</p>
+                        </div>
+                        <div th:if="${error}" class="uk-alert uk-alert-danger">
+                            <p th:text="${error}">Message d'erreur</p>
+                        </div>
 
                         <div class="uk-text-center uk-margin-bottom">
                             <img th:src="@{/images/logo-eni.png}" alt="Logo ENI" width="150">
