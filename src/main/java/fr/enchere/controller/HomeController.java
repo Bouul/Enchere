@@ -154,7 +154,9 @@ public class HomeController {
     }
 
     @GetMapping("/sell-item-page")
-    public String sellItemPage() {
+    public String sellItemPage(Model model) {
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
         return "/sell-item-page";
     }
 

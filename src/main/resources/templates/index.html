@@ -102,6 +102,23 @@
     </div>
 </div>
 
+<div id="createdItemModal" class="uk-flex-top" uk-modal th:if="${showModal}">
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-card uk-card-default uk-card-hover uk-border-rounded">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2>Item créé</h2>
+        <p th:text="'Nom : ' + ${item.itemName}">Nom de l'article</p>
+        <p th:text="'Description : ' + ${item.description}">Catégorie</p>
+        <p th:text="'StartDate : ' + ${item.startDate}">Catégorie</p>
+        <p th:text="'EndDate : ' + ${item.endDate}">Catégorie</p>
+        <p th:text="'StartingPrice : ' + ${item.startingPrice}">Catégorie</p>
+        <p th:text="'Catégorie : ' + ${category}">Catégorie</p>
+    </div>
+</div>
+
+<script th:if="${showModal}">
+    UIkit.modal('#createdItemModal').show();
+</script>
+
 <style>
     /* Grille avec un espacement de 20px entre les cartes */
     #bids-container {

@@ -64,7 +64,6 @@ public class ItemService {
         pickupLocationRepository.save(pickupLocation);
         itemRepository.save(item);
         bidRepository.save(bid);
-        //@TODO //  retourner l'index avec un modal de la création de l'objet
         return item;
     }
 
