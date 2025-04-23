@@ -6,11 +6,13 @@ import fr.enchere.repository.BidRepository;
 import fr.enchere.repository.ItemRepository;
 import fr.enchere.repository.PickupLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ItemService {
@@ -84,5 +86,28 @@ public class ItemService {
 
     public Item findByItemId(Long itemId) {
         return itemRepository.findByItemId(itemId);
+    }
+
+    @Scheduled(fixedRate = 60000) // toutes les 60 secondes
+    public void updateEndedAuctions() {
+        List<Item> items = itemRepository.findAll();
+
+        LocalDateTime now = LocalDateTime.now();
+
+        for (Item item : items) {
+            if (item.getEndDate().isBefore(now)
+                    && "EN_COURS".equals(item.getSaleStatus())) {
+                item.setSaleStatus("FINI");
+                item.setBuyer(bidRepository.findHighestBidByItemId(item.getItemId()).getUser());
+                itemRepository.save(item);
+                System.out.println("Article " + item.getItemId() + " mis à jour en FINI.");
+            }
+            if (item.getStartDate().isBefore(now)
+                    && "CREATED".equals(item.getSaleStatus())) {
+                item.setSaleStatus("EN_COURS");
+                itemRepository.save(item);
+                System.out.println("Article " + item.getItemId() + " mis à jour en EN_COURS.");
+            }
+        }
     }
 }
