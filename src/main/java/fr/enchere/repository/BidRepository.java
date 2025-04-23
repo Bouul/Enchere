@@ -22,6 +22,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
        JOIN FETCH i.seller
        LEFT JOIN FETCH i.pickupLocationBid
       WHERE i.category.categoryId = :categoryId
+          AND i.saleStatus!= 'RETRAIT'
     """)
    List<Bid> findByItemCategoryId(@Param("categoryId") Long categoryId);
 
@@ -33,6 +34,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     JOIN FETCH i.seller
     LEFT JOIN FETCH i.pickupLocationBid
     WHERE LOWER(i.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
+    AND i.saleStatus!= 'RETRAIT'
 """)
 
    List<Bid> findByItemNameContainingIgnoreCase(@Param("itemName") String itemName);
@@ -46,6 +48,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     LEFT JOIN FETCH i.pickupLocationBid
     WHERE i.category.categoryId = :categoryId 
     AND LOWER(i.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
+    AND i.saleStatus!= 'RETRAIT'
 """)
    List<Bid> findByItemCategoryIdAndItemNameContainingIgnoreCase(
            @Param("categoryId") Long categoryId,
@@ -59,6 +62,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     JOIN FETCH i.seller
     LEFT JOIN FETCH i.pickupLocationBid
     WHERE b.user.username = :username
+    AND i.saleStatus!= 'RETRAIT'
 """)
    List<Bid> findByUserUsername(@Param("username") String username);
 
@@ -76,6 +80,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
         WHERE b2.item = i
     )
     AND i.endDate < :currentDate
+    AND i.saleStatus!= 'RETRAIT'
 """)
    List<Bid> findWonBidsByUsername(
            @Param("username") String username,
@@ -92,7 +97,8 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     JOIN FETCH i.category
     JOIN FETCH i.seller
     LEFT JOIN FETCH i.pickupLocationBid
-""",
+   WHERE i.saleStatus!= 'RETRAIT'
+    """,
            countQuery = "SELECT COUNT(b) FROM Bid b")
    Page<Bid> findAllWithPagination(Pageable pageable);
 
@@ -104,6 +110,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     JOIN FETCH i.seller
     LEFT JOIN FETCH i.pickupLocationBid
     WHERE i.category.categoryId = :categoryId
+    AND i.saleStatus!= 'RETRAIT'
 """,
            countQuery = "SELECT COUNT(b) FROM Bid b JOIN b.item i WHERE i.category.categoryId = :categoryId")
    Page<Bid> findByItemCategoryIdPage(@Param("categoryId") Long categoryId, Pageable pageable);
@@ -116,6 +123,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     JOIN FETCH i.seller
     LEFT JOIN FETCH i.pickupLocationBid
     WHERE LOWER(i.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
+    AND i.saleStatus!= 'RETRAIT'
 """,
            countQuery = "SELECT COUNT(b) FROM Bid b JOIN b.item i WHERE LOWER(i.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))")
    Page<Bid> findByItemNameContainingIgnoreCasePage(@Param("itemName") String itemName, Pageable pageable);
@@ -129,6 +137,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     LEFT JOIN FETCH i.pickupLocationBid
     WHERE i.category.categoryId = :categoryId
     AND LOWER(i.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))
+    AND i.saleStatus!= 'RETRAIT'
 """,
            countQuery = "SELECT COUNT(b) FROM Bid b JOIN b.item i WHERE i.category.categoryId = :categoryId AND LOWER(i.itemName) LIKE LOWER(CONCAT('%', :itemName, '%'))")
    Page<Bid> findByItemCategoryIdAndItemNameContainingIgnoreCasePage(@Param("categoryId") Long categoryId, @Param("itemName") String itemName, Pageable pageable);
@@ -141,6 +150,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     JOIN FETCH i.seller
     LEFT JOIN FETCH i.pickupLocationBid
     WHERE b.user.username = :username
+    AND i.saleStatus!= 'RETRAIT'
 """,
            countQuery = "SELECT COUNT(b) FROM Bid b WHERE b.user.username = :username")
    Page<Bid> findByUserUsernamePage(@Param("username") String username, Pageable pageable);
@@ -159,6 +169,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
         WHERE b2.item = i
     )
     AND i.endDate < :currentDate
+    AND i.saleStatus!= 'RETRAIT'
 """,
            countQuery = "SELECT COUNT(b) FROM Bid b JOIN b.item i WHERE b.user.username = :username AND b.bidAmount = (SELECT MAX(b2.bidAmount) FROM Bid b2 WHERE b2.item = i) AND i.endDate < :currentDate")
    Page<Bid> findWonBidsByUsernamePage(@Param("username") String username, @Param("currentDate") LocalDateTime currentDate, Pageable pageable);
