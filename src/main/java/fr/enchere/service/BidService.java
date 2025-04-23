@@ -25,5 +25,6 @@ public interface BidService {
     Page<Bid> getBidsByCategoryAndItemNamePage(Long categoryId, String itemName, Pageable pageable);
     Page<Bid> getBidsByUsernamePage(String username, Pageable pageable);
     Page<Bid> getWonBidsByUsernamePage(String username, Pageable pageable);
+    Page<Bid> getByUserIdPage(Long userId, Pageable pageable);
 
 }

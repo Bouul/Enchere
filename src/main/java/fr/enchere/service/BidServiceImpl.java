@@ -86,4 +86,9 @@ public class BidServiceImpl implements BidService {
         return bidRepository.findWonBidsByUsernamePage(username, LocalDateTime.now(), pageable);
     }
 
+    @Override
+    public Page<Bid> getByUserIdPage(Long userId, Pageable pageable) {
+        return bidRepository.findByUserIdPage(userId, pageable);
+    }
+
 }
