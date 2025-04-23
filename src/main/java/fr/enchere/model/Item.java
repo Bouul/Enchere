@@ -183,9 +183,7 @@ public class Item {
         return bids;
     }
 
-    public void setBids(List<Bid> bids) {
-        this.bids = bids;
-    }
+    public void setBids(List<Bid> bids) { this.bids = bids; }
 
     public PickupLocation getPickupLocationBid() {
         return pickupLocationBid;

@@ -54,7 +54,7 @@ public class HomeController {
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
         String username = isAuthenticated ? authentication.getName() : null;
 
-        // Filtres pour utilisateurs non connectés
+        // Non connectés
         if (!isAuthenticated || filterType == null) {
             if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
                 result = bidService.getBids();
@@ -65,28 +65,59 @@ public class HomeController {
             } else {
                 result = bidService.getBidsByCategoryAndItemName(categoryId, search);
             }
-        }
-        // Filtres pour utilisateurs connectés
-        else {
-            if ("my-bids".equals(filterType)) {
-                result = bidService.getBidsByUsername(username);
-            } else if ("my-wins".equals(filterType)) {
-                result = bidService.getWonBidsByUsername(username);
-            } else {
-                // Appliquer les autres filtres comme pour les non-connectés
-                if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
-                    result = bidService.getBids();
-                } else if (search == null || search.isEmpty()) {
-                    result = bidService.getBidsByCategory(categoryId);
-                } else if (categoryId == null || categoryId == 0) {
-                    result = bidService.getBidsByItemName(search);
-                } else {
-                    result = bidService.getBidsByCategoryAndItemName(categoryId, search);
-                }
-            }
-        }
+        } else {
+            switch (filterType) {
+                case "my-bids":
+                    List<Bid> userBids = bidService.getBidsByUsername(username);
 
-        return result != null ? result : new ArrayList<>();
+                    if (categoryId != null && categoryId > 0) {
+                        userBids = userBids.stream()
+                                .filter(bid -> bid.getItem().getCategory().getCategoryId().equals(categoryId))
+                                .toList();
+                    }
+
+                    if (search != null && !search.isEmpty()) {
+                        userBids = userBids.stream()
+                                .filter(bid -> bid.getItem().getItemName().toLowerCase().contains(search.toLowerCase()))
+                                .toList();
+                    }
+
+                    result = userBids;
+                    break;
+
+                case "my-wins":
+                    List<Bid> wonBids = bidService.getWonBidsByUsername(username);
+
+                    if (categoryId != null && categoryId > 0) {
+                        wonBids = wonBids.stream()
+                                .filter(bid -> bid.getItem().getCategory().getCategoryId().equals(categoryId))
+                                .toList();
+                    }
+
+                    if (search != null && !search.isEmpty()) {
+                        wonBids = wonBids.stream()
+                                .filter(bid -> bid.getItem().getItemName().toLowerCase().contains(search.toLowerCase()))
+                                .toList();
+                    }
+
+                    result = wonBids;
+                    break;
+
+                default:
+                    if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
+                        result = bidService.getBids();
+                    } else if (search == null || search.isEmpty()) {
+                        result = bidService.getBidsByCategory(categoryId);
+                    } else if (categoryId == null || categoryId == 0) {
+                        result = bidService.getBidsByItemName(search);
+                    } else {
+                        result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+                    }
+            }
+
+            return result != null ? result : new ArrayList<>();
+        }
+        return result;
     }
 
     @GetMapping("/login")

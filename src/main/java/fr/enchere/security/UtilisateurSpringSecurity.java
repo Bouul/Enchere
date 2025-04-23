@@ -80,4 +80,9 @@ public class UtilisateurSpringSecurity implements UserDetails {
     public Long getUserId() {
         return this.membre.getUserId();
     }
+
+    public Integer getCredits() {
+        return this.membre.getCredit();
+    }
+
 }
