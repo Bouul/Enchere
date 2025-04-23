@@ -66,6 +66,22 @@ public class ItemService {
         return item;
     }
 
+    public Item updateItem(Item item) {
+        Item existingItem = itemRepository.findById(item.getItemId()).orElse(null);
+        if (existingItem != null) {
+            existingItem.setItemName(item.getItemName());
+            existingItem.setDescription(item.getDescription());
+            existingItem.setStartDate(item.getStartDate());
+            existingItem.setEndDate(item.getEndDate());
+            existingItem.setStartingPrice(item.getStartingPrice());
+            existingItem.setSalePrice(item.getSalePrice());
+            existingItem.setSaleStatus(item.getSaleStatus());
+            existingItem.setCategory(item.getCategory());
+            return itemRepository.save(existingItem);
+        }
+        return null;
+    }
+
     public Item findByItemId(Long itemId) {
         return itemRepository.findByItemId(itemId);
     }
