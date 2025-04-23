@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Entity
 public class Item {
     @Id
@@ -19,7 +20,7 @@ public class Item {
     @Size(min = 1, max = 50)
     private String itemName;
 
-    @Size(min = 1, max = 254)
+    @Size(max = 254)
     private String description;
 
     @NotNull
@@ -66,7 +67,7 @@ public class Item {
         // Default constructor
     }
   
-    public Item(Long itemId, String itemName, String description, LocalDateTime startDate, LocalDateTime endDate, int startingPrice, int salePrice, String saleStatus, Category category, User seller, User buyer, List<Bid> bids, PickupLocation pickupLocationBid) {
+    public Item(Long itemId, String itemName, String description, LocalDateTime startDate, LocalDateTime endDate, int startingPrice, int salePrice, String saleStatus, Category category, User seller, User buyer, List<Bid> bids, PickupLocation pickupLocationBid, String image) {
 
         this.itemId = itemId;
         this.itemName = itemName;
@@ -81,6 +82,7 @@ public class Item {
         this.buyer = buyer;
         this.bids = bids;
         this.pickupLocationBid = pickupLocationBid;
+        this.image = image;
     }
 
     public String getImage() {
