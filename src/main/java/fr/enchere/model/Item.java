@@ -2,6 +2,9 @@ package fr.enchere.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,13 +14,28 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
+
+    @NotNull
+    @Size(min = 1, max = 50)
     private String itemName;
+
+    @Size(min = 1, max = 254)
     private String description;
+
+    @NotNull
     private LocalDateTime startDate;
+
+    @NotNull
     private LocalDateTime endDate;
+
+    @NotNull
+    @Min(1)
     private int startingPrice;
+
     private int salePrice;
+
     private String saleStatus;
+
     private String image;
 
     @ManyToOne
