@@ -2,6 +2,7 @@ package fr.enchere.controller;
 
 import fr.enchere.model.Bid;
 import fr.enchere.model.Category;
+import fr.enchere.model.DTO.BidPageDTO;
 import fr.enchere.model.Item;
 import fr.enchere.repository.ItemRepository;
 import fr.enchere.model.Item;
@@ -13,6 +14,8 @@ import fr.enchere.service.ItemService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,80 +47,56 @@ public class HomeController {
 
     @GetMapping("/api/bids/filter")
     @ResponseBody
-    public List<Bid> filterBids(
+    public BidPageDTO filterBids(
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String filterType,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size,
             Authentication authentication) {
 
-        List<Bid> result;
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
         String username = isAuthenticated ? authentication.getName() : null;
 
-        // Non connectés
+        Page<Bid> bidPage;
+
         if (!isAuthenticated || filterType == null) {
             if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
-                result = bidService.getBids();
+                bidPage = bidService.getBidsPage(PageRequest.of(page, size));
             } else if (search == null || search.isEmpty()) {
-                result = bidService.getBidsByCategory(categoryId);
+                bidPage = bidService.getBidsByCategoryPage(categoryId, PageRequest.of(page, size));
             } else if (categoryId == null || categoryId == 0) {
-                result = bidService.getBidsByItemName(search);
+                bidPage = bidService.getBidsByItemNamePage(search, PageRequest.of(page, size));
             } else {
-                result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+                bidPage = bidService.getBidsByCategoryAndItemNamePage(categoryId, search, PageRequest.of(page, size));
             }
         } else {
             switch (filterType) {
                 case "my-bids":
-                    List<Bid> userBids = bidService.getBidsByUsername(username);
-
-                    if (categoryId != null && categoryId > 0) {
-                        userBids = userBids.stream()
-                                .filter(bid -> bid.getItem().getCategory().getCategoryId().equals(categoryId))
-                                .toList();
-                    }
-
-                    if (search != null && !search.isEmpty()) {
-                        userBids = userBids.stream()
-                                .filter(bid -> bid.getItem().getItemName().toLowerCase().contains(search.toLowerCase()))
-                                .toList();
-                    }
-
-                    result = userBids;
+                    bidPage = bidService.getBidsByUsernamePage(username, PageRequest.of(page, size));
                     break;
-
                 case "my-wins":
-                    List<Bid> wonBids = bidService.getWonBidsByUsername(username);
-
-                    if (categoryId != null && categoryId > 0) {
-                        wonBids = wonBids.stream()
-                                .filter(bid -> bid.getItem().getCategory().getCategoryId().equals(categoryId))
-                                .toList();
-                    }
-
-                    if (search != null && !search.isEmpty()) {
-                        wonBids = wonBids.stream()
-                                .filter(bid -> bid.getItem().getItemName().toLowerCase().contains(search.toLowerCase()))
-                                .toList();
-                    }
-
-                    result = wonBids;
+                    bidPage = bidService.getWonBidsByUsernamePage(username, PageRequest.of(page, size));
                     break;
-
                 default:
                     if ((categoryId == null || categoryId == 0) && (search == null || search.isEmpty())) {
-                        result = bidService.getBids();
+                        bidPage = bidService.getBidsPage(PageRequest.of(page, size));
                     } else if (search == null || search.isEmpty()) {
-                        result = bidService.getBidsByCategory(categoryId);
+                        bidPage = bidService.getBidsByCategoryPage(categoryId, PageRequest.of(page, size));
                     } else if (categoryId == null || categoryId == 0) {
-                        result = bidService.getBidsByItemName(search);
+                        bidPage = bidService.getBidsByItemNamePage(search, PageRequest.of(page, size));
                     } else {
-                        result = bidService.getBidsByCategoryAndItemName(categoryId, search);
+                        bidPage = bidService.getBidsByCategoryAndItemNamePage(categoryId, search, PageRequest.of(page, size));
                     }
             }
-
-            return result != null ? result : new ArrayList<>();
         }
-        return result;
+
+        return new BidPageDTO(
+                bidPage.getContent(),
+                bidPage.getTotalPages(),
+                bidPage.getNumber(),
+                bidPage.getTotalElements()
+        );
     }
 
     @GetMapping("/login")
