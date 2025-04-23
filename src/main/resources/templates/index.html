@@ -3,6 +3,12 @@
 <head th:replace="~{fragments/head :: uikit-head('home')}"></head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<div th:if="${success}" class="uk-alert-success" uk-alert>
+    <p th:text="${success}"></p>
+</div>
+<div th:if="${error}" class="uk-alert-danger" uk-alert>
+    <p th:text="${error}"></p>
+</div>
 
 <!-- Section de filtres -->
 <div class="uk-section uk-section-small">
