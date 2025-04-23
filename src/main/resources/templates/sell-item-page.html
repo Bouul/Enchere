@@ -27,10 +27,11 @@
                     <label class="uk-form-label" for="category">Catégorie</label>
                     <div class="uk-form-controls">
                         <select class="uk-select" id="category" name="category" required>
-                            <option value="" disabled selected>-- Sélectionner une catégorie --</option>
-                            <option value="1">Informatique</option>
-                            <option value="2">Mobilier</option>
-                            <option value="3">Loisir</option>
+                            <option value="0">Toutes</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.categoryId}"
+                                    th:text="${category.label}">Catégorie
+                            </option>
                         </select>
                     </div>
                 </div>

@@ -33,6 +33,9 @@ public class ItemController {
         List<Bid> bids = bidService.getBids();
         List<Category> categories = categoryService.findAll();
         itemService.saveItem(item);
+        Long categoryId = item.getCategory();
+        String category = categoryService.findById(categoryId).getLabel();
+        model.addAttribute("category", category);
         model.addAttribute("bids", bids);
         model.addAttribute("categories", categories);
         model.addAttribute("item", item);
