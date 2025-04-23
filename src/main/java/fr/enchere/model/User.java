@@ -30,20 +30,24 @@ public class User {
     private String firstName;
 
     @NotNull
+    @Size(min = 7, max = 100, message = "2 caractères minimum, 100 maximum")
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[a-zA-Z]{2,}$", message = "Adresse email invalide")
     private String email;
 
     @NotNull
-    @Pattern(regexp = "^(\\+33|0)[5-7](\\s?\\d{2}){4}$\n", message = "Téléphone invalide")
+    @Size(min = 10, max = 13, message = "10 caractères minimum, 13 maximum")
     private String phone;
 
     @NotNull
+    @Size(min = 2, max = 50, message = "2 caractères minimum, 50 maximum")
     private String street;
 
     @NotNull
+    @Size(min = 4, max = 5, message = "4 caractères minimum, 5 maximum")
     private String postalCode;
 
     @NotNull
+    @Size(min = 2, max = 50, message = "2 caractères minimum, 50 maximum")
     private String city;
 
     @NotNull

@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-@Controller
+@RestController
+@RequestMapping("/api")
 public class ItemController {
 
 
