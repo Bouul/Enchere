@@ -3,6 +3,8 @@ package fr.enchere.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -14,17 +16,44 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+
+    @NotNull
+    @Size(min = 2, max = 20, message = "2 caractères minimum, 20 maximum")
     private String username;
+
+    @NotNull
+    @Size(min = 2, max = 20, message = "2 caractères minimum, 20 maximum")
     private String lastName;
+
+    @NotNull
+    @Size(min = 2, max = 20, message = "2 caractères minimum, 20 maximum")
     private String firstName;
+
+    @NotNull
+    @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[a-zA-Z]{2,}$", message = "Adresse email invalide")
     private String email;
+
+    @NotNull
+    @Pattern(regexp = "^(\\+33|0)[5-7](\\s?\\d{2}){4}$\n", message = "Téléphone invalide")
     private String phone;
+
+    @NotNull
     private String street;
+
+    @NotNull
     private String postalCode;
+
+    @NotNull
     private String city;
+
+    @NotNull
+    @Size(min = 8, max = 254, message = "8 caractères minimum")
     private String password;
+
     private int credit;
+
     private boolean administrator;
+
     private boolean active = true; // Par défaut, le compte est actif
 
     @OneToMany(mappedBy = "user")

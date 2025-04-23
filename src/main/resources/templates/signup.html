@@ -23,35 +23,35 @@
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                    <input class="uk-input" type="text" th:field="*{username}" placeholder="Pseudo" required>
+                                    <input class="uk-input" type="text" th:field="*{username}" placeholder="Pseudo" minlength="2" maxlength="20" required>
                                 </div>
                             </div>
 
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                    <input class="uk-input" type="text" th:field="*{lastName}" placeholder="Nom" required>
+                                    <input class="uk-input" type="text" th:field="*{lastName}" placeholder="Nom" minlength="2" maxlength="20" required>
                                 </div>
                             </div>
 
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                    <input class="uk-input" type="text" th:field="*{firstName}" placeholder="Prénom" required>
+                                    <input class="uk-input" type="text" th:field="*{firstName}" placeholder="Prénom" minlength="2" maxlength="20" required>
                                 </div>
                             </div>
 
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: mail"></span>
-                                    <input class="uk-input" type="email" th:field="*{email}" placeholder="Email" required>
+                                    <input class="uk-input" type="email" th:field="*{email}" pattern="^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$" placeholder="Email" required>
                                 </div>
                             </div>
 
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: receiver"></span>
-                                    <input class="uk-input" type="tel" th:field="*{phone}" placeholder="Téléphone">
+                                    <input class="uk-input" type="tel" th:field="*{phone}" pattern="^(\\+33|0)[5-7](\\s?\\d{2}){4}$\n" placeholder="Téléphone">
                                 </div>
                             </div>
 
