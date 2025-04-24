@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <th:block th:replace="~{fragments/head :: uikit-head('Profil Utilisateur')}"></th:block>
+    <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/add-credit.css}">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<div class="uk-container uk-margin-large-top uk-margin-large-bottom" style="max-width: 950px; margin: 0 auto;">
+    <form class="uk-card uk-card-default uk-card-body uk-grid-medium uk-grid-stack uk-grid uk-border-rounded" uk-grid>
+    <!-- Formulaire -->
+        <div class="uk-width-1-1@s uk-width-1-2@m uk-padding-large">
+
+        <div class="uk-margin">
+                <label class="uk-form-label">Numéro de carte :</label>
+                <input class="uk-input uk-form-large" type="text" id="cardNumber" maxlength="19"
+                       placeholder="1234 5678 9123 4567" onclick="flipCard('flipToFront')" />
+            </div>
+
+            <div class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-2">
+                    <label class="uk-form-label">Date d'expiration :</label>
+                    <input class="uk-input uk-form-large" type="text" id="expDate" maxlength="5"
+                           placeholder="12/12" onclick="flipCard('flipToFront')" />
+                </div>
+                <div class="uk-width-1-2">
+                    <label class="uk-form-label">CCV :</label>
+                    <input class="uk-input uk-form-large" type="text" id="ccvNumber" maxlength="3"
+                           placeholder="123" onclick="flipCard('flipToRear')" />
+                </div>
+            </div>
+
+            <div class="uk-margin-top">
+                <label class="uk-form-label">Nom du titulaire :</label>
+                <input class="uk-input uk-form-large" type="text" id="cardName"
+                       placeholder="John Doe" onclick="flipCard('flipToFront')" />
+            </div>
+        </div>
+
+        <!-- Carte -->
+        <div class="uk-width-1-1@s uk-width-1-2@m uk-padding-large">
+            <div class="uk-position-relative" style="height: 220px;">
+                <div id="creditCard" class="creditCard uk-transition-toggle" onclick="flipCard('flip')">
+                    <div class="card-inner">
+                        <!-- Face avant -->
+                        <div class="card-front uk-border-rounded uk-box-shadow-large uk-overflow-hidden">
+                            <img src="https://i.ibb.co/swnZ5b1/Front-Side-Card.jpg" alt="Card Front" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="uk-position-top-left uk-padding-small">
+                                <p class="uk-text-meta" style="color: white;">Card Number</p>
+                                <p id="imageCardNumber" class="uk-text-bold uk-margin-remove" style="color: white;">1234 5678 9123 4567</p>
+                                <div class="uk-flex uk-flex-between uk-margin-top">
+                                    <div>
+                                        <p class="uk-text-meta" style="color: white;">Name</p>
+                                        <p id="imageCardName" class="uk-margin-remove" style="color: white;">John Doe</p>
+                                    </div>
+                                    <div>
+                                        <p class="uk-text-meta" style="color: white;">Expiry</p>
+                                        <p id="imageExpDate" class="uk-margin-remove" style="color: white;">12/12</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Face arrière -->
+                        <div class="card-back uk-border-rounded uk-box-shadow-large uk-overflow-hidden">
+                            <img src="https://i.ibb.co/Fn11jBc/Rear-Side-Card.jpg" alt="Card Back" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="uk-position-center-right uk-padding-small">
+                                <p id="imageCCVNumber" class="uk-text-large" style="color: black;">123</p>
+                                <p class="uk-text-small uk-text-right" style="color: white;">security code</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="uk-width-1-1@s uk-margin-top uk-margin-right">
+        <button class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded" onclick="redirectToProfile()">Payer</button>
+    </div>
+</div>
+
+<script>
+    function redirectToProfile() {
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get("userId");
+        if (userId) {
+            window.location.href = `/validation-payment`;
+        } else {
+            alert("Identifiant utilisateur manquant dans l'URL.");
+        }
+    }
+    const cardEl = document.getElementById("creditCard");
+    const flipCard = (flip) => {
+        if (flip === "flipToRear") {
+            cardEl.classList.add("rearIsVisible");
+        }
+        if (flip === "flipToFront") {
+            cardEl.classList.remove("rearIsVisible");
+        }
+        if (flip === "flip") {
+            cardEl.classList.toggle("rearIsVisible");
+        }
+    };
+
+    // Numéro de carte
+    const inputCardNumber = document.getElementById("cardNumber");
+    const imageCardNumber = document.getElementById("imageCardNumber");
+    inputCardNumber.addEventListener("input", (e) => {
+        const digits = e.target.value.replace(/\D/g, "").substring(0, 16);
+        const formatted = digits.replace(/(.{4})/g, "$1 ").trim();
+        inputCardNumber.value = formatted;
+        imageCardNumber.textContent = formatted;
+    });
+
+    // CCV
+    const inputCCVNumber = document.getElementById("ccvNumber");
+    const imageCCVNumber = document.getElementById("imageCCVNumber");
+    inputCCVNumber.addEventListener("input", (e) => {
+        const val = e.target.value.replace(/\D/g, "").substring(0, 3);
+        inputCCVNumber.value = val;
+        imageCCVNumber.textContent = val;
+        flipCard("flipToRear");
+    });
+
+    // Date d'expiration
+    const expirationDate = document.getElementById("expDate");
+    const imageExpDate = document.getElementById("imageExpDate");
+    expirationDate.addEventListener("input", (e) => {
+        const val = e.target.value.replace(/\D/g, "").substring(0, 4);
+        let formatted = val;
+        if (val.length >= 3) formatted = val.slice(0, 2) + "/" + val.slice(2);
+        expirationDate.value = formatted;
+        imageExpDate.textContent = formatted;
+    });
+
+    // Nom du titulaire
+    const inputCardName = document.getElementById("cardName");
+    const imageCardName = document.getElementById("imageCardName");
+    inputCardName.addEventListener("input", (e) => {
+        imageCardName.textContent = e.target.value;
+    });
+</script>
+
+</body>
+</html>
