@@ -60,7 +60,11 @@ public class ItemService {
         item.setCategory(categoryService.findById(form.getCategory()));
         item.setSeller(user);
         item.setPickupLocationBid(pickupLocation);
-        item.setSaleStatus(String.valueOf(SalesStatusCycle.CREATED));
+        if (item.getStartDate().equals(LocalDateTime.now()) || item.getStartDate().isBefore(LocalDateTime.now())) {
+            item.setSaleStatus(String.valueOf(SalesStatusCycle.IN_PROGRESS));
+        } else {
+            item.setSaleStatus(String.valueOf(SalesStatusCycle.CREATED));
+        }
         Bid bid = new Bid();
         bid.setBidDate(LocalDateTime.parse(form.getStartDate()));
         bid.setItem(item);
@@ -111,17 +115,17 @@ public class ItemService {
 
         for (Item item : items) {
             if (item.getEndDate().isBefore(now)
-                    && "EN_COURS".equals(item.getSaleStatus())) {
-                item.setSaleStatus("FINI");
+                    && "IN_PROGRESS".equals(item.getSaleStatus())) {
+                item.setSaleStatus("AUCTION_ENDED");
                 item.setBuyer(bidRepository.findHighestBidByItemId(item.getItemId()).getUser());
                 itemRepository.save(item);
-                System.out.println("Article " + item.getItemId() + " mis à jour en FINI.");
+                System.out.println("Article " + item.getItemId() + " mis à jour en AUCTION_ENDED.");
             }
             if (item.getStartDate().isBefore(now)
                     && "CREATED".equals(item.getSaleStatus())) {
-                item.setSaleStatus("EN_COURS");
+                item.setSaleStatus("IN_PROGRESS");
                 itemRepository.save(item);
-                System.out.println("Article " + item.getItemId() + " mis à jour en EN_COURS.");
+                System.out.println("Article " + item.getItemId() + " mis à jour en IN_PROGRESS.");
             }
         }
     }
