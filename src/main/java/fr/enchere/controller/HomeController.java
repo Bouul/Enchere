@@ -2,10 +2,10 @@ package fr.enchere.controller;
 
 import fr.enchere.model.Bid;
 import fr.enchere.model.Category;
+import fr.enchere.model.Item;
 import fr.enchere.service.BidService;
 import fr.enchere.service.CategoryService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import fr.enchere.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +24,9 @@ public class HomeController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ItemService itemService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -117,9 +120,15 @@ public class HomeController {
     }
 
     @GetMapping("/modify-sell-item")
-    public String modifySellItem() {
-        return "/modify-sell-item";
-    }
+    public String showModifyItemPage(@RequestParam("id") Long id, Model model) {
+//        Item item = itemService.findById;
+//        if (item == null) {
+//            return "redirect:/error"; // ou autre page
+//        }
+//        model.addAttribute("item", item); // ← CETTE LIGNE EST ESSENTIELLE
+        return "modify-sell-item";
+   }
+
 
     @GetMapping("/deconnexion-confirmation")
     public String deconnexionPage() {
