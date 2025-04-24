@@ -19,7 +19,6 @@
 
     <form th:action="@{/profil/modifier}" method="post">
         <input type="hidden" name="userId" th:value="${user.userId}" />
-        <input type="hidden" name="username" th:value="${user.username}" />
 
         <div class="uk-grid-small" uk-grid>
             <!-- COLONNE GAUCHE -->
@@ -27,7 +26,7 @@
                 <div class="uk-margin">
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: user"></span>
-                        <input class="uk-input" type="text" th:value="${user.username}" placeholder="Pseudo">
+                        <input class="uk-input" type="text" name="username" th:value="${user.username}" placeholder="Pseudo" required>
                     </div>
                 </div>
                 <div class="uk-margin">
