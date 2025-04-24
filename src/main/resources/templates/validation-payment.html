@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <th:block th:replace="~{fragments/head :: uikit-head('Déconnexion')}"></th:block>
+  <th:block th:replace="~{fragments/head :: uikit-head('Confirmation de paiement')}"></th:block>
   <style>
     body {
       background: #ffffff; /* Fond blanc pur */
       font-family: 'Segoe UI', Roboto, sans-serif;
     }
 
-    .logout-wrapper {
+    .payment-wrapper {
       max-width: 600px;
       margin: 5rem auto;
       padding: 2rem;
@@ -18,7 +18,7 @@
       animation: slideFadeIn 0.6s ease-out both;
     }
 
-    .logout-wrapper h1 {
+    .payment-wrapper h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
     }
@@ -70,28 +70,31 @@
 </head>
 <body>
 
-<div class="uk-container">
-  <div class="logout-wrapper uk-text-center">
+<div class="uk-container uk-width-2-3@m uk-width-1-1@s">
+  <div class="payment-wrapper uk-text-center">
     <div>
-      <span uk-icon="icon: sign-out; ratio: 2" class="uk-text-primary"></span>
+      <span uk-icon="icon: check-circle; ratio: 2" class="uk-text-success"></span>
     </div>
 
-    <h1 class="uk-heading-divider">Déconnexion</h1>
+    <h1 class="uk-heading-divider">Paiement réussi</h1>
 
+    <!-- Message de succès -->
     <div th:if="${success}" class="uk-alert-success uk-text-left uk-margin-bottom" uk-alert>
-      <p th:text="${success}">Vous avez été déconnecté avec succès.</p>
+      <p th:text="${success}">Votre paiement a été effectué avec succès. Merci de votre achat !</p>
     </div>
 
-    <p class="uk-text-meta fade-text">Merci d'avoir utilisé ENI Enchère.<br>À très bientôt !</p>
+    <p class="uk-text-meta fade-text">Votre commande est en cours de traitement.<br>Nous vous remercions pour votre confiance !</p>
 
+    <!-- Animation de chargement -->
     <div class="spinner-container">
       <div uk-spinner="ratio: 2"></div>
     </div>
 
     <p class="uk-text-small uk-text-muted">Redirection automatique vers la page d'accueil dans quelques instants...</p>
 
+    <!-- Bouton pour retour immédiat -->
     <div class="return-button">
-      <a href="/enchere" class="uk-button uk-button-primary uk-button-large">Retour immédiat</a>
+      <a href="/" class="uk-button uk-button-primary uk-button-large">Retour immédiat à l'accueil</a>
     </div>
   </div>
 
@@ -106,7 +109,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => {
       window.location.href = '/';
-    }, 1500);
+    }, 3000); // Redirige vers la page d'accueil après 3 secondes
   });
 </script>
 
