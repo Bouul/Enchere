@@ -2,6 +2,7 @@ package fr.enchere.controller;
 
 import fr.enchere.model.*;
 import fr.enchere.model.DTO.BidPageDTO;
+import fr.enchere.model.DTO.BidWithSellerDTO;
 import fr.enchere.repository.BidRepository;
 import fr.enchere.model.Item;
 import fr.enchere.service.*;
@@ -22,6 +23,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -110,8 +112,23 @@ public class HomeController {
             }
         }
 
+        List<BidWithSellerDTO> dtos = bidPage.getContent().stream().map(bid -> {
+            var item = bid.getItem();
+            return new BidWithSellerDTO(
+                    bid.getBidId(),
+                    bid.getBidDate(),
+                    bid.getBidAmount(),
+                    item.getItemId(),
+                    item.getItemName(),
+                    item.getEndDate(),
+                    item.getStartingPrice(),
+                    item.getImage(),
+                    item.getSeller().getUsername()    // ← ici on récupère bien le username
+            );
+        }).collect(Collectors.toList());
+
         return new BidPageDTO(
-                bidPage.getContent(),
+                dtos,
                 bidPage.getTotalPages(),
                 bidPage.getNumber(),
                 bidPage.getTotalElements()
