@@ -18,7 +18,7 @@
                     <label class="uk-form-label" for="article">Nom de l'article</label>
                     <div class="uk-inline uk-width-1-1">
                         <span class="uk-form-icon" uk-icon="icon: tag"></span>
-                        <input class="uk-input" type="text" id="article" name="itemName" placeholder="Ex : Ordinateur portable" required>
+                        <input class="uk-input" type="text" id="article" name="itemName" minlength="1" maxlength="50" required >
                     </div>
                 </div>
 
@@ -27,10 +27,11 @@
                     <label class="uk-form-label" for="category">Catégorie</label>
                     <div class="uk-form-controls">
                         <select class="uk-select" id="category" name="category" required>
-                            <option value="" disabled selected>-- Sélectionner une catégorie --</option>
-                            <option value="1">Informatique</option>
-                            <option value="2">Mobilier</option>
-                            <option value="3">Loisir</option>
+                            <option value="0">Toutes</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="${category.categoryId}"
+                                    th:text="${category.label}">Catégorie
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -38,7 +39,7 @@
                 <!-- Description -->
                 <div class="uk-margin">
                     <label class="uk-form-label" for="description">Description</label>
-                    <textarea class="uk-textarea" rows="4" id="description" name="description" placeholder="Décrivez votre article..." required></textarea>
+                    <textarea class="uk-textarea" rows="4" id="description" name="description" placeholder="Décrivez votre article..." maxlength="254" required></textarea>
                 </div>
 
                 <!-- Image avec preview -->
@@ -58,15 +59,15 @@
                 <div class="uk-grid uk-child-width-1-3@m uk-grid-small" uk-grid>
                     <div>
                         <label class="uk-form-label" for="prix">Prix initial (€)</label>
-                        <input class="uk-input" type="number" id="prix" name="startingPrice" value="150" min="1" required>
+                        <input class="uk-input" type="number" id="prix" name="startingPrice" min="1" step="1" required>
                     </div>
                     <div>
                         <label class="uk-form-label" for="debut">Début de l'enchère</label>
-                        <input class="uk-input" type="date" id="debut" name="startDate" required>
+                        <input class="uk-input" type="datetime-local" id="debut" name="startDate" required>
                     </div>
                     <div>
                         <label class="uk-form-label" for="fin">Fin de l'enchère</label>
-                        <input class="uk-input" type="date" id="fin" name="endDate" required>
+                        <input class="uk-input" type="datetime-local" id="fin" name="endDate" required>
                     </div>
                 </div>
 
@@ -87,7 +88,7 @@
                     <div class="uk-grid uk-child-width-1-2@s" uk-grid>
                         <div>
                             <label class="uk-form-label" for="postalCode">Code postal</label>
-                            <input class="uk-input" type="text" id="postalCode" name="postalCode" required>
+                            <input class="uk-input" type="text" id="postalCode" name="postalCode" maxlength="5" required title="Code postal à 5 chiffres">
                         </div>
                         <div>
                             <label class="uk-form-label" for="city">Ville</label>

@@ -3,6 +3,9 @@ package fr.enchere.service;
 import fr.enchere.model.Bid;
 import fr.enchere.repository.BidRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,8 +14,7 @@ import java.util.List;
 @Service
 public class BidServiceImpl implements BidService {
 
-    @Autowired
-    private BidRepository bidRepository;
+    private final BidRepository bidRepository;
 
 
     public BidServiceImpl(BidRepository bidRepository) {
@@ -30,12 +32,6 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Bid findByBidId(Long bidId) {
-       Bid bid = bidRepository.findByBidId(bidId);
-        return bid;
-    }
-
-    @Override
     public List<Bid> getBidsByItemName(String itemName) {
         return bidRepository.findByItemNameContainingIgnoreCase(itemName);
     }
@@ -44,59 +40,55 @@ public class BidServiceImpl implements BidService {
     public List<Bid> getBidsByCategoryAndItemName(Long categoryId, String itemName) {
         return bidRepository.findByItemCategoryIdAndItemNameContainingIgnoreCase(categoryId, itemName);
     }
-
-    @Override
-    public ServiceResponse<Bid> createBid(Bid bid) {
-        // Vérification que l'enchère n'est pas null
-        if (bid == null) {
-            return ServiceResponse.buildResponse(
-                    ServiceConstant.CD_ERR_NOT_FOUND,
-                    "error.bid.null",
-                    null
-            );
-        }
-
-        // Vérification que l'enchère a un montant valide
-        if (bid.getBidAmount() <= 0) {
-            return ServiceResponse.buildResponse(
-                    ServiceConstant.CD_ERR_NOT_FOUND,
-                    "error.bid.amount.invalid",
-                    bid
-            );
-        }
-
-        // Autres vérifications...
-
-        try {
-            bidRepository.save(bid);
-            return ServiceResponse.buildResponse(
-                    ServiceConstant.CD_SUCCESS,
-                    "success.bid.created",
-                    bid
-            );
-        } catch (Exception e) {
-            return ServiceResponse.buildResponse(
-                    ServiceConstant.CD_ERR_TCH,
-                    "error.bid.save.failed",
-                    bid
-            );
-        }
-    }
-
-
-
-    @Override
-    public Bid updateBid(Bid bid) {
-        return null;
+  
+     @Override
+     public List<Bid> getBidsByUsername(String username) {
+        return bidRepository.findByUserUsername(username);
     }
 
     @Override
-    public void deleteBid(Long bidId) {
-
+    public List<Bid> getWonBidsByUsername(String username) {
+        return bidRepository.findWonBidsByUsername(username, LocalDateTime.now());
     }
 
     @Override
     public Bid findHighestBidByItemId(Long itemId) {
-        return null;
+        return bidRepository.findHighestBidByItemId(itemId);
     }
+
+    @Override
+    public Page<Bid> getBidsPage(Pageable pageable) {
+        return bidRepository.findAllWithPagination(pageable);
+    }
+
+    @Override
+    public Page<Bid> getBidsByCategoryPage(Long categoryId, Pageable pageable) {
+        return bidRepository.findByItemCategoryIdPage(categoryId, pageable);
+    }
+
+    @Override
+    public Page<Bid> getBidsByItemNamePage(String itemName, Pageable pageable) {
+        return bidRepository.findByItemNameContainingIgnoreCasePage(itemName, pageable);
+    }
+
+    @Override
+    public Page<Bid> getBidsByCategoryAndItemNamePage(Long categoryId, String itemName, Pageable pageable) {
+        return bidRepository.findByItemCategoryIdAndItemNameContainingIgnoreCasePage(categoryId, itemName, pageable);
+    }
+
+    @Override
+    public Page<Bid> getBidsByUsernamePage(String username, Pageable pageable) {
+        return bidRepository.findByUserUsernamePage(username, pageable);
+    }
+
+    @Override
+    public Page<Bid> getWonBidsByUsernamePage(String username, Pageable pageable) {
+        return bidRepository.findWonBidsByUsernamePage(username, LocalDateTime.now(), pageable);
+    }
+
+    @Override
+    public Page<Bid> getByUserIdPage(Long userId, Pageable pageable) {
+        return bidRepository.findByUserIdPage(userId, pageable);
+    }
+
 }
