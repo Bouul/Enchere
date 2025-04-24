@@ -30,13 +30,11 @@ public class ItemController {
     }
 
     @PostMapping("/saveItem")
-     public String createItem(@ModelAttribute ItemDTO item, Model model) {
      public String createItem(@ModelAttribute ItemDTO item,
                               @RequestParam("photo") MultipartFile photo,
                               Model model) {
         List<Bid> bids = bidService.getBids();
         List<Category> categories = categoryService.findAll();
-        itemService.saveItem(item);
 //        itemService.saveItem(item);
         itemService.saveItem(item, photo);
         Long categoryId = item.getCategory();
