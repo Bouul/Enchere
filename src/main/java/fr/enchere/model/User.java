@@ -60,6 +60,10 @@ public class User {
 
     private boolean active = true; // Par défaut, le compte est actif
 
+    private String resetToken;
+
+    private LocalDateTime resetTokenExpiry;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Bid> bids;
@@ -224,6 +228,22 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public LocalDateTime getResetTokenExpiry() {
+        return resetTokenExpiry;
+    }
+
+    public void setResetTokenExpiry(LocalDateTime resetTokenExpiry) {
+        this.resetTokenExpiry = resetTokenExpiry;
     }
 
     /**

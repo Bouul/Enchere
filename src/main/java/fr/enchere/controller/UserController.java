@@ -188,4 +188,48 @@ public class UserController {
 
         return hasUppercase && hasDigit && hasSpecialChar;
     }
+
+    @GetMapping("/forgot-password")
+    public String sendMailForgottenPasswordPage() {
+        return "forgot-password";
+    }
+
+    @PostMapping("/forgot-password")
+    public String resetPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        try {
+            String token = userService.resetPassword(email);
+            return "redirect:/reset-password?token=" + token;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la réinitialisation du mot de passe.");
+            return "redirect:/forgot-password";
+        }
+    }
+
+    @GetMapping("/reset-password")
+    public String showResetPasswordPage(@RequestParam String token, Model model) {
+        model.addAttribute("token", token);
+        return "reset-password";
+    }
+
+    @PostMapping("/reset-password")
+    public String updatePassword(@RequestParam String token, @RequestParam String newPassword,
+                                 @RequestParam String confirmation, RedirectAttributes redirectAttributes) {
+        if (!newPassword.equals(confirmation)) {
+            redirectAttributes.addFlashAttribute("error", "Les mots de passe ne correspondent pas.");
+            return "redirect:/reset-password?token=" + token;
+        }
+
+        try {
+            userService.updatePassword(token, passwordEncoder.encode(newPassword));
+            redirectAttributes.addFlashAttribute("success", "Mot de passe mis à jour avec succès.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la mise à jour du mot de passe.");
+            return "redirect:/reset-password?token=" + token;
+        }
+
+        return "redirect:/login";
+    }
+
+
+
 }

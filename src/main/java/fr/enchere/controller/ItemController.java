@@ -9,6 +9,7 @@ import fr.enchere.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,9 +31,14 @@ public class ItemController {
 
     @PostMapping("/saveItem")
      public String createItem(@ModelAttribute ItemDTO item, Model model) {
+     public String createItem(@ModelAttribute ItemDTO item,
+                              @RequestParam("photo") MultipartFile photo,
+                              Model model) {
         List<Bid> bids = bidService.getBids();
         List<Category> categories = categoryService.findAll();
         itemService.saveItem(item);
+//        itemService.saveItem(item);
+        itemService.saveItem(item, photo);
         Long categoryId = item.getCategory();
         String category = categoryService.findById(categoryId).getLabel();
         model.addAttribute("category", category);

@@ -4,6 +4,8 @@ import fr.enchere.model.User;
 import fr.enchere.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -15,5 +17,7 @@ public interface UserService {
     User createUser(User user);
     int getProfileCompletion(Long userId);
     void deactivateUser(Long userId);
+    String resetPassword(String email);
+    void updatePassword(String token, String newPassword);
 }
 
