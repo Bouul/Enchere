@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,8 +13,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Column(unique = true)
     @NotNull
     @Size(min = 2, max = 20, message = "2 caractères minimum, 20 maximum")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Le nom d'utilisateur ne doit contenir que des caractères alphanumériques")
     private String username;
 
     @NotNull
@@ -29,6 +27,7 @@ public class User {
     @Size(min = 2, max = 20, message = "2 caractères minimum, 20 maximum")
     private String firstName;
 
+    @Column(unique = true)
     @NotNull
     @Size(min = 7, max = 100, message = "2 caractères minimum, 100 maximum")
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[a-zA-Z]{2,}$", message = "Adresse email invalide")

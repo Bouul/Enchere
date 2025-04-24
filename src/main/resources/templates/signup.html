@@ -20,13 +20,15 @@
                         </div>
 
                         <form th:action="@{/signup}" method="post" th:object="${user}">
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                    <input class="uk-input" type="text" th:field="*{username}" placeholder="Pseudo" minlength="2" maxlength="20" required>
+                                    <input class="uk-input" type="text" th:field="*{username}" pattern="^[a-zA-Z0-9]+$" title="Caractère Alphanumérique uniquement !" placeholder="Pseudo" minlength="2" maxlength="20" required>
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
@@ -34,6 +36,7 @@
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
@@ -41,6 +44,7 @@
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: mail"></span>
@@ -48,6 +52,7 @@
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: receiver"></span>
@@ -56,6 +61,7 @@
                             </div>
 
                             <!-- Rue avec suggestions -->
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></div>
                             <div class="uk-margin uk-position-relative">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: location"></span>
@@ -64,6 +70,7 @@
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: location"></span>
@@ -71,6 +78,7 @@
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: location"></span>
@@ -78,6 +86,7 @@
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: lock"></span>
