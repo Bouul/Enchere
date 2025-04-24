@@ -10,6 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/images/**")
+                //CHANGER GLANDRY
                 .addResourceLocations("file:C:\\Users\\glandry2023\\Desktop\\Enchere\\src\\main\\resources\\static\\uploads\\");
     }
 }
