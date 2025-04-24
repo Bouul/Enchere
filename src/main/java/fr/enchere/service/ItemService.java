@@ -11,6 +11,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,7 +38,7 @@ public class ItemService {
         this.bidRepository = bidRepository;
     }
 
-    public Item saveItem(ItemDTO form) {
+    public Item saveItem(ItemDTO form, MultipartFile photo) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User user = userService.findByUsername(username);
@@ -66,6 +71,17 @@ public class ItemService {
         bid.setUser(user);
         bid.setBidAmount(form.getStartingPrice());
         pickupLocationRepository.save(pickupLocation);
+        if (photo != null && !photo.isEmpty()) {
+            try {
+                String uploadDir = "C:/Users/glandry2023/Desktop/Enchere/src/main/resources/static/uploads/";
+                String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+                Path filePath = Paths.get(uploadDir, fileName);
+                Files.copy(photo.getInputStream(), filePath);
+                item.setImage(fileName); // On stocke juste le nom du fichier
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         itemRepository.save(item);
         bidRepository.save(bid);
         return item;
