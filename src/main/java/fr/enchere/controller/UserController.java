@@ -3,6 +3,7 @@ package fr.enchere.controller;
 import fr.enchere.model.User;
 import fr.enchere.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,8 +37,11 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute User user, @RequestParam String confirmation,
-                                     Model model, RedirectAttributes redirectAttributes) {
+    public String signup(@Valid @ModelAttribute User user,BindingResult result, @RequestParam String confirmation,
+                         Model model, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "signup"; // Réaffiche le formulaire avec les erreurs
+        }
         // Vérifier que les mots de passe correspondent
         if (!user.getPassword().equals(confirmation)) {
             model.addAttribute("error", "Les mots de passe ne correspondent pas");
