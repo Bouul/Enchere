@@ -73,7 +73,7 @@ public class ItemService {
         pickupLocationRepository.save(pickupLocation);
         if (photo != null && !photo.isEmpty()) {
             try {
-                String uploadDir = "C:/Users/glandry2023/Desktop/Enchere/src/main/resources/static/uploads/";
+                String uploadDir = "C:/Users/cboulesteix2023/IdeaProjects/Enchere/src/main/resources/static/uploads";
                 String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
                 Path filePath = Paths.get(uploadDir, fileName);
                 Files.copy(photo.getInputStream(), filePath);
