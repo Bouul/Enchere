@@ -6,11 +6,13 @@ import fr.enchere.repository.BidRepository;
 import fr.enchere.repository.ItemRepository;
 import fr.enchere.repository.PickupLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ItemService {
@@ -53,7 +55,11 @@ public class ItemService {
         item.setCategory(categoryService.findById(form.getCategory()));
         item.setSeller(user);
         item.setPickupLocationBid(pickupLocation);
-        item.setSaleStatus(String.valueOf(SalesStatusCycle.CREATED));
+        if (item.getStartDate().equals(LocalDateTime.now()) || item.getStartDate().isBefore(LocalDateTime.now())) {
+            item.setSaleStatus(String.valueOf(SalesStatusCycle.IN_PROGRESS));
+        } else {
+            item.setSaleStatus(String.valueOf(SalesStatusCycle.CREATED));
+        }
         Bid bid = new Bid();
         bid.setBidDate(LocalDateTime.parse(form.getStartDate()));
         bid.setItem(item);
@@ -62,11 +68,49 @@ public class ItemService {
         pickupLocationRepository.save(pickupLocation);
         itemRepository.save(item);
         bidRepository.save(bid);
-        //@TODO //  retourner l'index avec un modal de la création de l'objet
         return item;
+    }
+
+    public Item updateItem(Item item) {
+        Item existingItem = itemRepository.findById(item.getItemId()).orElse(null);
+        if (existingItem != null) {
+            existingItem.setItemName(item.getItemName());
+            existingItem.setDescription(item.getDescription());
+            existingItem.setStartDate(item.getStartDate());
+            existingItem.setEndDate(item.getEndDate());
+            existingItem.setStartingPrice(item.getStartingPrice());
+            existingItem.setSalePrice(item.getSalePrice());
+            existingItem.setSaleStatus(item.getSaleStatus());
+            existingItem.setCategory(item.getCategory());
+            return itemRepository.save(existingItem);
+        }
+        return null;
     }
 
     public Item findByItemId(Long itemId) {
         return itemRepository.findByItemId(itemId);
+    }
+
+    @Scheduled(fixedRate = 60000) // toutes les 60 secondes
+    public void updateEndedAuctions() {
+        List<Item> items = itemRepository.findAll();
+
+        LocalDateTime now = LocalDateTime.now();
+
+        for (Item item : items) {
+            if (item.getEndDate().isBefore(now)
+                    && "IN_PROGRESS".equals(item.getSaleStatus())) {
+                item.setSaleStatus("AUCTION_ENDED");
+                item.setBuyer(bidRepository.findHighestBidByItemId(item.getItemId()).getUser());
+                itemRepository.save(item);
+                System.out.println("Article " + item.getItemId() + " mis à jour en AUCTION_ENDED.");
+            }
+            if (item.getStartDate().isBefore(now)
+                    && "CREATED".equals(item.getSaleStatus())) {
+                item.setSaleStatus("IN_PROGRESS");
+                itemRepository.save(item);
+                System.out.println("Article " + item.getItemId() + " mis à jour en IN_PROGRESS.");
+            }
+        }
     }
 }

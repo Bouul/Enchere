@@ -20,68 +20,77 @@
                         </div>
 
                         <form th:action="@{/signup}" method="post" th:object="${user}">
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                    <input class="uk-input" type="text" th:field="*{username}" placeholder="Pseudo" required>
+                                    <input class="uk-input" type="text" th:field="*{username}" pattern="^[a-zA-Z0-9]+$" title="Caractère Alphanumérique uniquement !" placeholder="Pseudo" minlength="2" maxlength="20" required>
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                    <input class="uk-input" type="text" th:field="*{lastName}" placeholder="Nom" required>
+                                    <input class="uk-input" type="text" th:field="*{lastName}" placeholder="Nom" minlength="2" maxlength="20" required>
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: user"></span>
-                                    <input class="uk-input" type="text" th:field="*{firstName}" placeholder="Prénom" required>
+                                    <input class="uk-input" type="text" th:field="*{firstName}" placeholder="Prénom" minlength="2" maxlength="20" required>
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: mail"></span>
-                                    <input class="uk-input" type="email" th:field="*{email}" placeholder="Email" required>
+                                    <input class="uk-input" type="email" th:field="*{email}" pattern="^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$" placeholder="Email" required>
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: receiver"></span>
-                                    <input class="uk-input" type="tel" th:field="*{phone}" placeholder="Téléphone">
+                                    <input class="uk-input" type="tel" th:field="*{phone}" placeholder="Téléphone" minlength="10" maxlength="17" required>
                                 </div>
                             </div>
 
                             <!-- Rue avec suggestions -->
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></div>
                             <div class="uk-margin uk-position-relative">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: location"></span>
-                                    <input class="uk-input" type="text" th:field="*{street}" id="street" placeholder="Rue" required autocomplete="off">
+                                    <input class="uk-input" type="text" th:field="*{street}" id="street" placeholder="Rue" minlength="2" maxlength="50" required autocomplete="off">
                                     <div id="autocomplete-results"></div>
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: location"></span>
-                                    <input class="uk-input" type="text" th:field="*{postalCode}" placeholder="Code postal" required>
+                                    <input class="uk-input" type="text" th:field="*{postalCode}" placeholder="Code postal" minlength="4" maxlength="5" required>
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: location"></span>
-                                    <input class="uk-input" type="text" th:field="*{city}" placeholder="Ville" required>
+                                    <input class="uk-input" type="text" th:field="*{city}" placeholder="Ville" minlength="2" maxlength="50" required>
                                 </div>
                             </div>
 
+                            <div class="uk-text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                                    <input class="uk-input" type="password" th:field="*{password}" placeholder="Mot de passe" required>
+                                    <input class="uk-input" type="password" th:field="*{password}" placeholder="Mot de passe" minlength="8" maxlength="254" required>
                                 </div>
                             </div>
 
@@ -89,7 +98,7 @@
                             <div class="uk-margin">
                                 <div class="uk-inline uk-width-1-1">
                                     <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                                    <input class="uk-input" type="password" name="confirmation" placeholder="Confirmer le mot de passe" required>
+                                    <input class="uk-input" type="password" name="confirmation" placeholder="Confirmer le mot de passe" minlength="8" maxlength="254" required>
                                 </div>
                             </div>
 

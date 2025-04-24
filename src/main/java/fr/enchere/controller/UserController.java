@@ -3,8 +3,8 @@ package fr.enchere.controller;
 import fr.enchere.model.User;
 import fr.enchere.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,8 +36,11 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute User user, @RequestParam String confirmation,
-                                     Model model, RedirectAttributes redirectAttributes) {
+    public String signup(@Valid @ModelAttribute User user,BindingResult result, @RequestParam String confirmation,
+                         Model model, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "signup"; // Réaffiche le formulaire avec les erreurs
+        }
         // Vérifier que les mots de passe correspondent
         if (!user.getPassword().equals(confirmation)) {
             model.addAttribute("error", "Les mots de passe ne correspondent pas");
@@ -188,4 +191,48 @@ public class UserController {
 
         return hasUppercase && hasDigit && hasSpecialChar;
     }
+
+    @GetMapping("/forgot-password")
+    public String sendMailForgottenPasswordPage() {
+        return "forgot-password";
+    }
+
+    @PostMapping("/forgot-password")
+    public String resetPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
+        try {
+            String token = userService.resetPassword(email);
+            return "redirect:/reset-password?token=" + token;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la réinitialisation du mot de passe.");
+            return "redirect:/forgot-password";
+        }
+    }
+
+    @GetMapping("/reset-password")
+    public String showResetPasswordPage(@RequestParam String token, Model model) {
+        model.addAttribute("token", token);
+        return "reset-password";
+    }
+
+    @PostMapping("/reset-password")
+    public String updatePassword(@RequestParam String token, @RequestParam String newPassword,
+                                 @RequestParam String confirmation, RedirectAttributes redirectAttributes) {
+        if (!newPassword.equals(confirmation)) {
+            redirectAttributes.addFlashAttribute("error", "Les mots de passe ne correspondent pas.");
+            return "redirect:/reset-password?token=" + token;
+        }
+
+        try {
+            userService.updatePassword(token, passwordEncoder.encode(newPassword));
+            redirectAttributes.addFlashAttribute("success", "Mot de passe mis à jour avec succès.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la mise à jour du mot de passe.");
+            return "redirect:/reset-password?token=" + token;
+        }
+
+        return "redirect:/login";
+    }
+
+
+
 }
