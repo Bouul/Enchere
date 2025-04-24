@@ -138,10 +138,6 @@ public class HomeController {
         return "auction-list-pages";
     }
 
-    @GetMapping("/bidding-page")
-    public String biddingPage() {
-        return "/bidding-page";
-    }
 
     @GetMapping("/profile-modification")
     public String profileModification() {
@@ -164,9 +160,9 @@ public class HomeController {
     public String showModifyItemPage(@RequestParam("id") Long id, Model model) {
 //        Item item = itemService.findById;
 //        if (item == null) {
-//            return "redirect:/error"; // ou autre page
+//            return "redirect:/error";
 //        }
-//        model.addAttribute("item", item); // ← CETTE LIGNE EST ESSENTIELLE
+//        model.addAttribute("item", item);
         return "modify-sell-item";
    }
 
