@@ -337,7 +337,7 @@
     // Appel AJAX pour les utilisateurs non connectés
     function filterBids(page = 0) {
         currentPage = page;
-        const {categoryId, search} = getFilters(false);
+        const { categoryId, search } = getFilters(false);
         let url = `/api/bids/filter?page=${currentPage}&size=${pageSize}`;
         if (categoryId && categoryId !== '0') url += `&categoryId=${categoryId}`;
         if (search) url += `&search=${encodeURIComponent(search)}`;
@@ -350,7 +350,7 @@
     // Appel AJAX pour les utilisateurs connectés
     function filterBidsAuth(page = 0) {
         currentPage = page;
-        const {categoryId, search, filterType} = getFilters(true);
+        const { categoryId, search, filterType } = getFilters(true);
         let url = `/api/bids/filter?page=${currentPage}&size=${pageSize}`;
         if (categoryId && categoryId !== '0') url += `&categoryId=${categoryId}`;
         if (search) url += `&search=${encodeURIComponent(search)}`;
@@ -368,7 +368,7 @@
     }
 
     // Initialisation des événements
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Non connecté
         if (document.getElementById('categories')) {
             document.getElementById('categories').addEventListener('change', () => filterBids(0));
