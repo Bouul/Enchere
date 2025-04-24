@@ -41,7 +41,7 @@ public class HomeController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping("/enchere")
     public String home(Model model) {
         List<Bid> bids = bidService.getBids();
         List<Category> categories = categoryService.findAll();
