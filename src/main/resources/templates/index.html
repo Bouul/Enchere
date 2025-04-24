@@ -80,7 +80,14 @@
         <div id="bids-container" class="uk-grid uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid>
             <div th:each="bid : ${bids}" class="uk-card uk-card-default uk-margin-bottom">
                 <div class="uk-card-media-top">
-                    <div class="uk-height-medium uk-background-muted uk-flex uk-flex-center uk-flex-middle">
+                    <div th:if="${bid.item.image != null}" class="uk-height-medium uk-flex uk-flex-center uk-flex-middle">
+                        <img th:src="@{/images/{file}(file=${bid.item.image})}"
+                             alt="Image de l'article"
+                             class="uk-border-rounded"
+                             style="max-height:180px; max-width:100%; object-fit:cover;">
+
+                    </div>
+                    <div th:if="${bid.item.image == null}" class="uk-height-medium uk-background-muted uk-flex uk-flex-center uk-flex-middle">
                         <span>Pas d'image disponible</span>
                     </div>
                 </div>
@@ -236,10 +243,19 @@
             const bidCard = document.createElement('div');
             bidCard.className = 'uk-card uk-card-default uk-margin-bottom';
             bidCard.innerHTML = `
-            <div class="uk-card-media-top">
-                <div class="uk-height-medium uk-background-muted uk-flex uk-flex-center uk-flex-middle">
+           <div class="uk-card-media-top">
+    ${
+                item.image
+                    ? `<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle">
+                    <img src="/images/${item.image}"
+     alt="Image de l'article"
+     class="uk-border-rounded"
+     style="max-height:180px; max-width:100%; object-fit:cover;">
+               </div>`
+                    : `<div class="uk-height-medium uk-background-muted uk-flex uk-flex-center uk-flex-middle">
                     <span>Pas d'image disponible</span>
-                </div>
+               </div>`
+            }
             </div>
             <div class="uk-card-body">
                 <div class="uk-flex uk-flex-between">
