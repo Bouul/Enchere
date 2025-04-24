@@ -234,7 +234,7 @@ public class HomeController {
         bid.setUser(user);
         bidRepository.save(bid);
 
-        user.setCredit(user.getCredit()-bid.getBidAmount());
+        user.setCredit(user.getCredit() - bid.getBidAmount());
         userService.updateUser(user);
 
         redirectAttributes.addFlashAttribute("success", "Votre enchère a bien été enregistrée !");
@@ -262,3 +262,4 @@ public class HomeController {
             return "redirect:/";
         }
     }
+}
