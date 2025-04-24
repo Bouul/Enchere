@@ -235,5 +235,36 @@ public class UserController {
     }
 
 
+    @PostMapping("/profil/ajouterCredits")
+    public String ajouterCredits(@RequestParam Long userId,
+                                 @RequestParam int credits,
+                                 RedirectAttributes redirectAttributes) {
+
+        User user = userService.findByUserId(userId);
+        if (user != null) {
+            user.setCredit(user.getCredit() + credits);
+            userService.updateUser(user);
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Utilisateur non trouvé.");
+        }
+        return "redirect:/profil/credits?userId=" + user.getUserId();
+    }
+
+    @GetMapping("/profil/credits")
+    public String getCredits(@RequestParam Long userId, Model model) {
+        User user = userService.findByUserId(userId);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "add-credit"; // Page pour ajouter des crédits
+        } else {
+            model.addAttribute("error", "Utilisateur non trouvé");
+            return "error";
+        }
+    }
+
+    @GetMapping("/validation-payment")
+    public String getValidationPayment() {
+            return "validation-payment";
+    }
 
 }

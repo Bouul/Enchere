@@ -262,9 +262,4 @@ public class HomeController {
             return "redirect:/";
         }
     }
-
-    @GetMapping("/test")
-    public String test() {
-        return "add-credit";
-    }
 }

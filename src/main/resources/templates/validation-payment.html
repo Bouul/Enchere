@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="~{fragments/head :: uikit-head('Confirmation de paiement')}"></th:block>
+  <style>
+    body {
+      background: #ffffff; /* Fond blanc pur */
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .payment-wrapper {
+      max-width: 600px;
+      margin: 5rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      animation: slideFadeIn 0.6s ease-out both;
+    }
+
+    .payment-wrapper h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .uk-alert-success {
+      border-radius: 10px;
+    }
+
+    .spinner-container {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+
+    .uk-icon {
+      margin-bottom: 1rem;
+    }
+
+    @keyframes slideFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-text {
+      animation: fadeIn 1s ease-in forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .return-button {
+      margin-top: 1.5rem;
+    }
+
+    .return-button a {
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="uk-container uk-width-2-3@m uk-width-1-1@s">
+  <div class="payment-wrapper uk-text-center">
+    <div>
+      <span uk-icon="icon: check-circle; ratio: 2" class="uk-text-success"></span>
+    </div>
+
+    <h1 class="uk-heading-divider">Paiement réussi</h1>
+
+    <!-- Message de succès -->
+    <div th:if="${success}" class="uk-alert-success uk-text-left uk-margin-bottom" uk-alert>
+      <p th:text="${success}">Votre paiement a été effectué avec succès. Merci de votre achat !</p>
+    </div>
+
+    <p class="uk-text-meta fade-text">Votre commande est en cours de traitement.<br>Nous vous remercions pour votre confiance !</p>
+
+    <!-- Animation de chargement -->
+    <div class="spinner-container">
+      <div uk-spinner="ratio: 2"></div>
+    </div>
+
+    <p class="uk-text-small uk-text-muted">Redirection automatique vers la page d'accueil dans quelques instants...</p>
+
+    <!-- Bouton pour retour immédiat -->
+    <div class="return-button">
+      <a href="/" class="uk-button uk-button-primary uk-button-large">Retour immédiat à l'accueil</a>
+    </div>
+  </div>
+
+  <!-- Formulaire invisible pour la déconnexion complète (si besoin) -->
+  <form id="logout-form" th:action="@{/logout}" method="post" style="display: none;">
+    <input type="hidden" th:name="${_csrf != null ? _csrf.parameterName : '_csrf'}"
+           th:value="${_csrf != null ? _csrf.token : ''}">
+  </form>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 3000); // Redirige vers la page d'accueil après 3 secondes
+  });
+</script>
+
+</body>
+</html>
