@@ -64,6 +64,8 @@ public class HomeController {
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated();
         String username = isAuthenticated ? authentication.getName() : null;
         Long userId = isAuthenticated ? userService.findByUsername(username).getUserId() : null;
+        System.out.println("DATA Vendeur ID"+ userId);
+        System.out.println("DATA Vendeur username"+ username);
 
         Page<Bid> bidPage;
 
