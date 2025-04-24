@@ -41,6 +41,15 @@ public class HomeController {
     }
 
 
+    @GetMapping("/")
+    public String home1(Model model) {
+        List<Bid> bids = bidService.getBids();
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("bids", bids);
+        model.addAttribute("categories", categories);
+        return "redirect:/enchere";
+    }
+
     @GetMapping("/enchere")
     public String home(Model model) {
         List<Bid> bids = bidService.getBids();
