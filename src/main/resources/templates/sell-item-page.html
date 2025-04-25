@@ -6,12 +6,16 @@
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-
 <div class="uk-section uk-section-muted uk-padding-remove-top">
     <div class="uk-container uk-margin-large-top">
         <div class="uk-card uk-card-default uk-card-body uk-card-hover uk-width-2xlarge uk-margin-auto uk-box-shadow-xlarge uk-border-rounded uk-animation-slide-bottom-small">
             <h2 class="uk-heading-line uk-text-center"><span>🛒 Créer une nouvelle enchère</span></h2>
-
+            <div th:if="${success}" class="uk-alert-success uk-border-rounded" uk-alert>
+                <p th:text="${success}"></p>
+            </div>
+            <div th:if="${error}" class="uk-alert-danger uk-border-rounded" uk-alert>
+                <p th:text="${error}"></p>
+            </div>
             <form class="uk-form-stacked" th:action="@{/api/saveItem}" method="post" enctype="multipart/form-data">
                 <!-- Nom de l'article -->
                 <div class="uk-margin">

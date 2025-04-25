@@ -58,7 +58,7 @@ function updateBidsDisplay(data) {
                             ${isOngoing ? 'En cours' : 'Terminée'}
                         </span>
                     </div>
-                    <p><strong>Prix de départ:</strong> <span>${startingPrice} €</span></p>
+                    <p><strong>Prix de départ:</strong> <span>${startingPrice}</span></p>
                     <p><strong>Fin de l'enchère:</strong> <span>${bid.itemEndDate || 'Non spécifié'}</span></p>
                     <p><strong>Retrait:</strong> <span>${pickupAddress}</span></p>
                     <p><strong>Vendeur:</strong> <span>${seller}</span></p>
