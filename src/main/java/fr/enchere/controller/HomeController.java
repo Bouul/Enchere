@@ -112,6 +112,11 @@ public class HomeController {
 
         List<BidWithSellerDTO> dtos = bidPage.getContent().stream().map(bid -> {
             var item = bid.getItem();
+            String pickupAddress = "Non spécifié";
+            if (item.getPickupLocationBid() != null) {
+                var loc = item.getPickupLocationBid();
+                pickupAddress = loc.getStreet() + ", " + loc.getPostalCode() + " " + loc.getCity();
+            }
             return new BidWithSellerDTO(
                     bid.getBidId(),
                     bid.getBidDate(),
@@ -121,7 +126,8 @@ public class HomeController {
                     item.getEndDate(),
                     item.getStartingPrice(),
                     item.getImage(),
-                    item.getSeller().getUsername()    // ← ici on récupère bien le username
+                    item.getSeller().getUsername(),
+                    pickupAddress
             );
         }).collect(Collectors.toList());
 

@@ -32,7 +32,7 @@ function updateBidsDisplay(data) {
         const isOngoing = endDate > new Date();
 
         // Vous n’avez plus pickupLocation dans le DTO
-        let pickupAddress = 'Non spécifié';
+        const pickupAddress = bid.pickupAddress || 'Non spécifié';
 
         const bidCard = document.createElement('div');
         bidCard.className = 'uk-card uk-card-default uk-margin-bottom';
