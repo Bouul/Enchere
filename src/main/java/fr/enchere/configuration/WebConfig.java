@@ -13,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
                 //CHANGER GLANDRY
                 .addResourceLocations(
                         "classpath:/static/images/",
-                        "file:C:\\Users\\aurelien.flahaut2024\\Documents\\projet\\Enchere\\src\\main\\resources\\static\\uploads");
+                        "file:C:\\Users\\glandry2023\\Desktop\\Enchere\\src\\main\\resources\\static\\uploads");
     }
 }
