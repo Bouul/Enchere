@@ -1,384 +1,106 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:replace="~{fragments/head :: uikit-head('home')}"></head>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <th:block th:replace="~{fragments/head :: uikit-head('Accueil')}"></th:block>
+    <link rel="stylesheet" th:href="@{/vendor/eni-enchere/css/index.css}">
+    <script th:src="@{/vendor/eni-enchere/js/index.js}"></script>
+
+</head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-<div th:if="${success}" class="uk-alert-success" uk-alert>
-    <p th:text="${success}"></p>
-</div>
-<div th:if="${error}" class="uk-alert-danger" uk-alert>
-    <p th:text="${error}"></p>
-</div>
 
-<!-- Section de filtres -->
 <div class="uk-section uk-section-small">
     <div class="uk-container">
-        <h2>Filtres :</h2>
+        <h2 class="uk-heading-divider">Filtres</h2>
 
-        <!-- Filtres pour utilisateurs NON connectés -->
-        <div sec:authorize="!isAuthenticated()" class="uk-grid-small" uk-grid>
-            <div class="uk-width-1-4@m">
-                <label for="categories">Catégories:</label>
-                <select class="uk-select" id="categories" name="categories">
+        <!-- Non authentifié -->
+        <div sec:authorize="!isAuthenticated()" class="uk-flex uk-flex-wrap uk-flex-middle uk-grid-small filter-group" uk-grid>
+            <div class="uk-width-expand@s">
+                <label for="categories">Catégories</label>
+                <select id="categories" class="uk-select">
                     <option value="0">Toutes</option>
-                    <!-- On affiche dynamiquement toutes les catégories -->
-                    <option th:each="category : ${categories}"
-                            th:value="${category.categoryId}"
-                            th:text="${category.label}">Catégorie
-                    </option>
+                    <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.label}"></option>
                 </select>
             </div>
-            <div class="uk-width-1-2@m">
-                <label for="search">Le nom de l'article contient:</label>
-                <input class="uk-input" type="text" id="search" name="search">
+            <div class="uk-width-expand@s">
+                <label for="search">Nom contient</label>
+                <input id="search" type="text" class="uk-input" placeholder="Rechercher...">
             </div>
-            <div class="uk-width-1-4@m uk-flex uk-flex-bottom">
-                <button class="uk-button uk-button-primary" id="search-button" type="button">Rechercher</button>
+            <div class="uk-width-expand@s">
+                <label class="uk-hidden@s">&nbsp;</label> <!-- Pour aligner verticalement sur petits écrans -->
+                <button id="search-button" class="uk-button uk-button-primary uk-width-1-1">Rechercher</button>
             </div>
         </div>
 
-        <!-- Filtres pour utilisateurs connectés -->
-        <div sec:authorize="isAuthenticated()" class="uk-grid-small" uk-grid>
-            <div class="uk-width-1-4@m">
-                <label for="categories-auth">Catégories:</label>
-                <select class="uk-select" id="categories-auth" name="categories">
+        <!-- Authentifié -->
+        <div sec:authorize="isAuthenticated()" class="uk-flex uk-flex-wrap uk-flex-middle uk-grid-small filter-group" uk-grid>
+            <div class="uk-width-expand@s">
+                <label for="categories-auth">Catégories</label>
+                <select id="categories-auth" class="uk-select">
                     <option value="0">Toutes</option>
-                    <option th:each="category : ${categories}"
-                            th:value="${category.categoryId}"
-                            th:text="${category.label}">Catégorie
-                    </option>
+                    <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.label}"></option>
                 </select>
             </div>
-            <div class="uk-width-1-4@m">
-                <label for="search-auth">Le nom de l'article contient:</label>
-                <input class="uk-input" type="text" id="search-auth" name="search">
+            <div class="uk-width-expand@s">
+                <label for="search-auth">Nom contient</label>
+                <input id="search-auth" type="text" class="uk-input" placeholder="Rechercher...">
             </div>
-            <div class="uk-width-1-4@m">
-                <label for="filter-type">Mes enchères:</label>
-                <select class="uk-select" id="filter-type" name="filter-type">
+            <div class="uk-width-expand@s">
+                <label for="filter-type">Mes enchères</label>
+                <select id="filter-type" class="uk-select">
                     <option value="all">Toutes</option>
-                    <option value="my-bids">Mes enchères en cours</option>
-                    <option value="my-bidding">Mes mises sur enchère</option>
-                    <option value="my-wins">Mes enchères remportées</option>
+                    <option value="my-bids">En cours</option>
+                    <option value="my-bidding">Mes mises</option>
+                    <option value="my-wins">Remportées</option>
                 </select>
             </div>
-            <div class="uk-width-1-4@m uk-flex uk-flex-bottom">
-                <button class="uk-button uk-button-primary" id="search-button-auth" type="button">Rechercher</button>
+            <div class="uk-width-expand@s">
+                <label class="uk-hidden@s">&nbsp;</label>
+                <button id="search-button-auth" class="uk-button uk-button-primary uk-width-1-1 uk-margin-top">Rechercher</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Liste des enchères -->
 <div class="uk-section">
     <div class="uk-container">
-        <div id="bids-container" class="uk-grid uk-child-width-1-2@s uk-child-width-1-3@m" uk-grid>
-            <div th:each="bid : ${bids}" class="uk-card uk-card-default uk-margin-bottom">
-                <div class="uk-card-media-top">
-                    <div th:if="${bid.item.image != null}" class="uk-height-medium uk-flex uk-flex-center uk-flex-middle">
-                        <img th:src="@{/images/{file}(file=${bid.item.image})}"
-                             alt="Image de l'article"
-                             class="uk-border-rounded"
-                             style="max-height:180px; max-width:100%; object-fit:cover;">
+        <div id="no-bids-message" class="uk-alert-warning uk-text-center" hidden>Aucune enchère disponible.</div>
+        <div id="bids-container"></div>
+    </div>
+</div>
+<div id="createdItemModal" class="uk-flex-top" uk-modal th:if="${showModal}">
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-card uk-card-default uk-card-hover uk-border-rounded
+              uk-width-3-4@s uk-width-1-2@m uk-width-1-3@l">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
 
-                    </div>
-                    <div th:if="${bid.item.image == null}" class="uk-height-medium uk-background-muted uk-flex uk-flex-center uk-flex-middle">
-                        <span>Pas d'image disponible</span>
-                    </div>
-                </div>
-                <div class="uk-card-body">
-                    <h3 class="uk-card-title" th:text="${bid.item.itemName}">Titre de l'article</h3>
-                    <!-- Étiquette : en cours ou terminée -->
-                    <span th:if="${bid.item.saleStatus == 'EN_COURS'}" class="status-label en-cours">En cours</span>
-                    <span th:if="${bid.item.saleStatus == 'FINI'}" class="status-label terminée">Terminée</span>
-                    <p><strong>Prix:</strong> <span th:text="${bid.bidAmount + ' €'}">0.00 €</span></p>
-                    <p><strong>Fin de l'enchère:</strong> <span th:text="${bid.item.endDate}">01/01/2023</span></p>
-                    <p><strong>Retrait:</strong> <span th:text="${bid.item.pickupLocationBid != null ?
-                        (bid.item.pickupLocationBid.street + ', ' +
-                         bid.item.pickupLocationBid.postalCode + ' ' +
-                         bid.item.pickupLocationBid.city) : 'Non spécifié'}">Adresse</span></p>
-                    <p><strong>Enchérisseur:</strong> <span>${bid.user.username}</span></p>
+        <div class="uk-text-center uk-padding">
+            <span class="uk-icon-button uk-margin-bottom" uk-icon="icon: check; ratio: 3" style="color: #60f050;"></span>
+            <h2 class="uk-modal-title uk-text-success">Succès !</h2>
+            <p class="uk-text-lead" th:text="'Votre enchère sur « ' + ${item.itemName} + ' » a été ajoutée.'"></p>
 
-                    <a th:href="@{'/bidding-page?id=' + ${bid.item.itemId}}"
-                       class="uk-button uk-button-primary uk-width-1-1">Voir détails</a>
-                </div>
+            <div class="uk-grid-small uk-child-width-auto uk-flex-center uk-text-left" uk-grid>
+                <div><strong>Nom :</strong></div>
+                <div th:text="${item.itemName}"></div>
+                <div><strong>Description :</strong></div>
+                <div th:text="${item.description}"></div>
+                <div><strong>Début :</strong></div>
+                <div th:text="${item.startDate}"></div>
+                <div><strong>Fin :</strong></div>
+                <div th:text="${item.endDate}"></div>
+                <div><strong>Prix de départ :</strong></div>
+                <div th:text="${item.startingPrice} + ' €'"></div>
+                <div><strong>Catégorie :</strong></div>
+                <div th:text="${category}"></div>
             </div>
+        </div>
+
+        <div class="uk-text-center uk-margin-top">
+            <button class="uk-button uk-button-primary uk-modal-close" type="button">OK</button>
         </div>
     </div>
 </div>
-
-<div id="createdItemModal" class="uk-flex-top" uk-modal th:if="${showModal}">
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-card uk-card-default uk-card-hover uk-border-rounded">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2>Item créé</h2>
-        <p th:text="'Nom : ' + ${item.itemName}">Nom de l'article</p>
-        <p th:text="'Description : ' + ${item.description}">Catégorie</p>
-        <p th:text="'StartDate : ' + ${item.startDate}">Catégorie</p>
-        <p th:text="'EndDate : ' + ${item.endDate}">Catégorie</p>
-        <p th:text="'StartingPrice : ' + ${item.startingPrice}">Catégorie</p>
-        <p th:text="'Catégorie : ' + ${category}">Catégorie</p>
-    </div>
-</div>
-
 <script th:if="${showModal}">
     UIkit.modal('#createdItemModal').show();
 </script>
-
-<style>
-    /* Grille avec un espacement de 20px entre les cartes */
-    #bids-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ajuste la largeur des cartes */
-        gap: 20px; /* Espacement entre les cartes */
-    }
-
-    /* Style de la carte */
-    .uk-card {
-        margin-bottom: 20px;
-        width: 100%;
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .uk-card-media-top {
-        height: 200px; /* Hauteur fixe pour l'image */
-        background-color: #f0f0f0; /* Couleur de fond si pas d'image */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .uk-card-media-top .uk-height-medium {
-        width: 100%; /* Prendre toute la largeur disponible */
-        height: 200px; /* Ajuster la hauteur selon votre besoin */
-        background-size: cover; /* Couvre l'espace sans déformer l'image */
-        background-position: center center; /* Centrer l'image */
-    }
-
-    .uk-card-media-top .uk-height-medium img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .uk-card-body {
-        padding: 15px;
-    }
-
-    /* Positionner l'étiquette à droite */
-    .status-label {
-        padding-top: 8px;
-        padding-left: 8px;
-        padding-right: 8px;
-        border-radius: 4px;
-        font-weight: bold;
-        display: inline-block;
-        margin-left: 15px; /* Réduire l'écart entre le titre et l'étiquette */
-        line-height: 1; /* Ajuster la hauteur de ligne pour que l'étiquette s'adapte au texte */
-    }
-
-    .en-cours {
-        background-color: #28a745; /* Vert pour "En cours" */
-        color: white;
-    }
-
-    .terminée {
-        background-color: #dc3545; /* Rouge pour "Terminée" */
-        color: white;
-    }
-
-    .uk-card-title {
-        margin: 0; /* Supprimer la marge par défaut */
-    }
-
-
-
-
-</style>
-
-<!-- Script AJAX pour le filtrage -->
-<script>
-    let currentPage = 0;
-    const pageSize = 6;
-
-    function updateBidsDisplay(data) {
-        const container = document.getElementById('bids-container');
-        const noResultsMessage = document.getElementById('no-bids-message');
-        container.innerHTML = '';
-
-        if (!data.bids || data.bids.length === 0) {
-            if (noResultsMessage) noResultsMessage.style.display = 'block';
-            else {
-                const msg = document.createElement('div');
-                msg.id = 'no-bids-message';
-                msg.className = 'uk-alert uk-alert-warning';
-                msg.innerHTML = '<p>Aucune enchère disponible pour le moment.</p>';
-                container.parentNode.insertBefore(msg, container);
-            }
-            document.getElementById('pagination-container')?.remove();
-            return;
-        }
-        if (noResultsMessage) noResultsMessage.style.display = 'none';
-
-        data.bids.forEach(bid => {
-            const item = bid.item;
-            if (!item) return;
-            // Calculer si l'enchère est "En cours" ou "Terminée"
-            const endDate = new Date(item.endDate);
-            const currentDate = new Date();
-            const isOngoing = endDate > currentDate;
-
-            // Créer la carte d'enchère
-            let pickupAddress = 'Non spécifié';
-            if (item.pickupLocationBid)
-                pickupAddress = `${item.pickupLocationBid.street}, ${item.pickupLocationBid.postalCode} ${item.pickupLocationBid.city}`;
-
-            const bidCard = document.createElement('div');
-            bidCard.className = 'uk-card uk-card-default uk-margin-bottom';
-            bidCard.innerHTML = `
-           <div class="uk-card-media-top">
-    ${
-                item.image
-                    ? `<div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle">
-                    <img src="/images/${item.image}"
-     alt="Image de l'article"
-     class="uk-border-rounded"
-     style="max-height:180px; max-width:100%; object-fit:cover;">
-               </div>`
-                    : `<div class="uk-height-medium uk-background-muted uk-flex uk-flex-center uk-flex-middle">
-                    <span>Pas d'image disponible</span>
-               </div>`
-            }
-            </div>
-            <div class="uk-card-body">
-                <div class="uk-flex uk-flex-between">
-                    <h3 class="uk-card-title">${item.itemName || 'Nom non disponible'}</h3>
-                    <!-- Étiquette "En cours" ou "Terminée" -->
-                    <span class="status-label ${isOngoing ? 'en-cours' : 'terminée'}">${isOngoing ? 'En cours' : 'Terminée'}</span>
-                </div>
-                <p><strong>Prix:</strong> <span>${bid.bidAmount} €</span></p>
-                <p><strong>Fin de l'enchère:</strong> <span>${item.endDate || 'Non spécifié'}</span></p>
-                <p><strong>Retrait:</strong> <span>${pickupAddress}</span></p>
-                <p><strong>Vendeur:</strong> <span>${bid.user.username}</span></p>
-                <a href="/bidding-page?id=${item.itemId}" class="uk-button uk-button-primary uk-width-1-1">Voir détails</a>
-            </div>
-        `;
-
-
-            container.appendChild(bidCard);
-        });
-
-        updatePaginationControls(data.currentPage, data.totalPages);
-    }
-
-    // Affiche les contrôles de pagination
-    function updatePaginationControls(current, total) {
-        let pagination = document.getElementById('pagination-container');
-        if (!pagination) {
-            pagination = document.createElement('div');
-            pagination.id = 'pagination-container';
-            pagination.className = 'uk-margin-top uk-flex uk-flex-center';
-            container = document.getElementById('bids-container');
-            container.parentNode.appendChild(pagination);
-        }
-        let html = `<ul class="uk-pagination">`;
-        html += `<li class="${current === 0 ? 'uk-disabled' : ''}"><a href="#" id="prev-page">&laquo;</a></li>`;
-        // Affiche max 5 pages autour de la page courante
-        let start = Math.max(0, current - 2);
-        let end = Math.min(total - 1, start + 4);
-        if (end - start < 4) start = Math.max(0, end - 4);
-        for (let i = start; i <= end; i++) {
-            html += `<li class="${i === current ? 'uk-active' : ''}"><a href="#" class="page-link" data-page="${i}">${i + 1}</a></li>`;
-        }
-        html += `<li class="${current === total - 1 ? 'uk-disabled' : ''}"><a href="#" id="next-page">&raquo;</a></li>`;
-        html += `</ul>`;
-        pagination.innerHTML = html;
-
-        // Gestion des clics
-        document.getElementById('prev-page').onclick = e => {
-            e.preventDefault();
-            if (current > 0) goToPage(current - 1);
-        };
-        document.getElementById('next-page').onclick = e => {
-            e.preventDefault();
-            if (current < total - 1) goToPage(current + 1);
-        };
-        document.querySelectorAll('.page-link').forEach(link => {
-            link.onclick = e => {
-                e.preventDefault();
-                goToPage(parseInt(link.dataset.page));
-            };
-        });
-    }
-
-    // Récupère les filtres et recharge la page demandée
-    function getFilters(isAuth) {
-        if (isAuth) {
-            return {
-                categoryId: document.getElementById('categories-auth').value,
-                search: document.getElementById('search-auth').value.trim(),
-                filterType: document.getElementById('filter-type').value
-            };
-        } else {
-            return {
-                categoryId: document.getElementById('categories').value,
-                search: document.getElementById('search').value.trim()
-            };
-        }
-    }
-
-    // Appel AJAX pour les utilisateurs non connectés
-    function filterBids(page = 0) {
-        currentPage = page;
-        const { categoryId, search } = getFilters(false);
-        let url = `/api/bids/filter?page=${currentPage}&size=${pageSize}`;
-        if (categoryId && categoryId !== '0') url += `&categoryId=${categoryId}`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        fetch(url)
-            .then(r => r.json())
-            .then(data => updateBidsDisplay(data))
-            .catch(e => console.error(e));
-    }
-
-    // Appel AJAX pour les utilisateurs connectés
-    function filterBidsAuth(page = 0) {
-        currentPage = page;
-        const { categoryId, search, filterType } = getFilters(true);
-        let url = `/api/bids/filter?page=${currentPage}&size=${pageSize}`;
-        if (categoryId && categoryId !== '0') url += `&categoryId=${categoryId}`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        if (filterType && filterType !== 'all') url += `&filterType=${filterType}`;
-        fetch(url)
-            .then(r => r.json())
-            .then(data => updateBidsDisplay(data))
-            .catch(e => console.error(e));
-    }
-
-    // Navigation entre pages
-    function goToPage(page) {
-        if (document.getElementById('categories-auth')) filterBidsAuth(page);
-        else filterBids(page);
-    }
-
-    // Initialisation des événements
-    document.addEventListener('DOMContentLoaded', function() {
-        // Non connecté
-        if (document.getElementById('categories')) {
-            document.getElementById('categories').addEventListener('change', () => filterBids(0));
-            document.getElementById('search-button').addEventListener('click', () => filterBids(0));
-        }
-        // Connecté
-        if (document.getElementById('categories-auth')) {
-            document.getElementById('categories-auth').addEventListener('change', () => filterBidsAuth(0));
-            document.getElementById('search-button-auth').addEventListener('click', () => filterBidsAuth(0));
-            document.getElementById('filter-type').addEventListener('change', () => filterBidsAuth(0));
-        }
-        // Chargement initial
-        if (document.getElementById('categories-auth')) filterBidsAuth(0);
-        else filterBids(0);
-    });
-</script>
-
 </body>
 </html>

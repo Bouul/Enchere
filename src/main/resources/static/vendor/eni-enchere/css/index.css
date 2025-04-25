@@ -1,0 +1,83 @@
+/* Responsive grid: 1 col on mobile, 2 on small, 3 on medium+ */
+#bids-container { display: grid; gap: 1.5rem; grid-template-columns: repeat(1, 1fr); }
+@media (min-width: 640px) { #bids-container { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { #bids-container { grid-template-columns: repeat(3, 1fr); } }
+
+/* Card enhancements */
+.uk-card { transition: transform .2s, box-shadow .2s; border-radius: .75rem; overflow: hidden; }
+.uk-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.uk-card-media-top { position: relative; }
+.price-badge { position: absolute; top: .5rem; left: .5rem; background: rgba(0,0,0,0.7); color: #fff; padding: .25rem .5rem; border-radius: .25rem; font-size: .9rem; }
+
+/* Filters spacing */
+.filter-group { gap: 1rem; margin-bottom: 2rem; }
+.filter-group label { font-weight: 600; margin-bottom: .25rem; display: block; }
+
+/* Mobile-friendly inputs */
+.uk-input, .uk-select { width: 100%; }
+
+/* Grille avec un espacement de 20px entre les cartes */
+#bids-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ajuste la largeur des cartes */
+    gap: 20px; /* Espacement entre les cartes */
+}
+
+/* Style de la carte */
+.uk-card {
+    margin-bottom: 20px;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.uk-card-media-top {
+    height: 200px; /* Hauteur fixe pour l'image */
+    background-color: #f0f0f0; /* Couleur de fond si pas d'image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uk-card-media-top .uk-height-medium {
+    width: 100%; /* Prendre toute la largeur disponible */
+    height: 200px; /* Ajuster la hauteur selon votre besoin */
+    background-size: cover; /* Couvre l'espace sans déformer l'image */
+    background-position: center center; /* Centrer l'image */
+}
+
+.uk-card-media-top .uk-height-medium img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.uk-card-body {
+    padding: 15px;
+}
+
+/* Positionner l'étiquette à droite */
+.status-label {
+    padding-top: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 15px; /* Réduire l'écart entre le titre et l'étiquette */
+    line-height: 1; /* Ajuster la hauteur de ligne pour que l'étiquette s'adapte au texte */
+}
+
+.en-cours {
+    background-color: #28a745; /* Vert pour "En cours" */
+    color: white;
+}
+
+.terminée {
+    background-color: #dc3545; /* Rouge pour "Terminée" */
+    color: white;
+}
+
+.uk-card-title {
+    margin: 0; /* Supprimer la marge par défaut */
+}
