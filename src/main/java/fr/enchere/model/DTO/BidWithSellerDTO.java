@@ -12,6 +12,7 @@ public class BidWithSellerDTO {
     private int itemStartingPrice;
     private String itemImage;
     private String sellerUsername;
+    private String pickupAddress;
     // constructeur
     public BidWithSellerDTO(
             Long bidId,
@@ -22,7 +23,8 @@ public class BidWithSellerDTO {
             LocalDateTime itemEndDate,
             int itemStartingPrice,
             String itemImage,
-            String sellerUsername
+            String sellerUsername,
+            String pickupAddress
     ) {
         this.bidId = bidId;
         this.bidDate = bidDate;
@@ -33,6 +35,7 @@ public class BidWithSellerDTO {
         this.itemStartingPrice = itemStartingPrice;
         this.itemImage = itemImage;
         this.sellerUsername = sellerUsername;
+        this.pickupAddress = pickupAddress;
     }
 
     public Long getBidId() {
@@ -105,5 +108,13 @@ public class BidWithSellerDTO {
 
     public void setBidDate(LocalDateTime bidDate) {
         this.bidDate = bidDate;
+    }
+
+    public String getPickupAddress() {
+        return pickupAddress;
+    }
+
+    public void setPickupAddress(String pickupAddress) {
+        this.pickupAddress = pickupAddress;
     }
 }

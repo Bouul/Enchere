@@ -44,20 +44,18 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String home1(Model model) {
-        List<Bid> bids = bidService.getBids();
-        List<Category> categories = categoryService.findAll();
-        model.addAttribute("bids", bids);
-        model.addAttribute("categories", categories);
+    public String redirectHome(Model model) {
         return "redirect:/enchere";
     }
 
     @GetMapping("/enchere")
     public String home(Model model) {
-        List<Bid> bids = bidService.getBids();
-        List<Category> categories = categoryService.findAll();
-        model.addAttribute("bids", bids);
-        model.addAttribute("categories", categories);
+        if (!model.containsAttribute("bids")) {
+            model.addAttribute("bids", bidService.getBids());
+        }
+        if (!model.containsAttribute("categories")) {
+            model.addAttribute("categories", categoryService.findAll());
+        }
         return "index";
     }
 
@@ -114,6 +112,11 @@ public class HomeController {
 
         List<BidWithSellerDTO> dtos = bidPage.getContent().stream().map(bid -> {
             var item = bid.getItem();
+            String pickupAddress = "Non spécifié";
+            if (item.getPickupLocationBid() != null) {
+                var loc = item.getPickupLocationBid();
+                pickupAddress = loc.getStreet() + ", " + loc.getPostalCode() + " " + loc.getCity();
+            }
             return new BidWithSellerDTO(
                     bid.getBidId(),
                     bid.getBidDate(),
@@ -123,7 +126,8 @@ public class HomeController {
                     item.getEndDate(),
                     item.getStartingPrice(),
                     item.getImage(),
-                    item.getSeller().getUsername()    // ← ici on récupère bien le username
+                    item.getSeller().getUsername(),
+                    pickupAddress
             );
         }).collect(Collectors.toList());
 
