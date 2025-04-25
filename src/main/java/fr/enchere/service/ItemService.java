@@ -48,10 +48,11 @@ public class ItemService {
             pickupLocation.setCity(form.getCity());
             pickupLocation.setPostalCode(form.getPostalCode());
             pickupLocation.setStreet(form.getStreet());
+        } else {
+            pickupLocation.setCity(user.getCity());
+            pickupLocation.setPostalCode(user.getPostalCode());
+            pickupLocation.setStreet(user.getStreet());
         }
-        pickupLocation.setCity(user.getCity());
-        pickupLocation.setPostalCode(user.getPostalCode());
-        pickupLocation.setStreet(user.getStreet());
         item.setItemName(form.getItemName());
         item.setDescription(form.getDescription());
         item.setStartDate(LocalDateTime.parse(form.getStartDate()));
