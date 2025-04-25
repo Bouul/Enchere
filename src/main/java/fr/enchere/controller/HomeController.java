@@ -157,17 +157,6 @@ public class HomeController {
         return "login";
     }
 
-
-    @GetMapping("/acquisition-page")
-    public String acquisitionPage() {
-        return "acquisition-page";
-    }
-
-    @GetMapping("/auction-list-pages")
-    public String acquisitionListPage() {
-        return "auction-list-pages";
-    }
-
     @GetMapping("/profile-modification")
     public String profileModification() {
         return "/profile-modification";
