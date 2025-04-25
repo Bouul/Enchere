@@ -8,7 +8,6 @@
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
-
 <div class="uk-section uk-section-small">
     <div class="uk-container">
         <h2 class="uk-heading-divider">Filtres</h2>
@@ -64,6 +63,12 @@
 
 <div class="uk-section">
     <div class="uk-container">
+        <div th:if="${success}" class="uk-alert uk-alert-success">
+            <p th:text="${success}">Message de succès</p>
+        </div>
+        <div th:if="${error}" class="uk-alert uk-alert-danger">
+            <p th:text="${error}">Message d'erreur</p>
+        </div>
         <div id="no-bids-message" class="uk-alert-warning uk-text-center" hidden>Aucune enchère disponible.</div>
         <div id="bids-container"></div>
     </div>

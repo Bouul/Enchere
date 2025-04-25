@@ -270,15 +270,12 @@ public class HomeController {
             item.setSaleStatus("RETRAIT");
             itemService.updateItem(item);
 
-            // Invalider la session
-            request.getSession().invalidate();
-
             // Rediriger vers la page de déconnexion
             redirectAttributes.addFlashAttribute("success", "Retrait confirmé avec succès !");
-            return "redirect:/";
+            return "redirect:/enchere";
         } else {
             redirectAttributes.addFlashAttribute("error", "Un problème est survenu lors du retrait.");
-            return "redirect:/";
+            return "redirect:/enchere";
         }
     }
 }
